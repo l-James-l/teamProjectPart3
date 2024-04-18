@@ -1,0 +1,17 @@
+.main-content-container {
+    position: fixed; 
+    left:280px;
+    width: -webkit-fill-available;
+    padding: 25px;
+    overflow-y: scroll;
+    height: -webkit-fill-available;
+}
+.list-group {
+    padding-bottom: 10px;
+}
+
+.sidebar {
+    width: 280px; 
+    position: fixed;
+    height: -webkit-fill-available;
+}
