@@ -128,17 +128,25 @@
             
 
             <div class="send-bar-section">
-                <form id="send-message-form" action="send-message.php" method="post">
+                <form id="send-message-form" action="send-message.php" method="post" onsubmit="sendMessage()">
                     <input type="hidden" name="chat_id" id="chat_id" value="1"> 
-                    <input type="text" name="message" placeholder="Type your message...">
+                    <input type="text" name="message" id="message" placeholder="Type your message...">
                     <button type="submit">Send Message</button>
                 </form>
             </div>
+            
 
         </div>
 
     </main>
     <script>
+    function sendMessage() {
+        // Get the value of the message input field
+        var message = document.getElementById("message").value;
+        
+        // Display the message in the console
+        console.log("Message: " + message);
+    }
         // Ensures that the chat section is scrolled to the bottom
         // when the page is loaded, making the latest messages visible.
         document.addEventListener("DOMContentLoaded", function () {

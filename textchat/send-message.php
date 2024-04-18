@@ -1,6 +1,9 @@
 <?php
 include_once(__DIR__ . '/../src/db_connection.php');
 
+//ds
+var_dump($_POST);
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['message']) && !empty($_POST['message'])) {
         // Get the message from the POST data and sanitise it
