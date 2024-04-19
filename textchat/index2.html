@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messaging Service</title>
-    <!-- <link rel="stylesheet" href="stylesheets/messaging-styles-colour.css"> -->
+    <link rel="stylesheet" href="stylesheets/messaging-styles-colour.css">
     <link rel="stylesheet" href="stylesheets/messaging-styles.css">
 </head>
 <body>
@@ -128,11 +128,12 @@
             
 
             <div class="send-bar-section">
-                <form id="send-message-form" action="send-message.php" method="post" onsubmit="sendMessage()">
-                    <input type="hidden" name="chat_id" id="chat_id" value="1"> 
+                <form id="send-message-form" action="send-message.php" method="post" onsubmit="sendMessage(event)">
+                    <input type="hidden" name="chat_id" id="chat_id" value="1">
                     <input type="text" name="message" id="message" placeholder="Type your message...">
                     <button type="submit">Send Message</button>
                 </form>
+                
             </div>
             
 
@@ -140,13 +141,43 @@
 
     </main>
     <script>
-    function sendMessage() {
-        // Get the value of the message input field
-        var message = document.getElementById("message").value;
-        
-        // Display the message in the console
-        console.log("Message: " + message);
+   function sendMessage(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    var chatId = document.getElementById("chat_id").value;
+    var message = document.getElementById("message").value;
+
+    // Basic validation
+    if (!message.trim()) {
+        console.log("Message is empty.");
+        return;
     }
+
+    // Construct the POST data
+    var formData = new FormData();
+    formData.append('chat_id', chatId);
+    formData.append('message', message);
+
+    // Create and send an AJAX request
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "send-message.php", true);
+    xhr.onload = function () {
+        if (this.status === 200) {
+            console.log(this.responseText);
+            // You may want to call scrollToBottom() to scroll the chat into view.
+        } else {
+            console.error('An error occurred during the AJAX request');
+        }
+    };
+    xhr.onerror = function () {
+        console.error('An error occurred during the AJAX request');
+    };
+    xhr.send(formData);
+
+    // Clear the message input
+    document.getElementById("message").value = '';
+}
+
         // Ensures that the chat section is scrolled to the bottom
         // when the page is loaded, making the latest messages visible.
         document.addEventListener("DOMContentLoaded", function () {
