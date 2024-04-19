@@ -22,28 +22,18 @@ if ($conn) {
             where (project_title like '$searchString'
             or first_name like '$searchString'
             or surname like '$searchString')
-            group by project.project_id
-            
-            ";
-            
-        } else if ($role == "TL") {
-            $stmt = "select project_title, first_name, surname, project.due_date, count(task_id) as task_count, avg(completion_percentage) as overall_completion
-            from project inner join users on users.user_id = project.team_leader_id 
-            left join task on project.project_id = task.project_id 
-            where (project_title like '$searchString'
-            or first_name like '$searchString'
-            or surname like '$searchString')
             group by project.project_id";
             
-        } else if ($role == "Emp") {
+        } else if ($role == "TL" || $role == "Emp") {
             $stmt = "select project_title, first_name, surname, project.due_date, count(task_id) as task_count, avg(completion_percentage) as overall_completion
             from project inner join users on users.user_id = project.team_leader_id 
             left join task on project.project_id = task.project_id 
-            where project.project_id in (select project_id from task where user_id = :user_id)
+            where (project.team_leader_id = :user_id
+            or project.project_id in (select project_id from task where user_id = :user_id))
             and (project_title like '$searchString'
             or first_name like '$searchString'
             or surname like '$searchString')
-            group by project.project_id";
+            group by project.project_id";  
         } 
         if (!isset($_GET["sortValue"])) {
             $stmt = $stmt." order by project.due_date";
@@ -53,6 +43,8 @@ if ($conn) {
             $stmt = $stmt." order by overall_completion";
         } else if ($_GET["sortValue"] == "assigned tasks") {
             $stmt = $stmt." order by task_count";
+        } else {
+            $stmt = $stmt." order by project.due_date";
         }
 
         if (!isset($_GET["sortOrder"])){
