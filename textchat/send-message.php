@@ -1,18 +1,6 @@
 <?php
 
 include_once(__DIR__.'/../src/db_connection.php');
-$connection=mysqli_connect($servername,$username,$password,$dbname);
-$statement=mysqli_stmt_init($connection);
-
-// include_once(__DIR__ . '/../src/db_connection.php');
-
-
-// $conn = new mysqli($servername, $username, $password, $db_name);
-
-// if ($conn->connect_error) {
-//     die("Connection failed: " . $conn->connect_error);
-// }
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['message']) && !empty($_POST['message'])) {
@@ -50,5 +38,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Request method is not POST
     echo json_encode(array("status" => "error", "message" => "Invalid request method"));
 }
-// $conn->close();
 ?>
