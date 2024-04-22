@@ -1,6 +1,14 @@
 <?php
 
-include_once(__DIR__.'/../src/db_connection.php');
+include "db_connection.php";
+
+try {
+    $conn = new PDO("mysql:host=localhost;dbname=make_it_all", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    print "Error!: " . $e->getMessage() . "<br/>";
+    die();
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['message']) && !empty($_POST['message'])) {
