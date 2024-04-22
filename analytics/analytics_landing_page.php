@@ -103,7 +103,7 @@ if (isset($_GET["lf"])) {
 
                 <div class="dropdown col-2" style="padding: 0px">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdownMenuButton"
-                        data-bs-toggle="dropdown" style="width: 90%;">Filter</button>
+                        data-bs-toggle="dropdown" data-bs-auto-close="outside" style="width: 90%;">Filter</button>
                         <div class="dropdown-menu" aria-labelledby="filterDropdownMenuButton">
                             <button class="dropdown-item d-flex justify-content-between" type="button" onclick="toggleFilter('Mgr');get_user_json()">
                                 Managers <i id="MgrToggleIcon" class="bi bi-check"></i>
