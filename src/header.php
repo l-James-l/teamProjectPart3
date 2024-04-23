@@ -64,7 +64,7 @@ if (!isset($currentPage)) {
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    <li><a class="dropdown-item" href="login.php">Sign out</a></li>
+                    <li><a class="dropdown-item" href="../src/login.php">Sign out</a></li>
                 </ul>
             </div>
         </div>
