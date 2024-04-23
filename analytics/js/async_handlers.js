@@ -151,7 +151,7 @@ function display_users(responseJson) {
         // the link item that contains everything else
         let link_body = document.createElement("a")
         link_body.classList.add("list-group-item", "list-group-item-action", "flex-column", "align-items-start")
-        link_body.href = "#"
+        link_body.href = "./individual_analytics.php"
 
         let title_row = document.createElement("div")
         title_row.classList.add("d-flex", "w-100", "justify-content-between")

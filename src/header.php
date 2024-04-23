@@ -19,6 +19,7 @@ if (!isset($currentPage)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Make It All</title>
+	<link rel="icon" type="image/x-icon" href="./imgs/logo.ico">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -35,10 +36,10 @@ if (!isset($currentPage)) {
 
             <ul style="display: flex;">
                 <li class="sub-system-link <?php echo $currentPage=='analytics' ? 'current-page-li': '' ?>">
-                    <a class="headerLink <?php echo $currentPage=='analytics' ? 'current-page': 'default' ?>" href="./analytics_landing_page.php?lf=projects">Analytics</a>
+                    <a class="headerLink <?php echo $currentPage=='analytics' ? 'current-page': 'default' ?>" href="../analytics_landing_page.php?lf=projects">Analytics</a>
                 </li>
                 <li class="sub-system-link <?php echo $currentPage=='chat' ? 'current-page': '' ?>">
-                    <a class="headerLink <?php echo $currentPage=='chat' ? 'current-page': 'default' ?>" href="./chat.php">Chat</a>
+                    <a class="headerLink <?php echo $currentPage=='chat' ? 'current-page': 'default' ?>" href="../textchat/index2.html.php">Chat</a>
                 </li>
             </ul>
 

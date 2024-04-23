@@ -110,13 +110,13 @@ $conn->close();
     <link rel="stylesheet" href="stylesheets/individual.css">
 </head>
 <body>
-    <header>
+    <!-- <header>
         <div class="container header-container">
             <img src="content/logo.png" alt="Company Logo" id="page-logo">
             
             <div class="header-title">
-                Analytics Dashboard - <?php echo $fullName ?>
-                <div class="header-subtitle"><?php echo $role ?></div> 
+                Analytics Dashboard - <?php //echo $fullName ?>
+                <div class="header-subtitle"><?php //echo $role ?></div> 
             </div>
 
             <div class="dropdown">
@@ -138,7 +138,15 @@ $conn->close();
                 </ul>
             </div>
         </div>
-    </header>
+    </header> -->
+    <?php
+    if (isset($_SESSION["user_id"])) {
+        $currentPage = "analytics";
+        include "header.php";
+    } else {
+        header("location: login.php");
+    }
+    ?>
 
     <div class="container-fluid">
         <div class="row">
