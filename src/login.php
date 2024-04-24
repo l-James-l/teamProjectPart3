@@ -34,7 +34,7 @@ if (isset ($_POST["username"]) && isset ($_POST["password"])) {
 			$_SESSION["surname"] = $user["surname"];
 			$_SESSION["role"] = $user["role"];
 			$_SESSION["email"] = $user["email"];
-			header("location: ./info.php");
+			header("location: ../analytics/analytics_landing_page.php");
 		}
 		else {
 			$errorMessage = 'Email and Password dont match';
