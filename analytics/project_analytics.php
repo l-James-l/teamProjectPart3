@@ -105,7 +105,7 @@ $conn->close();
     <link rel="stylesheet" href="stylesheets/individual.css">
 </head>
 <body>
-    <!-- <header>
+     <header>
         <div class="container header-container">
             <img src="content/logo.png" alt="Company Logo" id="page-logo">
             
@@ -133,7 +133,7 @@ $conn->close();
                 </ul>
             </div>
         </div>
-    </header> -->
+    </header> 
 
     <div class="container-fluid">
         <div class="row">
