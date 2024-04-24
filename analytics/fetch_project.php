@@ -21,7 +21,7 @@ if (mysqli_connect_errno()) {
 echo "Connected successfully";
 
 // Fetch project tasks
-$sql = "SELECT task_id, completion_percentage, estimated_hours FROM tasks WHERE project_id = ?";
+$sql = "SELECT task_id, completion_percentage, estimated_hours FROM task WHERE project_id = ?";
 $stmt = mysqli_prepare($connection, $sql);
 if ($stmt === false) {
     die('MySQL prepare error: ' . mysqli_error($connection));
