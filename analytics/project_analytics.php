@@ -59,13 +59,29 @@ if ($stmt->fetch()) {
             
             <div class="header-title">
                 Analytics Dashboard - Project Name
-                <div class="project-select mt-2" style="width: 200px;"> <!-- Inline style for width -->
-                    <select class="form-select form-select-sm" aria-label=".form-select-sm example">
-                        <option selected>Select a project</option>
-                        <option value="1">Website Redesign</option>
-                        <option value="2">Marketing Campaign</option>
-                        <option value="3">New Product Launch</option>
-                    </select>
+                <div class="project-select mt-2" style="width: 200px;"> 
+                    <?php
+                    // SQL to fetch projects
+                    $projectQuery = "SELECT project_id, project_title FROM project";
+                    $projectResult = $conn->query($projectQuery);
+
+                    // Check if there are any projects returned
+                    if ($projectResult->num_rows > 0) {
+                        // Start the select element
+                        echo '<select class="form-select form-select-sm" aria-label=".form-select-sm example">';
+                        echo '<option selected>Select a project</option>';
+                        
+                        // Loop through all the projects and create an option element for each
+                        while($project = $projectResult->fetch_assoc()) {
+                            echo '<option value="' . htmlspecialchars($project['project_id']) . '">' . htmlspecialchars($project['project_title']) . '</option>';
+                        }
+                        
+                        // Close the select element
+                        echo '</select>';
+                    } else {
+                        echo 'No projects found.';
+                    }
+                    ?>
                 </div>
                 <div class="header-subtitle"></div> 
             </div>
