@@ -11,15 +11,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
         mysqli_stmt_bind_param($statement,"ii",$_GET['message_id'],$_SESSION['user_id']);
         mysqli_stmt_execute($statement);
         $affectedRows=mysqli_stmt_affected_rows($statement);
-        $result;
         if($affectedRows==1) {
             //Success
         }
         else if($affectedRows==0) {
             //No message deleted - no matching message
+            http_response_code(404);
         }
         else if(affectedRows==-1) {
             //Query error
+            http_response_code(500);
         }
     }
 }
