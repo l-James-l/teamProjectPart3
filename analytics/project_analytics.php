@@ -42,7 +42,7 @@ if ($stmt->fetch()) {
 
 $stmt->close();
 
-$sql = "SELECT projectID, completion_percentage, estimated_hours FROM tasks WHERE user_id = ?";
+$sql = "SELECT projectID, completion_percentage, estimated_hours FROM task WHERE user_id = ?";
 $stmt = $conn->prepare($sql);
 if ($stmt === false) {
     die('MySQL prepare error: ' . $conn->error);
