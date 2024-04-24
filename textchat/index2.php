@@ -1,3 +1,14 @@
+<?php
+// session_start();
+
+// if (!isset($_SESSION["user_id"])) {
+//     header("location: login.php");
+// }
+
+$currentPage = "textchat"; 
+include "../src/header.php"; 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,9 +17,34 @@
     <title>Messaging Service</title>
     <!-- <link rel="stylesheet" href="stylesheets/messaging-styles-colour.css"> -->
     <link rel="stylesheet" href="stylesheets/messaging-styles-colour.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="js/async_handlers.js"></script>
 </head>
 <body>
     <main>
+
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="?lf=projects" class="nav-link <?php echo $currentPage == "projects" ? "active" : "link-dark" ?>" aria-current="page">
+                    <i class="bi bi-folder-fill"></i>
+                    Projects
+                </a>
+            </li>
+            <li>
+                <a href="?lf=users" class="nav-link <?php echo $currentPage == "users" ? "active" : "link-dark" ?>">
+                    <i class="bi bi-people-fill"></i>
+                    Users
+                </a>
+            </li>
+        </ul>
+        <hr>
+        </div>
+
         <div class="groups-sidebar">
             <div class="groups-sidebar-item">1-1</div>
             <div class="groups-sidebar-item">Group</div>
