@@ -189,7 +189,7 @@ $conn->close();
                         die("Connection failed: " . $conn->connect_error);
                     }
 
-                    $sql = "SELECT t.task_name, p.project_name, t.due_date, t.priority, t.est_length, t.completion_percentage 
+                    $sql = "SELECT t.task_title, p.project_title, t.due_date, t.priority, t.est_length, t.completion_percentage 
                             FROM task t 
                             INNER JOIN project p ON t.project_id = p.project_id
                             WHERE t.user_id = ?";
