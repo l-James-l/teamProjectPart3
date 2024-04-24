@@ -17,7 +17,7 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully";
 
-$stmt = $conn->prepare("SELECT first_name, surname, role FROM user WHERE userID = ?");
+$stmt = $conn->prepare("SELECT first_name, surname, role FROM users WHERE userID = ?");
 if ($stmt === false) {
     die('MySQL prepare error: ' . $conn->error);
 }
