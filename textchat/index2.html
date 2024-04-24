@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messaging Service</title>
+    <!-- <link rel="stylesheet" href="stylesheets/messaging-styles-colour.css"> -->
     <link rel="stylesheet" href="stylesheets/messaging-styles-colour.css">
-    <!-- <link rel="stylesheet" href="stylesheets/messaging-styles.css"> -->
 </head>
 <body>
     <main>
         <div class="groups-sidebar">
             <div class="groups-sidebar-item">1-1</div>
             <div class="groups-sidebar-item">Group</div>
-            <div class="groups-sidebar-item">Settings</div>
+            <a href="settings.html" class="groups-sidebar-item">Settings</a>
         </div>
 
         <div class="message-list-sidebar">
@@ -123,11 +123,12 @@
                 <div class="message-container outgoing">
                     <div class="outgoing-message">Agreed. I'll prioritize the design revisions and coordinate with the design team to ensure we stay on track. Looking forward to a productive week!</div>
                 </div>
-                <!-- Add more work-related messages as needed -->
+                
             </div>
             
 
             <div class="send-bar-section">
+                <form id="send-message-form" action="send-message2.php" method="post" onsubmit="sendMessage(event)">
                     <input type="hidden" name="chat_id" id="chat_id" value="1">
                     <input type="text" name="message" id="message" placeholder="Type your message...">
                     <button type="submit">Send Message</button>
@@ -141,12 +142,12 @@
     </main>
     <script>
    function sendMessage(event) {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault(); 
 
     var chatId = document.getElementById("chat_id").value;
     var message = document.getElementById("message").value;
 
-    // Basic validation
+    
     if (!message.trim()) {
         console.log("Message is empty.");
         return;
@@ -159,11 +160,11 @@
 
     // Create and send an AJAX request
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "send-message.php", true);
+    xhr.open("POST", "send-message2.php", true);
     xhr.onload = function () {
         if (this.status === 200) {
             console.log(this.responseText);
-            // You may want to call scrollToBottom() to scroll the chat into view.
+            
         } else {
             console.error('An error occurred during the AJAX request');
         }
