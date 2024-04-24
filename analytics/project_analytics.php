@@ -1,5 +1,9 @@
 <?php
 
+// SQL data collection
+
+
+$userID = 1; // get userID from url later
 
 // DB connection 
 $servername = "localhost";
@@ -36,7 +40,50 @@ if ($stmt->fetch()) {
 }
 }
 
+$stmt->close();
+
+$sql = "SELECT projectID, completion_percentage, estimated_hours FROM tasks WHERE user_id = ?";
+$stmt = $conn->prepare($sql);
+if ($stmt === false) {
+    die('MySQL prepare error: ' . $conn->error);
+}
+$stmt->bind_param('i', $userID);
+$stmt->execute();
+$stmt->bind_result($projectID, $completionPercentage, $estimatedHours);
+
+$completionPercentages = array();
+$estimatedHoursArray = array();
+$projectIDs = array();
+
+while ($stmt->fetch()) {
+    $completionPercentages[] = $completionPercentage;
+    $estimatedHoursArray[] = $estimatedHours;
+    $projectIDs[] = $projectID;
+}
+
+$stmt->close();
+
+$completionSum = array_sum($completionPercentages);
+if (count($completionPercentages) > 0) {
+    $overallCompletion = $completionSum / count($completionPercentages);
+} else {
+    $overallCompletion = 0; 
+}
+
+$hoursDoneArray = array();
+foreach ($completionPercentages as $index => $completionPercentage) {
+    $hoursDoneArray[$index] = $completionPercentage * $estimatedHoursArray[$index];
+    $hoursDone = array_sum($hoursDoneArray);
+    $hoursLeft = array_sum($estimatedHoursArray) - $hoursDone;
+}
+
+$projectCount = count(array_unique($projectIDs));
+$taskCount = count($completionPercentages);
+
+$conn->close();
+
 ?>
+
 
 
 <!DOCTYPE html>
@@ -44,140 +91,32 @@ if ($stmt->fetch()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics - Project Name</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="stylesheets/individual.css">
+    <title>Project Analytics - Project ID <?php echo $projectID; ?></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <header>
-        <div class="container header-container">
-            <img src="content/logo.png" alt="Company Logo" id="page-logo">
-            
-            <div class="header-title">
-                Analytics Dashboard - Project Name
-                <div class="project-select mt-2" style="width: 200px;"> 
-                    <?php
-                    // SQL to fetch projects
-                    $projectQuery = "SELECT project_id, project_title FROM project";
-                    $projectResult = $conn->query($projectQuery);
-
-                    // Check if there are any projects returned
-                    if ($projectResult->num_rows > 0) {
-                        // Start the select element
-                        echo '<select class="form-select form-select-sm" aria-label=".form-select-sm example">';
-                        echo '<option selected>Select a project</option>';
-                        
-                        // Loop through all the projects and create an option element for each
-                        while($project = $projectResult->fetch_assoc()) {
-                            echo '<option value="' . htmlspecialchars($project['project_id']) . '">' . htmlspecialchars($project['project_title']) . '</option>';
-                        }
-                        
-                        // Close the select element
-                        echo '</select>';
-                    } else {
-                        echo 'No projects found.';
-                    }
-                    ?>
-                </div>
-                <div class="header-subtitle"></div> 
-            </div>
-
-            <div class="dropdown">
-                <a href="#" class="d-block link-dark text-decoration-none user-dropdown dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="content/icon.png" alt="mdo" width="42" height="42" class="rounded-circle">
-                </a>
-                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                    <li>
-                        <div class="dropdown-item dropdown-item-nohover">
-                            <div style="white-space: normal;">
-                                <img src="content/icon.png" alt="mdo" width="32" height="32" class="rounded-circle">
-                                <span style="padding-left: 10px;">John Doe</span>
-                            </div>
-                            <span>johndoe@example.com</span>
-                        </div>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="login.php">Sign out</a></li>
-                </ul>
-            </div>
+    <div class="container">
+        <h1>Project Dashboard</h1>
+        <div class="alert alert-info">
+            Total Task Completion: <?php echo round($overallCompletion, 2); ?>%
         </div>
-    </header>
-
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-5 sidebar">
-                <div class="sidebar-row flex-fill d-flex flex-column align-items-center justify-content-center">
-                    <div class="number-label">
-                        Total Task Completion
-                    </div>
-                    <div class="circle-percentage d-flex flex-column align-items-center justify-content-center">
-                        <div class="percentage-number" data-bs-toggle="tooltip" data-bs-placement="top" title="Hours Done: 150h, Hours Left: 50h">
-                            75%
-                        </div>
+        <div class="alert alert-warning">
+            Remaining Assigned Hours: <?php echo round($hoursLeft, 2); ?>
+        </div>
+        <div class="mt-3">
+            <h2>Tasks Details</h2>
+            <?php foreach ($taskDetails as $task) { ?>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Task: <?php echo htmlspecialchars($task['task_title']); ?></h5>
+                        <p class="card-text">Completion: <?php echo $task['completion_percentage']; ?>%</p>
+                        <p class="card-text">Estimated Hours: <?php echo $task['estimated_hours']; ?></p>
                     </div>
                 </div>
-                
-                
-                <div class="sidebar-row flex-fill">
-                    <p></p>
-                </div>
-                <div class="sidebar-row flex-fill d-flex flex-column align-items-center justify-content-center">
-                    <div class="number-label">
-                        Current Remaining Assigned Hours
-                    </div>
-                    
-                    <div class="hours-left d-flex flex-column align-items-center justify-content-center">
-                        <div class="hours-number" >
-                            30 Hours
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-7">
-                <!-- Main content goes here -->
-                <header class="main-content-header">
-                    <h1>2 Remaining Tasks</h1>
-                </header>
-                <div class="task-container">
-                    <div class="task-box bg-light border rounded p-3 mb-2">
-                        <div class="task-info">
-                            <h5 class="task-name">Task: Implement User Authentication</h5>
-                            <h5 class="project-name">Project: Website Redesign</h5>
-                            <p class="task-due-date">Due Date: 2024-04-30</p>
-                            <p class="task-priority">Priority: High</p>
-                            <p class="task-length">Estimated Length: 15 hours</p>
-                            <div class="progress" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50% Complete</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="task-box bg-light border rounded p-3 mb-2">
-                        <div class="task-info">
-                            <h5 class="task-name">Task: Implement User Authentication</h5>
-                            <h5 class="project-name">Project: Website Redesign</h5>
-                            <p class="task-due-date">Due Date: 2024-04-30</p>
-                            <p class="task-priority">Priority: High</p>
-                            <p class="task-length">Estimated Length: 15 hours</p>
-                            <div class="progress" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50% Complete</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php } ?>
         </div>
     </div>
 
-    <script>
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-    </script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
