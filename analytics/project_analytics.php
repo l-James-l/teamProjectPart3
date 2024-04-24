@@ -1,5 +1,5 @@
 <?php
-
+include 'fetch_projects.php';
 // SQL data collection
 
 
@@ -117,6 +117,41 @@ $conn->close();
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    var projectID = <?php echo json_encode($projectID); ?>; // Get project ID from PHP
+
+    $.ajax({
+        url: 'fetch_projects.php', // Your back-end endpoint
+        type: 'GET',
+        data: {projectID: projectID},
+        dataType: 'json',
+        success: function(data) {
+            if(data) {
+                // Update your frontend elements like task details
+                $.each(data.taskDetails, function(i, task) {
+                    $('.task-container').append(`
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Task: ${task.task_title}</h5>
+                                <p class="card-text">Completion: ${task.completion_percentage}%</p>
+                                <p class="card-text">Estimated Hours: ${task.estimated_hours}</p>
+                            </div>
+                        </div>
+                    `);
+                });
+                // Update other elements like completion and hours left
+                $('.alert-info').text(`Total Task Completion: ${data.overallCompletion}%`);
+                $('.alert-warning').text(`Remaining Assigned Hours: ${data.hoursLeft}`);
+            }
+        },
+        error: function() {
+            alert('Error loading data.');
+        }
+    });
+});
+</script>
+
 </body>
 </html>

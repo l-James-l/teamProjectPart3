@@ -1,10 +1,4 @@
 <?php
-session_start();
-
-if (!isset($_SESSION["user_id"])) {
-    header("location: login.php");
-    exit();
-}
 
 // Get projectID from URL
 $projectID = isset($_GET['projectID']) ? intval($_GET['projectID']) : 0; // ensure the ID is an integer
@@ -55,4 +49,11 @@ foreach ($estimatedHoursArray as $index => $hours) {
 
 // Close DB connection
 mysqli_close($connection);
+
+header('Content-Type: application/json');
+echo json_encode([
+    'taskDetails' => $taskDetails,
+    'overallCompletion' => round($overallCompletion, 2),
+    'hoursLeft' => round($hoursLeft, 2)
+]);
 
