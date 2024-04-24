@@ -191,7 +191,7 @@ $conn->close();
 
                     $sql = "SELECT t.task_name, p.project_name, t.due_date, t.priority, t.est_length, t.completion_percentage 
                             FROM task t 
-                            INNER JOIN projects p ON t.project_id = p.project_id
+                            INNER JOIN project p ON t.project_id = p.project_id
                             WHERE t.user_id = ?";
                     $stmt = $conn->prepare($sql);
                     if ($stmt === false) {
