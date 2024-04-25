@@ -121,7 +121,7 @@ echo "Connected successfully";
                 <div class="task-container">
                 <?php
                     // Set the project_id you want to display tasks for
-                    $projectId = 1; // Replace with your actual project_id
+                    $projectId = 2; // Replace with your actual project_id
 
                     // Fetch task details for a specific project
                     $tasksSql = "SELECT t.task_id, t.task_title, p.project_title, t.due_date, t.priority, t.est_length, t.completion_percentage FROM task t INNER JOIN project p ON t.project_id = p.project_id WHERE t.project_id = $projectId ORDER BY t.due_date ASC";
