@@ -9,7 +9,7 @@ if (!isset($_SESSION["user_id"])) {
 // SQL data collection
 
 
-$userID = 1; // get userID from url later
+$userID = $_GET['userToGet'];
 
 // DB connection 
 $servername = "localhost";
