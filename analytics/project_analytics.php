@@ -119,9 +119,12 @@ echo "Connected successfully";
 
                 <!-- Task container -->
                 <div class="task-container">
-                    <?php
-                    // Fetch task details
-                    $tasksSql = "SELECT t.task_id, t.task_title, p.project_title, t.due_date, t.priority, t.est_length, t.completion_percentage FROM task t INNER JOIN project p ON t.project_id = p.project_id ORDER BY t.due_date ASC";
+                <?php
+                    // Set the project_id you want to display tasks for
+                    $projectId = 1; // Replace with your actual project_id
+
+                    // Fetch task details for a specific project
+                    $tasksSql = "SELECT t.task_id, t.task_title, p.project_title, t.due_date, t.priority, t.est_length, t.completion_percentage FROM task t INNER JOIN project p ON t.project_id = p.project_id WHERE t.project_id = $projectId ORDER BY t.due_date ASC";
                     $tasksResult = $conn->query($tasksSql);
 
                     if ($tasksResult->num_rows > 0) {
