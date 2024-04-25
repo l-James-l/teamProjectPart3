@@ -19,6 +19,32 @@ main {
     flex-direction: row;
 
 }
+.navbar {
+    width: 100%;
+    height: 70px;
+    background-color: rgb(149, 146, 146);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    box-sizing: border-box;
+}
+
+.nav-item {
+    color: white;
+    font-size: 16px;
+    margin-right: 10px;
+}
+.nav-item:last-child {
+    margin-right:0
+}
+.nav-circle {
+    width: 30px;
+    height: 30px;
+    background-color: rgb(176, 171, 171);
+    border-radius: 50%;
+    border: 2px solid white;
+}
 
 .groups-sidebar {
     height: 100%;
