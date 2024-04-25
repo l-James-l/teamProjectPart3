@@ -11,7 +11,7 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully";
 
-$projectId = 2
+$projectId = 2;
 
 
 $totalHoursSql = "SELECT SUM(est_length) AS total_estimated_hours FROM task WHERE project_id = $projectId";
