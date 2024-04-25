@@ -22,7 +22,7 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully";
 
-$stmt = $conn->prepare("SELECT first_name, surname, role FROM users WHERE userID = ?");
+$stmt = $conn->prepare("SELECT first_name, surname, role FROM users WHERE user_ID = ?");
 if ($stmt === false) {
     die('MySQL prepare error: ' . $conn->error);
 }
@@ -48,7 +48,7 @@ if ($stmt->fetch()) {
 
 $stmt->close();
 
-$sql = "SELECT projectID, completion_percentage, estimated_hours FROM tasks WHERE userID = ?";
+$sql = "SELECT projectID, completion_percentage, estimated_hours FROM tasks WHERE user_ID = ?";
 $stmt = $conn->prepare($sql);
 if ($stmt === false) {
     die('MySQL prepare error: ' . $conn->error);
