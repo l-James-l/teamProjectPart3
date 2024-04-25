@@ -5,9 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messaging Service</title>
     <!-- <link rel="stylesheet" href="stylesheets/messaging-styles-colour.css"> -->
-    <link rel="stylesheet" href="stylesheets/messaging-styles-colour.css">
+    <link rel="stylesheet" href="stylesheets/messaging-styles.css">
 </head>
 <body>
+    <header class="navbar">
+        <div class="nav-item">ANALYTICS</div>
+        <div class="nav-item">CHAT</div>
+        <div class="nav-circle"></div>
+    </header>
     <main>
         <div class="groups-sidebar">
             <div class="groups-sidebar-item">1-1</div>
@@ -130,8 +135,8 @@
             <div class="send-bar-section">
                 <form id="send-message-form" action="send-message2.php" method="post" onsubmit="sendMessage(event)">
                     <input type="hidden" name="chat_id" id="chat_id" value="1">
-                    <input type="text" name="message" id="message" placeholder="Type your message...">
-                    <button type="submit">Send Message</button>
+                    <input type="text" name="message"  class="message-input" placeholder="Type your message...">
+                    <button type="submit" id = send-message-button >Send Message</button>
                 </form>
                 
             </div>
