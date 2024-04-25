@@ -1,3 +1,14 @@
+<?php
+// session_start();
+
+// if (!isset($_SESSION["user_id"])) {
+//     header("location: login.php");
+// }
+
+$currentPage = "textchat"; 
+include "../src/header.php"; 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,22 +16,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messaging Service</title>
     <!-- <link rel="stylesheet" href="stylesheets/messaging-styles-colour.css"> -->
-    <link rel="stylesheet" href="stylesheets/messaging-styles.css">
+    <link rel="stylesheet" href="stylesheets/messaging-styles-colour.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="js/async_handlers.js"></script>
 </head>
 <body>
-    <header class="navbar">
-        <div class="nav-item">ANALYTICS</div>
-        <div class="nav-item">CHAT</div>
-        <div class="nav-circle"></div>
-    </header>
     <main>
+
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="?lf=projects" class="nav-link <?php echo $currentPage == "projects" ? "active" : "link-dark" ?>" aria-current="page">
+                    <i class="bi bi-folder-fill"></i>
+                    Projects
+                </a>
+            </li>
+            <li>
+                <a href="?lf=users" class="nav-link <?php echo $currentPage == "users" ? "active" : "link-dark" ?>">
+                    <i class="bi bi-people-fill"></i>
+                    Users
+                </a>
+            </li>
+        </ul>
+        <hr>
+        </div>
+
         <div class="groups-sidebar">
             <div class="groups-sidebar-item">1-1</div>
             <div class="groups-sidebar-item">Group</div>
             <a href="settings.html" class="groups-sidebar-item">Settings</a>
         </div>
 
-        <div class="message-list-sidebar">+++++++++
+        <div class="message-list-sidebar">
             
             <div class="message-list-sidebar-content">
                 <p id="message-list-title">Messages</p>
@@ -135,8 +166,8 @@
             <div class="send-bar-section">
                 <form id="send-message-form" action="send-message2.php" method="post" onsubmit="sendMessage(event)">
                     <input type="hidden" name="chat_id" id="chat_id" value="1">
-                    <input type="text" name="message"  class="message-input" placeholder="Type your message...">
-                    <button type="submit" id = send-message-button >Send Message</button>
+                    <input type="text" name="message" id="message" placeholder="Type your message...">
+                    <button type="submit">Send Message</button>
                 </form>
                 
             </div>

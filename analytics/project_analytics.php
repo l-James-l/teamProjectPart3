@@ -1,6 +1,11 @@
 <?php
 
 
+// SQL data collection
+
+
+$userID = 1; // get userID from url later
+
 // DB connection 
 $servername = "localhost";
 $username = "phpUser";
@@ -36,7 +41,54 @@ if ($stmt->fetch()) {
 }
 }
 
+$stmt->close();
+
+$sql = "SELECT project_id, completion_percentage, est_length FROM task WHERE user_id = ?";
+$stmt = $conn->prepare($sql);
+if ($stmt === false) {
+    die('MySQL prepare error: ' . $conn->error);
+}
+$stmt->bind_param('i', $userID);
+$stmt->execute();
+$stmt->bind_result($projectID, $completionPercentage, $estimatedHours);
+
+$completionPercentages = array();
+$estimatedHoursArray = array();
+$projectIDs = array();
+
+while ($stmt->fetch()) {
+    $completionPercentages[] = $completionPercentage;
+    $estimatedHoursArray[] = $estimatedHours;
+    $projectIDs[] = $projectID;
+}
+
+$stmt->close();
+
+$completionSum = array_sum($completionPercentages);
+if (count($completionPercentages) > 0) {
+    $overallCompletion = $completionSum / count($completionPercentages);
+} else {
+    $overallCompletion = 0; 
+}
+
+$hoursDoneArray = array();
+foreach ($completionPercentages as $index => $completionPercentage) {
+    $hoursDoneArray[$index] = $completionPercentage * $estimatedHoursArray[$index];
+    $hoursDone = array_sum($hoursDoneArray);
+    $hoursLeft = array_sum($estimatedHoursArray) - $hoursDone;
+}
+
+$projectCount = count(array_unique($projectIDs));
+$taskCount = count($completionPercentages);
+
+$conn->close();
+
 ?>
+
+
+
+
+
 
 
 <!DOCTYPE html>
@@ -44,7 +96,7 @@ if ($stmt->fetch()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics - Project Name</title>
+    <title>Analytics - <?php echo $fullName ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -53,37 +105,13 @@ if ($stmt->fetch()) {
     <link rel="stylesheet" href="stylesheets/individual.css">
 </head>
 <body>
-    <header>
+     <header>
         <div class="container header-container">
             <img src="content/logo.png" alt="Company Logo" id="page-logo">
             
             <div class="header-title">
-                Analytics Dashboard - Project Name
-                <div class="project-select mt-2" style="width: 200px;"> 
-                    <?php
-                    // SQL to fetch projects
-                    $projectQuery = "SELECT project_id, project_title FROM project";
-                    $projectResult = $conn->query($projectQuery);
-
-                    // Check if there are any projects returned
-                    if ($projectResult->num_rows > 0) {
-                        // Start the select element
-                        echo '<select class="form-select form-select-sm" aria-label=".form-select-sm example">';
-                        echo '<option selected>Select a project</option>';
-                        
-                        // Loop through all the projects and create an option element for each
-                        while($project = $projectResult->fetch_assoc()) {
-                            echo '<option value="' . htmlspecialchars($project['project_id']) . '">' . htmlspecialchars($project['project_title']) . '</option>';
-                        }
-                        
-                        // Close the select element
-                        echo '</select>';
-                    } else {
-                        echo 'No projects found.';
-                    }
-                    ?>
-                </div>
-                <div class="header-subtitle"></div> 
+                Analytics Dashboard - <?php //echo $fullName ?>
+                <div class="header-subtitle"><?php //echo $role ?></div> 
             </div>
 
             <div class="dropdown">
@@ -105,7 +133,7 @@ if ($stmt->fetch()) {
                 </ul>
             </div>
         </div>
-    </header>
+    </header> 
 
     <div class="container-fluid">
         <div class="row">
@@ -114,9 +142,18 @@ if ($stmt->fetch()) {
                     <div class="number-label">
                         Total Task Completion
                     </div>
-                    <div class="circle-percentage d-flex flex-column align-items-center justify-content-center">
-                        <div class="percentage-number" data-bs-toggle="tooltip" data-bs-placement="top" title="Hours Done: 150h, Hours Left: 50h">
-                            75%
+                    <div class="circle-percentage d-flex flex-column align-items-center justify-content-center" style="background-color: <?php 
+                            if ($overallCompletion < 40) {
+                                echo 'red';
+                            } elseif ($overallCompletion >= 40 && $overallCompletion <= 70) {
+                                echo 'yellow';
+                            } else {
+                                echo 'green';
+                            }
+                        ?>;">
+                            <div class="percentage-number" data-bs-toggle="tooltip" data-bs-placement="top" title="Hours Done: <?php echo $hoursDone?>, Hours Left: <?php echo $hoursLeft; ?>">
+                                <?php echo $overallCompletion; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -132,41 +169,61 @@ if ($stmt->fetch()) {
                     
                     <div class="hours-left d-flex flex-column align-items-center justify-content-center">
                         <div class="hours-number" >
-                            30 Hours
+                            <?php echo $hoursLeft ?>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-7">
-                <!-- Main content goes here -->
                 <header class="main-content-header">
-                    <h1>2 Remaining Tasks</h1>
+                    <h1>Current Tasks - <?php echo $taskCount ?> across <?php echo $projectCount ?> projects</h1>
                 </header>
                 <div class="task-container">
-                    <div class="task-box bg-light border rounded p-3 mb-2">
-                        <div class="task-info">
-                            <h5 class="task-name">Task: Implement User Authentication</h5>
-                            <h5 class="project-name">Project: Website Redesign</h5>
-                            <p class="task-due-date">Due Date: 2024-04-30</p>
-                            <p class="task-priority">Priority: High</p>
-                            <p class="task-length">Estimated Length: 15 hours</p>
-                            <div class="progress" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50% Complete</div>
+                <?php
+                    $servername = "localhost";
+                    $username = "phpUser";
+                    $password = "p455w0rD";
+                    $dbname = "make_it_all";  
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
+
+                    $sql = "SELECT t.task_title, p.project_title, t.due_date, t.priority, t.est_length, t.completion_percentage 
+                            FROM task t 
+                            INNER JOIN project p ON t.project_id = p.project_id
+                            WHERE t.user_id = ?";
+                    $stmt = $conn->prepare($sql);
+                    if ($stmt === false) {
+                        die('MySQL prepare error: ' . $conn->error);
+                    }
+                    $stmt->bind_param('i', $userID);
+                    $stmt->execute();
+                    $stmt->bind_result($taskName, $projectName, $dueDate, $priority, $estimatedLength, $completionPercentage);
+
+                    while ($stmt->fetch()) {
+                    ?>
+                        <div class="task-box bg-light border rounded p-3 mb-2">
+                            <div class="task-info">
+                                <h5 class="task-name">Task: <?php echo $taskName; ?></h5>
+                                <h5 class="project-name">Project: <?php echo $projectName; ?></h5>
+                                <p class="task-due-date">Due Date: <?php echo $dueDate; ?></p>
+                                <p class="task-priority">Priority: <?php echo $priority; ?></p>
+                                <p class="task-length">Estimated Length: <?php echo $estimatedLength; ?> hours</p>
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar" role="progressbar" style="width: <?php echo $completionPercentage; ?>%;" aria-valuenow="<?php echo $completionPercentage; ?>" aria-valuemin="0" aria-valuemax="100">
+                                        <?php echo $completionPercentage; ?>% Complete
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="task-box bg-light border rounded p-3 mb-2">
-                        <div class="task-info">
-                            <h5 class="task-name">Task: Implement User Authentication</h5>
-                            <h5 class="project-name">Project: Website Redesign</h5>
-                            <p class="task-due-date">Due Date: 2024-04-30</p>
-                            <p class="task-priority">Priority: High</p>
-                            <p class="task-length">Estimated Length: 15 hours</p>
-                            <div class="progress" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50% Complete</div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php
+                    }
+
+                    $stmt->close();
+                    $conn->close();
+                    ?>
+
                 </div>
             </div>
         </div>
