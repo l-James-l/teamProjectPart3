@@ -33,7 +33,7 @@ main {
 .nav-item {
     color: white;
     font-size: 16px;
-    margin-right: 10px;
+    margin-right: 5px;
 }
 .nav-item:last-child {
     margin-right:0
@@ -177,7 +177,7 @@ main {
 
 #send-message-button {
     height: 44px;
-    width: 44px;
+    width: 80px;
     border-radius: 100px;
     display: flex;
     align-items: center;
