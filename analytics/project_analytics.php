@@ -11,6 +11,26 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully";
 
+$projectId = 2
+
+
+$totalHoursSql = "SELECT SUM(est_length) AS total_estimated_hours FROM task WHERE project_id = $projectId";
+$totalHoursResult = $conn->query($totalHoursSql);
+$totalHoursRow = $totalHoursResult->fetch_assoc();
+
+$completedHoursSql = "SELECT SUM(est_length * (completion_percentage / 100)) AS total_completed_hours FROM task WHERE project_id = $projectId";
+$completedHoursResult = $conn->query($completedHoursSql);
+$completedHoursRow = $completedHoursResult->fetch_assoc();
+
+// Calculate remaining hours
+$remainingHours = $totalHoursRow['total_estimated_hours'] - $completedHoursRow['total_completed_hours'];
+
+$totalCompletionSql = "SELECT SUM(est_length * completion_percentage) / SUM(est_length) AS overall_completion_percentage FROM task WHERE project_id = $projectId";
+$totalCompletionResult = $conn->query($totalCompletionSql);
+$totalCompletionRow = $totalCompletionResult->fetch_assoc();
+
+$overallCompletionPercentage = $totalCompletionRow['overall_completion_percentage'];
+?>
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +103,7 @@ echo "Connected successfully";
                     </div>
                     <div class="circle-percentage d-flex flex-column align-items-center justify-content-center">
                         <div class="percentage-number" data-bs-toggle="tooltip" data-bs-placement="top" title="Hours Done: 150h, Hours Left: 50h">
-                            75%
+                            <?php echo round($overallCompletionPercentage); ?>%
                         </div>
                     </div>
                 </div>
@@ -99,7 +119,7 @@ echo "Connected successfully";
                     
                     <div class="hours-left d-flex flex-column align-items-center justify-content-center">
                         <div class="hours-number" >
-                            30 Hours
+                            <?php echo round($remainingHours); ?> Hours
                         </div>
                     </div>
                 </div>
