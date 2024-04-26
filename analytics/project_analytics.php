@@ -11,7 +11,12 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully";
 
-$projectId = 2;
+
+if (isset($_GET['userToGet'])) {
+    $userID = $_GET['userToGet'];
+} else {
+    header("location: ./analytics_landing_page.php");
+}
 
 
 $totalHoursSql = "SELECT SUM(est_length) AS total_estimated_hours FROM task WHERE project_id = $projectId";

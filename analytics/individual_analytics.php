@@ -8,8 +8,11 @@ if (!isset($_SESSION["user_id"])) {
 
 // SQL data collection
 
-
-$userID = $_GET['userToGet'];
+if (isset($_GET['userToGet'])) {
+    $userID = $_GET['userToGet'];
+} else {
+    header("location: ./analytics_landing_page.php");
+}
 
 // DB connection 
 $servername = "localhost";
