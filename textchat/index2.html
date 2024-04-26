@@ -141,6 +141,7 @@
                 
             </div>
             
+            
 
         </div>
 
@@ -158,6 +159,12 @@
         return;
     }
 
+    var chatSection = document.querySelector(".chat-section");
+    var newMessage = document.createElement("div");
+    newMessage.classList.add("message-container", "outgoing"); 
+    newMessage.innerHTML = `<div class="outgoing-message">${message}</div>`;
+    chatSection.appendChild(newMessage);
+
     // Construct the POST data
     var formData = new FormData();
     formData.append('chat_id', chatId);
@@ -169,6 +176,7 @@
     xhr.onload = function () {
         if (this.status === 200) {
             console.log(this.responseText);
+            scrollToBottom();
             
         } else {
             console.error('An error occurred during the AJAX request');
