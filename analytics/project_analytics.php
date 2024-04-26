@@ -12,8 +12,8 @@ if ($conn->connect_error) {
 echo "Connected successfully";
 
 
-if (isset($_GET['userToGet'])) {
-    $userID = $_GET['userToGet'];
+if (isset($_GET['projectToGet'])) {
+    $userID = $_GET['projectToGet'];
 } else {
     header("location: ./analytics_landing_page.php");
 }
