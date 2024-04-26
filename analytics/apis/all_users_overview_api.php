@@ -12,7 +12,7 @@ if ($conn) {
     } else {
         $searchString = "%";
     }
-    $stmt = "select first_name, surname, role, email, count(task_id) as task_count, count(project.project_id) as project_count     
+    $stmt = "select users.user_id, first_name, surname, role, email, count(task_id) as task_count, count(project.project_id) as project_count     
     from users left join (select * from task where completion_percentage < 100) as task2 on task2.user_id = users.user_id     
     left join project on task2.project_id = project.project_id
     where (users.first_name like '$searchString'
