@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 // DB connection 
 $servername = "localhost";
 $username = "phpUser";
@@ -99,7 +99,12 @@ $overallCompletionPercentage = $totalCompletionRow['overall_completion_percentag
         </div>
     </header> -->
     <?php
-    include "../src/header.php"
+    if (isset($_SESSION["user_id"])) {
+        $currentPage = "analytics";
+        include "../src/header.php";
+    } else {
+        header("location: ../src/login.php");
+    }
     ?>
 
     <div class="container-fluid">

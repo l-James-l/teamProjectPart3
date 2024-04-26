@@ -147,7 +147,7 @@ $conn->close();
         $currentPage = "analytics";
         include "../src/header.php";
     } else {
-        header("location: login.php");
+        header("location: ../src/login.php");
     }
     ?>
 
