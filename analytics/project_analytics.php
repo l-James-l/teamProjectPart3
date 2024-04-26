@@ -52,26 +52,26 @@ $overallCompletionPercentage = $totalCompletionRow['overall_completion_percentag
     <link rel="stylesheet" href="stylesheets/individual.css">
 </head>
 <body>
-    <header>
+    <!-- <header>
         <div class="container header-container">
             <img src="content/logo.png" alt="Company Logo" id="page-logo">
             
             <div class="header-title">
                 Analytics Dashboard - Project Name
-                <div class="project-select mt-2" style="width: 200px;"> <!-- Inline style for width -->
+                <div class="project-select mt-2" style="width: 200px;"> Inline style for width
                 <select class="form-select form-select-sm" aria-label=".form-select-sm example">
                     <option selected>Select a project</option>
                         <?php
-                        $sql = "SELECT project_id, project_title FROM project";
-                        $result = $conn->query($sql);
+                        // $sql = "SELECT project_id, project_title FROM project";
+                        // $result = $conn->query($sql);
                         
-                        if ($result->num_rows > 0) {
-                            while($row = $result->fetch_assoc()) {
-                                echo "<option value='" . $row["project_id"] . "'>" . $row["project_title"] . "</option>";
-                            }
-                        } else {
-                            echo "<option disabled>No projects available</option>";
-                        }
+                        // if ($result->num_rows > 0) {
+                        //     while($row = $result->fetch_assoc()) {
+                        //         echo "<option value='" . $row["project_id"] . "'>" . $row["project_title"] . "</option>";
+                        //     }
+                        // } else {
+                        //     echo "<option disabled>No projects available</option>";
+                        // }
                         ?>
                 </select>
                 </div>
@@ -97,7 +97,10 @@ $overallCompletionPercentage = $totalCompletionRow['overall_completion_percentag
                 </ul>
             </div>
         </div>
-    </header>
+    </header> -->
+    <?php
+    include "../src/header.php"
+    ?>
 
     <div class="container-fluid">
         <div class="row">
