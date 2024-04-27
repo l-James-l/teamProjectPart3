@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
  
-include "db_connection.php";
+include_once(__DIR__.'/../src/db_connection.php');
 
 try {
     $conn = new PDO("mysql:host=localhost;dbname=make_it_all", $username, $password);

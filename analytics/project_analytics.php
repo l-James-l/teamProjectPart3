@@ -1,11 +1,5 @@
 <?php
-
-
-// SQL data collection
-
-
-$userID = 1; // get userID from url later
-
+session_start();
 // DB connection 
 $servername = "localhost";
 $username = "phpUser";
@@ -17,86 +11,39 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully";
 
-$stmt = $conn->prepare("SELECT first_name, surname, role FROM users WHERE user_id = ?");
-if ($stmt === false) {
-    die('MySQL prepare error: ' . $conn->error);
-}
-$stmt->bind_param('i', $userID);
-$stmt->execute();
 
-$stmt->bind_result($firstName, $surname, $role);
-
-
-
-if ($stmt->fetch()) {
-    $fullName = $firstName . " " . $surname;
-    if ($role === 'Mgr') {
-        $role = 'Manager';
-    } elseif ($role === 'TL') {
-        $role = 'Team Leader';
-    } elseif ($role === 'Emp') {
-        $role = 'Employee';
+if (isset($_GET['projectToGet'])) {
+    $projectId = $_GET['projectToGet'];
 } else {
-    echo "No user found with the specified userID.";
-}
-}
-
-$stmt->close();
-
-$sql = "SELECT project_id, completion_percentage, est_length FROM task WHERE user_id = ?";
-$stmt = $conn->prepare($sql);
-if ($stmt === false) {
-    die('MySQL prepare error: ' . $conn->error);
-}
-$stmt->bind_param('i', $userID);
-$stmt->execute();
-$stmt->bind_result($projectID, $completionPercentage, $estimatedHours);
-
-$completionPercentages = array();
-$estimatedHoursArray = array();
-$projectIDs = array();
-
-while ($stmt->fetch()) {
-    $completionPercentages[] = $completionPercentage;
-    $estimatedHoursArray[] = $estimatedHours;
-    $projectIDs[] = $projectID;
+    header("location: ./analytics_landing_page.php");
 }
 
-$stmt->close();
 
-$completionSum = array_sum($completionPercentages);
-if (count($completionPercentages) > 0) {
-    $overallCompletion = $completionSum / count($completionPercentages);
-} else {
-    $overallCompletion = 0; 
-}
+$totalHoursSql = "SELECT SUM(est_length) AS total_estimated_hours FROM task WHERE project_id = $projectId";
+$totalHoursResult = $conn->query($totalHoursSql);
+$totalHoursRow = $totalHoursResult->fetch_assoc();
 
-$hoursDoneArray = array();
-foreach ($completionPercentages as $index => $completionPercentage) {
-    $hoursDoneArray[$index] = $completionPercentage * $estimatedHoursArray[$index];
-    $hoursDone = array_sum($hoursDoneArray);
-    $hoursLeft = array_sum($estimatedHoursArray) - $hoursDone;
-}
+$completedHoursSql = "SELECT SUM(est_length * (completion_percentage / 100)) AS total_completed_hours FROM task WHERE project_id = $projectId";
+$completedHoursResult = $conn->query($completedHoursSql);
+$completedHoursRow = $completedHoursResult->fetch_assoc();
 
-$projectCount = count(array_unique($projectIDs));
-$taskCount = count($completionPercentages);
+// Calculate remaining hours
+$remainingHours = $totalHoursRow['total_estimated_hours'] - $completedHoursRow['total_completed_hours'];
 
-$conn->close();
+$totalCompletionSql = "SELECT SUM(est_length * completion_percentage) / SUM(est_length) AS overall_completion_percentage FROM task WHERE project_id = $projectId";
+$totalCompletionResult = $conn->query($totalCompletionSql);
+$totalCompletionRow = $totalCompletionResult->fetch_assoc();
 
+$overallCompletionPercentage = $totalCompletionRow['overall_completion_percentage'];
 ?>
-
-
-
-
-
-
+?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics - <?php echo $fullName ?></title>
+    <title>Analytics - Project Name</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
@@ -105,13 +52,30 @@ $conn->close();
     <link rel="stylesheet" href="stylesheets/individual.css">
 </head>
 <body>
-     <header>
+    <!-- <header>
         <div class="container header-container">
             <img src="content/logo.png" alt="Company Logo" id="page-logo">
             
             <div class="header-title">
-                Analytics Dashboard - <?php //echo $fullName ?>
-                <div class="header-subtitle"><?php //echo $role ?></div> 
+                Analytics Dashboard - Project Name
+                <div class="project-select mt-2" style="width: 200px;"> Inline style for width
+                <select class="form-select form-select-sm" aria-label=".form-select-sm example">
+                    <option selected>Select a project</option>
+                        <?php
+                        // $sql = "SELECT project_id, project_title FROM project";
+                        // $result = $conn->query($sql);
+                        
+                        // if ($result->num_rows > 0) {
+                        //     while($row = $result->fetch_assoc()) {
+                        //         echo "<option value='" . $row["project_id"] . "'>" . $row["project_title"] . "</option>";
+                        //     }
+                        // } else {
+                        //     echo "<option disabled>No projects available</option>";
+                        // }
+                        ?>
+                </select>
+                </div>
+                <div class="header-subtitle"></div> 
             </div>
 
             <div class="dropdown">
@@ -133,7 +97,15 @@ $conn->close();
                 </ul>
             </div>
         </div>
-    </header> 
+    </header> -->
+    <?php
+    if (isset($_SESSION["user_id"])) {
+        $currentPage = "analytics";
+        include "../src/header.php";
+    } else {
+        header("location: ../src/login.php");
+    }
+    ?>
 
     <div class="container-fluid">
         <div class="row">
@@ -142,18 +114,9 @@ $conn->close();
                     <div class="number-label">
                         Total Task Completion
                     </div>
-                    <div class="circle-percentage d-flex flex-column align-items-center justify-content-center" style="background-color: <?php 
-                            if ($overallCompletion < 40) {
-                                echo 'red';
-                            } elseif ($overallCompletion >= 40 && $overallCompletion <= 70) {
-                                echo 'yellow';
-                            } else {
-                                echo 'green';
-                            }
-                        ?>;">
-                            <div class="percentage-number" data-bs-toggle="tooltip" data-bs-placement="top" title="Hours Done: <?php echo $hoursDone?>, Hours Left: <?php echo $hoursLeft; ?>">
-                                <?php echo $overallCompletion; ?>
-                            </div>
+                    <div class="circle-percentage d-flex flex-column align-items-center justify-content-center">
+                        <div class="percentage-number" data-bs-toggle="tooltip" data-bs-placement="top" title="Hours Done: 150h, Hours Left: 50h">
+                            <?php echo round($overallCompletionPercentage); ?>%
                         </div>
                     </div>
                 </div>
@@ -169,63 +132,60 @@ $conn->close();
                     
                     <div class="hours-left d-flex flex-column align-items-center justify-content-center">
                         <div class="hours-number" >
-                            <?php echo $hoursLeft ?>
+                            <?php echo round($remainingHours); ?> Hours
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- Main content starts here -->
             <div class="col-md-7">
+                <!-- Main content header -->
                 <header class="main-content-header">
-                    <h1>Current Tasks - <?php echo $taskCount ?> across <?php echo $projectCount ?> projects</h1>
+                    <?php
+                    // Fetch the number of remaining tasks
+                    $countTasksSql = "SELECT COUNT(*) AS task_count FROM task WHERE completion_percentage < 100";
+                    $countResult = $conn->query($countTasksSql);
+                    $taskCountRow = $countResult->fetch_assoc();
+                    ?>
+                    <h1><?php echo $taskCountRow['task_count']; ?> Remaining Tasks</h1>
                 </header>
+
+                <!-- Task container -->
                 <div class="task-container">
                 <?php
-                    $servername = "localhost";
-                    $username = "phpUser";
-                    $password = "p455w0rD";
-                    $dbname = "make_it_all";  
-                    $conn = new mysqli($servername, $username, $password, $dbname);
-                    if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
+                    // Set the project_id you want to display tasks for
+                    $projectId = 2; // Replace with your actual project_id
 
-                    $sql = "SELECT t.task_title, p.project_title, t.due_date, t.priority, t.est_length, t.completion_percentage 
-                            FROM task t 
-                            INNER JOIN project p ON t.project_id = p.project_id
-                            WHERE t.user_id = ?";
-                    $stmt = $conn->prepare($sql);
-                    if ($stmt === false) {
-                        die('MySQL prepare error: ' . $conn->error);
-                    }
-                    $stmt->bind_param('i', $userID);
-                    $stmt->execute();
-                    $stmt->bind_result($taskName, $projectName, $dueDate, $priority, $estimatedLength, $completionPercentage);
+                    // Fetch task details for a specific project
+                    $tasksSql = "SELECT t.task_id, t.task_title, p.project_title, t.due_date, t.priority, t.est_length, t.completion_percentage FROM task t INNER JOIN project p ON t.project_id = p.project_id WHERE t.project_id = $projectId ORDER BY t.due_date ASC";
+                    $tasksResult = $conn->query($tasksSql);
 
-                    while ($stmt->fetch()) {
-                    ?>
-                        <div class="task-box bg-light border rounded p-3 mb-2">
-                            <div class="task-info">
-                                <h5 class="task-name">Task: <?php echo $taskName; ?></h5>
-                                <h5 class="project-name">Project: <?php echo $projectName; ?></h5>
-                                <p class="task-due-date">Due Date: <?php echo $dueDate; ?></p>
-                                <p class="task-priority">Priority: <?php echo $priority; ?></p>
-                                <p class="task-length">Estimated Length: <?php echo $estimatedLength; ?> hours</p>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar" role="progressbar" style="width: <?php echo $completionPercentage; ?>%;" aria-valuenow="<?php echo $completionPercentage; ?>" aria-valuemin="0" aria-valuemax="100">
-                                        <?php echo $completionPercentage; ?>% Complete
+                    if ($tasksResult->num_rows > 0) {
+                        // Output each task
+                        while($taskRow = $tasksResult->fetch_assoc()) {
+                            ?>
+                            <div class="task-box bg-light border rounded p-3 mb-2">
+                                <div class="task-info">
+                                    <h5 class="task-name">Task: <?php echo htmlspecialchars($taskRow["task_title"]); ?></h5>
+                                    <h5 class="project-name">Project: <?php echo htmlspecialchars($taskRow["project_title"]); ?></h5>
+                                    <p class="task-due-date">Due Date: <?php echo htmlspecialchars($taskRow["due_date"]); ?></p>
+                                    <p class="task-priority">Priority: <?php echo htmlspecialchars($taskRow["priority"]); ?></p>
+                                    <p class="task-length">Estimated Length: <?php echo htmlspecialchars($taskRow["est_length"]); ?> hours</p>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar" role="progressbar" style="width: <?php echo htmlspecialchars($taskRow["completion_percentage"]); ?>%;" aria-valuenow="<?php echo htmlspecialchars($taskRow["completion_percentage"]); ?>" aria-valuemin="0" aria-valuemax="100"><?php echo htmlspecialchars($taskRow["completion_percentage"]); ?>% Complete</div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php
+                            <?php
+                        }
+                    } else {
+                        echo "<p>No tasks to display</p>";
                     }
-
-                    $stmt->close();
-                    $conn->close();
                     ?>
-
                 </div>
             </div>
+            <!-- Main content ends here -->
+
         </div>
     </div>
 
@@ -238,3 +198,6 @@ $conn->close();
     
 </body>
 </html>
+<?php
+$conn->close();
+?>
