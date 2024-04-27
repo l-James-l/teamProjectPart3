@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
             //No message deleted - no matching message
             http_response_code(404);
         }
-        else if(affectedRows==-1) {
+        else if($affectedRows==-1) {
             //Query error
             http_response_code(500);
         }
