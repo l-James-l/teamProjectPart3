@@ -16,8 +16,11 @@ $iv = openssl_random_pseudo_bytes(16); // Generate a random IV
 $encryptedMessage = openssl_encrypt($message, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
 
 // Store the encrypted message and IV in the database
-$sql = "INSERT INTO chat_log (chat_id, encrypted_message, user_id, timestamp) 
-        VALUES ('$chatId', '$encryptedMessage', '$user_id', NOW())";
+$encryptedMessage = base64_encode($encryptedMessage); // Encode encrypted message for storage
+$iv = base64_encode($iv); // Encode IV for storage
+
+$sql = "INSERT INTO chat_log (chat_id, encrypted_message, iv, user_id, timestamp) 
+        VALUES ('$chatId', '$encryptedMessage', '$iv', '$user_id', NOW())";
 $result = mysqli_query($conn, $sql);
 
 if ($result) {
