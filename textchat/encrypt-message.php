@@ -5,7 +5,9 @@ include_once(__DIR__.'/../src/db_connection.php');
 
 // Get message and chat ID from POST data
 $message = mysqli_real_escape_string($conn, $_POST['message']);
-$chatId = mysqli_real_escape_string($conn, $_POST['chat_id']);
+
+$chatId = 1;
+$user_id = 1;
 
 // Perform encryption
 // Note: Implement your encryption logic here
@@ -16,11 +18,12 @@ $iv = openssl_random_pseudo_bytes(16); // Generate a random IV
 $encryptedMessage = openssl_encrypt($message, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
 
 // Store the encrypted message and IV in the database
-$encryptedMessage = base64_encode($encryptedMessage); // Encode encrypted message for storage
-$iv = base64_encode($iv); // Encode IV for storage
 
-$sql = "INSERT INTO chat_log (chat_id, encrypted_message, iv, user_id, timestamp) 
-        VALUES ('$chatId', '$encryptedMessage', '$iv', '$user_id', NOW())";
+
+// Construct the SQL query with hardcoded IDs
+$sql = "INSERT INTO chat_log (chat_id, message, user_id, timestamp) 
+        VALUES ('$chatId', '$message', '$user_id', NOW())";
+
 $result = mysqli_query($conn, $sql);
 
 if ($result) {
