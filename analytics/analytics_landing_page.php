@@ -29,7 +29,7 @@ if (isset($_GET["lf"])) {
     <?php
     if (isset($_SESSION["user_id"])) {
         $currentPage = "analytics";
-        include "header.php";
+        include "../src/header.php";
     } else {
         header("location: login.php");
     }

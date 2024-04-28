@@ -1,5 +1,5 @@
 <?php
-include "./../db_connection.php";
+include "../../src/db_connection.php";
 try {
     $conn = new PDO("mysql:host=localhost;dbname=make_it_all", $username, $password);
 } catch (PDOException $e) {
@@ -16,7 +16,7 @@ if ($conn) {
             exit();
         }
         else if ($role == "Mgr") {
-            $stmt = "select project_title, first_name, surname, project.due_date, count(task_id) as task_count, avg(completion_percentage) as overall_completion
+            $stmt = "select project.project_id, project_title, first_name, surname, project.due_date, count(task_id) as task_count, avg(completion_percentage) as overall_completion
             from project inner join users on users.user_id = project.team_leader_id 
             left join task on project.project_id = task.project_id 
             where (project_title like '$searchString'
@@ -25,7 +25,7 @@ if ($conn) {
             group by project.project_id";
             
         } else if ($role == "TL" || $role == "Emp") {
-            $stmt = "select project_title, first_name, surname, project.due_date, count(task_id) as task_count, avg(completion_percentage) as overall_completion
+            $stmt = "select project.project_id, project_title, first_name, surname, project.due_date, count(task_id) as task_count, avg(completion_percentage) as overall_completion
             from project inner join users on users.user_id = project.team_leader_id 
             left join task on project.project_id = task.project_id 
             where (project.team_leader_id = :user_id

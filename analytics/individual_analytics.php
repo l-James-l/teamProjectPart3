@@ -8,8 +8,11 @@ if (!isset($_SESSION["user_id"])) {
 
 // SQL data collection
 
-
-$userID = 1; // get userID from url later
+if (isset($_GET['userToGet'])) {
+    $userID = $_GET['userToGet'];
+} else {
+    header("location: ./analytics_landing_page.php");
+}
 
 // DB connection 
 $servername = "localhost";
@@ -22,7 +25,7 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully";
 
-$stmt = $conn->prepare("SELECT first_name, surname, role FROM users WHERE userID = ?");
+$stmt = $conn->prepare("SELECT first_name, surname, role FROM users WHERE user_ID = ?");
 if ($stmt === false) {
     die('MySQL prepare error: ' . $conn->error);
 }
@@ -48,7 +51,7 @@ if ($stmt->fetch()) {
 
 $stmt->close();
 
-$sql = "SELECT projectID, completion_percentage, estimated_hours FROM tasks WHERE userID = ?";
+$sql = "SELECT projectID, completion_percentage, estimated_hours FROM Task WHERE user_ID = ?";
 $stmt = $conn->prepare($sql);
 if ($stmt === false) {
     die('MySQL prepare error: ' . $conn->error);
@@ -110,13 +113,13 @@ $conn->close();
     <link rel="stylesheet" href="stylesheets/individual.css">
 </head>
 <body>
-    <header>
+    <!-- <header>
         <div class="container header-container">
             <img src="content/logo.png" alt="Company Logo" id="page-logo">
             
             <div class="header-title">
-                Analytics Dashboard - <?php echo $fullName ?>
-                <div class="header-subtitle"><?php echo $role ?></div> 
+                Analytics Dashboard - <?php //echo $fullName ?>
+                <div class="header-subtitle"><?php //echo $role ?></div> 
             </div>
 
             <div class="dropdown">
@@ -138,7 +141,15 @@ $conn->close();
                 </ul>
             </div>
         </div>
-    </header>
+    </header> -->
+    <?php
+    if (isset($_SESSION["user_id"])) {
+        $currentPage = "analytics";
+        include "../src/header.php";
+    } else {
+        header("location: ../src/login.php");
+    }
+    ?>
 
     <div class="container-fluid">
         <div class="row">

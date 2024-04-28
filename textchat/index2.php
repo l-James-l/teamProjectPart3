@@ -1,3 +1,14 @@
+<?php
+// session_start();
+
+// if (!isset($_SESSION["user_id"])) {
+//     header("location: login.php");
+// }
+
+$currentPage = "textchat"; 
+include "../src/header.php"; 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,15 +16,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messaging Service</title>
     <!-- <link rel="stylesheet" href="stylesheets/messaging-styles-colour.css"> -->
-    <link rel="stylesheet" href="stylesheets/messaging-styles.css">
+    <link rel="stylesheet" href="stylesheets/messaging-styles-colour.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="js/async_handlers.js"></script>
 </head>
 <body>
-    <header class="navbar">
-        <div class="nav-item">ANALYTICS</div>
-        <div class="nav-item">CHAT</div>
-        <div class="nav-circle"></div>
-    </header>
     <main>
+
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="?lf=projects" class="nav-link <?php echo $currentPage == "projects" ? "active" : "link-dark" ?>" aria-current="page">
+                    <i class="bi bi-folder-fill"></i>
+                    Projects
+                </a>
+            </li>
+            <li>
+                <a href="?lf=users" class="nav-link <?php echo $currentPage == "users" ? "active" : "link-dark" ?>">
+                    <i class="bi bi-people-fill"></i>
+                    Users
+                </a>
+            </li>
+        </ul>
+        <hr>
+        </div>
+
         <div class="groups-sidebar">
             <div class="groups-sidebar-item">1-1</div>
             <div class="groups-sidebar-item">Group</div>
@@ -141,75 +172,47 @@
                 
             </div>
             
-            
 
         </div>
 
     </main>
     <script>
+   function sendMessage(event) {
+    event.preventDefault(); 
 
-        function sendMessage(event) {
-            event.preventDefault(); // Prevent the default form submission
+    var chatId = document.getElementById("chat_id").value;
+    var message = document.getElementById("message").value;
 
-            var chatId = document.getElementById("chat_id").value;
-            var message = document.getElementById("message").value;
+    
+    if (!message.trim()) {
+        console.log("Message is empty.");
+        return;
+    }
 
-            // Basic validation
-            if (!message.trim()) {
-                console.log("Message is empty.");
-                return;
-            }
+    // Construct the POST data
+    var formData = new FormData();
+    formData.append('chat_id', chatId);
+    formData.append('message', message);
 
-            // Construct the POST data
-            var formData = new FormData();
-            formData.append('chat_id', chatId);
-            formData.append('message', message);
-
-            // Create and send an AJAX request to encrypt-message.php
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "encrypt-message.php", true); // Change URL to encrypt-message.php
-            xhr.onload = function () {
-                if (this.status === 200) {
-                    // Once encryption is done, send the encrypted message to send-message.php
-                    var encryptedMessage = this.responseText;
-                    sendEncryptedMessage(chatId, encryptedMessage);
-                } else {
-                    console.error('An error occurred during the AJAX request');
-                }
-            };
-            xhr.onerror = function () {
-                console.error('An error occurred during the AJAX request');
-            };
-            xhr.send(formData);
-
-            // Clear the message input
-            document.getElementById("message").value = '';
+    // Create and send an AJAX request
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "send-message2.php", true);
+    xhr.onload = function () {
+        if (this.status === 200) {
+            console.log(this.responseText);
+            
+        } else {
+            console.error('An error occurred during the AJAX request');
         }
+    };
+    xhr.onerror = function () {
+        console.error('An error occurred during the AJAX request');
+    };
+    xhr.send(formData);
 
-        // Function to send the encrypted message to send-message.php
-        function sendEncryptedMessage(chatId, encryptedMessage) {
-            // Construct the POST data
-            var formData = new FormData();
-            formData.append('chat_id', chatId);
-            formData.append('message', encryptedMessage);
-
-            // Create and send an AJAX request to send-message.php
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "send-message.php", true); // URL remains send-message.php
-            xhr.onload = function () {
-                if (this.status === 200) {
-                    console.log(this.responseText);
-                    // You may want to call scrollToBottom() to scroll the chat into view.
-                } else {
-                    console.error('An error occurred during the AJAX request');
-                }
-            };
-            xhr.onerror = function () {
-                console.error('An error occurred during the AJAX request');
-            };
-            xhr.send(formData);
-        }
-
+    // Clear the message input
+    document.getElementById("message").value = '';
+}
 
         // Ensures that the chat section is scrolled to the bottom
         // when the page is loaded, making the latest messages visible.
@@ -226,7 +229,10 @@
             var chatSection = document.querySelector(".chat-section");
             chatSection.scrollTop = chatSection.scrollHeight;
         }
-        
     </script>
+    
+    
+    
+    
 </body>
 </html>
