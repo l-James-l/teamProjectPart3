@@ -4,6 +4,7 @@ $username = "phpUser";
 $password = "p455w0rD";
 $dbname = "make_it_all"; 
 $conn = mysqli_connect($servername, $username, $password, $dbname);
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['message']) && !empty($_POST['message'])) {
         // Get the message from the POST data and sanitize it
@@ -23,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Construct the SQL query with prepared statements
             $sql = "INSERT INTO chat_log (chat_id, message, user_id, timestamp, message_iv)
-            VALUES (1, 'hardcoded_encrypted_message', 1, NOW(), 'hardcoded_iv');";
+            VALUES (?, ?, ?, NOW(), ?)";
             
             // Prepare the statement
             $stmt = mysqli_prepare($conn, $sql);
@@ -61,4 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Request method is not POST
     echo json_encode(array("status" => "error", "message" => "Invalid request method"));
 }
+
+// Close the database connection
+mysqli_close($conn);
 ?>

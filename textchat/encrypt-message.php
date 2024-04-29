@@ -5,7 +5,6 @@ $password = "p455w0rD";
 $dbname = "make_it_all"; 
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 $message = mysqli_real_escape_string($conn, $_POST['message']);
-
 $chatId = 1; // For demonstration purposes only; should come from POST data or session
 $user_id = 1; // For demonstration purposes only; should come from authentication
 
@@ -16,15 +15,14 @@ $encryptedMessage = openssl_encrypt($message, 'aes-256-cbc', $key, OPENSSL_RAW_D
 
 // Construct the SQL query with prepared statements
 $sql = "INSERT INTO chat_log (chat_id, message, user_id, timestamp, message_iv)
-            VALUES (1, 'hardcoded_encrypted_message', 1, NOW(), 'hardcoded_iv');";
-
+            VALUES (?, ?, ?, NOW(), ?)";
 
 // Prepare the statement
 $stmt = mysqli_prepare($conn, $sql);
 
 if ($stmt) {
     // Bind parameters
-    mysqli_stmt_bind_param($stmt, "issb", $chatId, $encryptedMessage, $user_id, $iv);
+    mysqli_stmt_bind_param($stmt, "isss", $chatId, $encryptedMessage, $user_id, $iv);
 
     // Execute the statement
     $result = mysqli_stmt_execute($stmt);
@@ -46,5 +44,4 @@ if ($stmt) {
 
 // Close the database connection
 mysqli_close($conn);
-
 ?>
