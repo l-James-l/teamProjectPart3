@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Get the chat ID from the POST data
         if (isset($_POST['chat_id']) && !empty($_POST['chat_id'])) {
-            $chat_id = mysqli_real_escape_string($conn, $_POST['chat_id']);
+            $chat_id = 1;
             
             // Perform encryption
             $key = openssl_random_pseudo_bytes(32); // Generate a random encryption key
@@ -24,18 +24,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Encode the encrypted message using base64
             $encodedMessage = base64_encode($encryptedMessage);
+
+            // Encode the IV using base64
+            $encodedIV = base64_encode($iv);
             
             // Construct the SQL query with prepared statements
             $sql = "INSERT INTO chat_log (chat_id, message, user_id, timestamp, message_iv)
-            VALUES (?, ?, ?, NOW(), ?)";
-            
+                    VALUES (?, ?, ?, NOW(), ?)";
+
             // Prepare the statement
             $stmt = mysqli_prepare($conn, $sql);
-            
+
             if ($stmt) {
                 // Bind parameters
-                mysqli_stmt_bind_param($stmt, "issb", $chat_id, $encodedMessage, $user_id, $iv);
-                
+                mysqli_stmt_bind_param($stmt, "isss", $chat_id, $encodedMessage, $user_id, $encodedIV);
+
                 // Execute the statement
                 $result = mysqli_stmt_execute($stmt);
                 

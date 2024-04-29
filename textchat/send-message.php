@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Get the chat ID from the POST data
         if (isset($_POST['chat_id']) && !empty($_POST['chat_id'])) {
-            $chat_id = mysqli_real_escape_string($conn, $_POST['chat_id']);
+            $chat_id = 1;
             
             // Perform encryption
             $key = openssl_random_pseudo_bytes(32); // Generate a random encryption key
