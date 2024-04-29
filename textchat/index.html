@@ -170,15 +170,17 @@
             xhr.open("POST", "encrypt-message.php", true); // Change URL to encrypt-message.php
             xhr.onload = function () {
                 if (this.status === 200) {
+                    console.log("Encryption successful.");
                     // Once encryption is done, send the encrypted message to send-message.php
                     var encryptedMessage = this.responseText;
+                    console.log("Encrypted message: ", encryptedMessage);
                     sendEncryptedMessage(chatId, encryptedMessage);
                 } else {
-                    console.error('An error occurred during the AJAX request');
+                    console.error('An error occurred during the AJAX request to encrypt-message.php');
                 }
             };
             xhr.onerror = function () {
-                console.error('An error occurred during the AJAX request');
+                console.error('An error occurred during the AJAX request to encrypt-message.php');
             };
             xhr.send(formData);
 
@@ -188,6 +190,7 @@
 
         // Function to send the encrypted message to send-message.php
         function sendEncryptedMessage(chatId, encryptedMessage) {
+            console.log("Sending encrypted message to send-message.php...");
             // Construct the POST data
             var formData = new FormData();
             formData.append('chat_id', chatId);
@@ -198,14 +201,14 @@
             xhr.open("POST", "send-message.php", true); // URL remains send-message.php
             xhr.onload = function () {
                 if (this.status === 200) {
-                    console.log(this.responseText);
+                    console.log("Message sent successfully: ", this.responseText);
                     // You may want to call scrollToBottom() to scroll the chat into view.
                 } else {
-                    console.error('An error occurred during the AJAX request');
+                    console.error('An error occurred during the AJAX request to send-message.php');
                 }
             };
             xhr.onerror = function () {
-                console.error('An error occurred during the AJAX request');
+                console.error('An error occurred during the AJAX request to send-message.php');
             };
             xhr.send(formData);
         }
