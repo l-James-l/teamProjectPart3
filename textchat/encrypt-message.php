@@ -1,5 +1,8 @@
 <?php
-include_once(__DIR__.'/../src/db_connection.php');
+$servername = "localhost";
+$username = "phpUser";
+$password = "p455w0rD";
+$dbname = "make_it_all"; 
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 $message = mysqli_real_escape_string($conn, $_POST['message']);
 
