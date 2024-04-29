@@ -1,5 +1,5 @@
 <?php
-include "db_connection.php";
+include "../../src/db_connection.php";
 try {
     $conn = new PDO("mysql:host=localhost;dbname=make_it_all", $username, $password);
 } catch (PDOException $e) {
@@ -16,7 +16,35 @@ if ($conn) {
         $result = $query->execute();
         if ($result) {
             $final_json->project = $query->fetch();
-            $stmt = " select * from task where project_id = :project_id";
+            $stmt = " select * from task where project_id = :project_id where true";
+            if (isset($_GET["task_search"])) {
+                $search_string = $_GET["task_search"];
+                $stmt += " and task_title like '%$search_string%'";
+            }
+            if (isset($_GET["task_filter_milestone"]) && $_GET["task_filter_milestone"] == "true") {
+                $stmt += " and is_milestone = true";
+            }
+
+            if (isset($_GET["sort_value"])) {
+                if ($_GET["sort_value"] == "due_date") {
+                    $stmt += " order by due_date"; 
+                }
+                else if ($_GET["sort_value"] == "priority") {
+                    $stmt += " order by priority"; 
+                }
+                else if ($_GET["sort_value"] == "est_length") {
+                    $stmt += " order by est_length"; 
+                }
+            } else {
+                $stmt += " order by due_date"; 
+            }
+            if (isset($_GET["sort_order"])) {
+                if ($_GET["sort_order"] == "ASC" || $_GET["sort_order"] == "DESC") {
+                    $stmt += $_GET["sort_order"];
+                } 
+            }
+
+            
             $query = $conn->prepare($stmt);
             $query->bindParam(":project_id", $_GET["project_ID"]);
             $result = $query->execute();
