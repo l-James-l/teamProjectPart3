@@ -23,12 +23,12 @@ if ($conn) {
             if ($result) {
                 $final_json["tasks"] = $query->fetchAll();
                 echo json_encode(array("status" => "success", "message" => $final_json));
-                exit;
+                // exit;
             }
         }
     } 
 }
 
-echo json_encode(array("status" => "error", "message" => null));
+// echo json_encode(array("status" => "error", "message" => null));
 
 ?>
