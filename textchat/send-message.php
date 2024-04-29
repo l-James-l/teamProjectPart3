@@ -19,7 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $encryptedMessage = openssl_encrypt($message, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
             
             // Construct the SQL query with prepared statements
-            $sql = "INSERT INTO chat_log (chat_id, encrypted_message, user_id, timestamp, message_iv) VALUES (1, 'hardcoded_encrypted_message', 1, NOW(), 'hardcoded_iv');";
+            $sql = "INSERT INTO chat_log (chat_id, message, user_id, timestamp, message_iv)
+            VALUES (1, 'hardcoded_encrypted_message', 1, NOW(), 'hardcoded_iv');";
             
             // Prepare the statement
             $stmt = mysqli_prepare($conn, $sql);
