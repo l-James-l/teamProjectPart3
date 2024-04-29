@@ -12,13 +12,13 @@ if ($conn) {
 
         $stmt = "select * from project where project_id = :project_id";
         $query = $conn->prepare($stmt);
-        $query->bind_param(":project_id", $_GET["project_ID"]);
+        $query->bindParam(":project_id", $_GET["project_ID"]);
         $result = $query->execute();
         if ($result) {
             $final_json["project"] = $query->fetch();
             $stmt = " select * from task where project_id = :project_id";
             $query = $conn->prepare($stmt);
-            $query->bind_param(":project_id", $_GET["project_ID"]);
+            $query->bindParam(":project_id", $_GET["project_ID"]);
             $result = $query->execute();
             if ($result) {
                 $final_json["tasks"] = $query->fetchAll();
