@@ -16,8 +16,8 @@ $iv = openssl_random_pseudo_bytes(16); // Generate a random IV
 $encryptedMessage = openssl_encrypt($message, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
 
 // Construct the SQL query with prepared statements
-$sql = "INSERT INTO chat_log (chat_id, encrypted_message, user_id, timestamp) 
-        VALUES (?, ?, ?, NOW())";
+$sql = "INSERT INTO chat_log (chat_id, message, user_id, timestamp, message_iv) 
+        VALUES (?, ?, ?, NOW(), ?)";
 
 // Prepare the statement
 $stmt = mysqli_prepare($conn, $sql);

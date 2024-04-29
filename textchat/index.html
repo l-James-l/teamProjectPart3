@@ -195,7 +195,7 @@
 
             // Create and send an AJAX request to send-message.php
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "send-message2.php", true); // URL remains send-message.php
+            xhr.open("POST", "send-message.php", true); // URL remains send-message.php
             xhr.onload = function () {
                 if (this.status === 200) {
                     console.log(this.responseText);
