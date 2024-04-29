@@ -1,5 +1,5 @@
 <?php
-include "../../src/db_connection.php";
+include "db_connection.php";
 try {
     $conn = new PDO("mysql:host=localhost;dbname=make_it_all", $username, $password);
 } catch (PDOException $e) {
@@ -15,20 +15,20 @@ if ($conn) {
         $query->bindParam(":project_id", $_GET["project_ID"]);
         $result = $query->execute();
         if ($result) {
-            $final_json["project"] = $query->fetch();
+            $final_json->project = $query->fetch();
             $stmt = " select * from task where project_id = :project_id";
             $query = $conn->prepare($stmt);
             $query->bindParam(":project_id", $_GET["project_ID"]);
             $result = $query->execute();
             if ($result) {
-                $final_json["tasks"] = $query->fetchAll();
+                $final_json->tasks = $query->fetchAll();
                 echo json_encode(array("status" => "success", "message" => $final_json));
-                // exit;
+                exit;
             }
         }
     } 
 }
 
-// echo json_encode(array("status" => "error", "message" => null));
+echo json_encode(array("status" => "error", "message" => null));
 
 ?>
