@@ -88,7 +88,7 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
                         <!-- search bar -->
                         <div class="col-6" style="padding-bottom: 10px; padding-left: unset">
                             <input id='searchbar' type="search" class="form-control" placeholder="Search..."
-                                oninput="get_project_from_api(<?php echo $_GET['projectToGet']?>)" aria-label="Search">
+                                oninput="get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')" aria-label="Search">
                         </div>
 
                         <!-- filter dropdown -->
@@ -96,7 +96,7 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdownMenuButton"
                                 data-bs-toggle="dropdown" data-bs-auto-close="outside" style="width: 90%;">Filter</button>
                                 <div class="dropdown-menu" aria-labelledby="filterDropdownMenuButton">
-                                    <button class="dropdown-item d-flex justify-content-between" type="button" onclick="toggleFilter('milestone');get_project_from_api(<?php echo $_GET['projectToGet']?>)">
+                                    <button class="dropdown-item d-flex justify-content-between" type="button" onclick="toggleFilter('milestone');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">
                                         milestones <i id="milestoneToggleIcon" class="bi bi-x"></i>
                                     </button>
                                     <input type="hidden" id="milestoneToggleValue" value=0>
@@ -109,21 +109,21 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
                                 data-bs-toggle="dropdown" style="width: 90%;">Sort</button>
                             <div class="dropdown-menu" aria-labelledby="filterDropdownMenuButton">
                                 <button class="dropdown-item" type="button"
-                                    onclick="change_sort_value('due_date');get_project_from_api(<?php echo $_GET['projectToGet']?>)">Due Date</button>
+                                    onclick="change_sort_value('due_date');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Due Date</button>
                                 <button class="dropdown-item" type="button"
-                                    onclick="change_sort_value('priority');get_project_from_api(<?php echo $_GET['projectToGet']?>)">Priority</button>
+                                    onclick="change_sort_value('priority');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Priority</button>
                                 <button class="dropdown-item" type="button"
-                                    onclick="change_sort_value('est_length');get_project_from_api(<?php echo $_GET['projectToGet']?>)">Hours</button>
+                                    onclick="change_sort_value('est_length');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Hours</button>
                                 <input type="hidden" id="sortValue" value="due_date">
                             </div>
                         </div>
                         <!-- ASC DESC buttons -->
                         <button id="asc-button" class="btn btn-secondary col-1" style="height: fit-content;" 
-                            onclick="change_sort_order('ASC');get_project_from_api(<?php echo $_GET['projectToGet']?>)">
+                            onclick="change_sort_order('ASC');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">
                             <i class="bi bi-sort-up"></i>
                         </button>
                         <button id="desc-button" class="btn btn-outline-secondary col-1" style="height: fit-content;"
-                            onclick="change_sort_order('DESC');get_project_from_api(<?php echo $_GET['projectToGet']?>)">
+                            onclick="change_sort_order('DESC');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">
                             <i class="bi bi-sort-down"></i>
                         </button>
                         <input type="hidden" id="sortOrder" value="ASC">
