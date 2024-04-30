@@ -10,7 +10,11 @@ if ($conn) {
     if (isset($_GET["project_ID"])) {
         $final_json = json_decode("{}");
 
-        $stmt = "select * from project where project_id = :project_id";
+        $stmt = "select project.project_id, project_title, project.due_date, sum(est_length) as total_hours, avg(completion_percentage) as total_completion, count(task_id) as task_count
+         from project left join task on project.project_id = task.project_id  
+         where project.project_id = 3
+         group by project.project_id";
+         
         $query = $conn->prepare($stmt);
         $query->bindParam(":project_id", $_GET["project_ID"]);
         $result = $query->execute();
@@ -52,11 +56,21 @@ if ($conn) {
                 $final_json->tasks = $query->fetchAll();
                 echo json_encode(array("status" => "success", "message" => $final_json));
                 exit;
+            } else {
+                echo json_encode(array("status" => "error", "message" => "task query failed"));
+                exit;
             }
+        }else {
+            echo json_encode(array("status" => "error", "message" => "project query failed"));
+            exit;
         }
-    } 
+    } else {
+        echo json_encode(array("status" => "error", "message" => "project ID not set"));
+        exit;
+    }
+} else {
+    echo json_encode(array("status" => "error", "message" => "failed to connect to db"));
+    exit;
 }
-
-echo json_encode(array("status" => "error", "message" => null));
 
 ?>
