@@ -24,7 +24,8 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="js/project_analytics.js"></script>
-
+    
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
 
 </head>
 
@@ -34,7 +35,7 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
         $currentPage = "analytics";
         include "../src/header.php";
     } else {
-        header("location: ../../src/login.php");
+        header("location: ../src/login.php");
     }
     ?>
     
@@ -47,19 +48,19 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="?page=overview" class="nav-link <?php echo $page == "projects" ? "active" : "link-dark" ?>" aria-current="page">
+                    <a href="?project_ID=<?php echo $_GET['projectToGet']?>&page=overview" class="nav-link <?php echo $page == "overview" ? "active" : "link-dark" ?>" aria-current="page">
                         <i class="bi bi-folder-fill"></i>
                         Overview
                     </a>
                 </li>
                 <li>
-                    <a href="?page=users" class="nav-link <?php echo $page == "users" ? "active" : "link-dark" ?>">
+                    <a href="?project_ID=<?php echo $_GET['projectToGet']?>&page=users" class="nav-link <?php echo $page == "users" ? "active" : "link-dark" ?>">
                         <i class="bi bi-people-fill"></i>
                         Users Assignment
                     </a>
                 </li>
                 <li>
-                    <a href="?page=progression" class="nav-link <?php echo $page == "progression" ? "active" : "link-dark" ?>">
+                    <a href="?project_ID=<?php echo $_GET['projectToGet']?>&page=progress" class="nav-link <?php echo $page == "progress" ? "active" : "link-dark" ?>">
                         <i class="bi bi-people-fill"></i>
                         Progression
                     </a>
@@ -71,40 +72,7 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
         </div>
         <div class="main-content-container">
             <h1 id="project_title"></h1>
-
-            <?php if ($page == "projects") { ?>
-            <!-- <div class="row" style="margin: auto;">
-                <div class="col-8" style="padding-bottom: 10px; padding-left: unset">
-                    <input id='searchbar' type="search" class="form-control" placeholder="Search..."
-                        oninput="get_project_json(<?php echo $_SESSION['user_id'] ?>)" aria-label="Search">
-                </div>
-
-                <div class="dropdown col-2" style="padding: 0px">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdownMenuButton"
-                        data-bs-toggle="dropdown" style="width: 90%;">Sort</button>
-                    <div class=" dropdown-menu" aria-labelledby="filterDropdownMenuButton">
-                        <button class="dropdown-item" type="button"
-                            onclick="change_sort_value('due date');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Due date</button>
-                        <button class="dropdown-item" type="button"
-                            onclick="change_sort_value('completion_percentage');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Completion Percentage</button>
-                        <button class="dropdown-item" type="button"
-                            onclick="change_sort_value('assigned tasks');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Assigned Tasks</button>
-                        <input type="hidden" id="sortValue" value="due date">
-                    </div>
-                </div>
-                <button id="asc-button" class="btn btn-secondary col-1" style="height: fit-content;" 
-                    onclick="change_sort_order('ASC');get_project_json(<?php echo $_SESSION['user_id'] ?>)">
-                    <i class="bi bi-sort-up"></i>
-                </button>
-                <button id="desc-button" class="btn btn-outline-secondary col-1" style="height: fit-content;"
-                    onclick="change_sort_order('DESC');get_project_json(<?php echo $_SESSION['user_id'] ?>)">
-                    <i class="bi bi-sort-down"></i>
-                </button>
-                <input type="hidden" id="sortOrder" value="ASC">
-                
-            </div> -->
-
-            <?php } else if ($page == "overview") { ?>
+            <?php if ($page == "overview") { ?>
             <div>
                 <div> <!-- summary details container-->
                     <h3>Summary</h3>
@@ -117,11 +85,13 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
                  <div> <!-- task display container -->
                     <h3 id="task_count"></h3>
                     <div class="row" style="margin: auto;">
+                        <!-- search bar -->
                         <div class="col-6" style="padding-bottom: 10px; padding-left: unset">
                             <input id='searchbar' type="search" class="form-control" placeholder="Search..."
                                 oninput="get_project_from_api(<?php echo $_GET['projectToGet']?>)" aria-label="Search">
                         </div>
 
+                        <!-- filter dropdown -->
                         <div class="dropdown col-2" style="padding: 0px">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdownMenuButton"
                                 data-bs-toggle="dropdown" data-bs-auto-close="outside" style="width: 90%;">Filter</button>
@@ -133,6 +103,7 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
                                 </div>
                         </div>
 
+                        <!-- sort order dropdown -->
                         <div class="dropdown col-2" style="padding: 0px">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdownMenuButton"
                                 data-bs-toggle="dropdown" style="width: 90%;">Sort</button>
@@ -146,6 +117,7 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
                                 <input type="hidden" id="sortValue" value="due_date">
                             </div>
                         </div>
+                        <!-- ASC DESC buttons -->
                         <button id="asc-button" class="btn btn-secondary col-1" style="height: fit-content;" 
                             onclick="change_sort_order('ASC');get_project_from_api(<?php echo $_GET['projectToGet']?>)">
                             <i class="bi bi-sort-up"></i>
@@ -163,7 +135,11 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
                 </div>
             </div>
 
-            <?php } ?>
+            <?php } else if ($page == "users") {?>
+                <div id="dual_x_div" style="width: -webkit-fill-available; height:400px"></div>
+            <?php } else if ($page == "progress") {?>
+                <!-- TODO -->
+            <?php }?>
        
             
         </div>
@@ -176,5 +152,5 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
 
 
 <script>
-    full_project_json = get_project_from_api(<?php echo $_GET["projectToGet"]?>)
+    get_project_from_api(<?php echo $_GET["project_ID"]?>, "<?php echo $page?>")
 </script>

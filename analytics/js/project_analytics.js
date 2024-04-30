@@ -1,11 +1,14 @@
-function get_project_from_api(id) {
+function get_project_from_api(id, page) {
     let data = {
-        project_ID: id,
-        task_search: document.getElementById("searchbar").value, 
-        sort_value: document.getElementById("sortValue").value,
-        sort_order: document.getElementById("sortOrder").value,
-        task_filter_milestone: document.getElementById("milestoneToggleValue").value % 2 == 0 ? false : true
+        project_ID: id
     }
+    if (page == "overview") {
+        data["task_search"] = document.getElementById("searchbar").value, 
+        data["sort_value"] = document.getElementById("sortValue").value,
+        data["sort_order"] = document.getElementById("sortOrder").value,
+        data["task_filter_milestone"] =  document.getElementById("milestoneToggleValue").value % 2 == 0 ? false : true
+    }
+    
     $.ajax({
         url: 'apis/get_project.php',
         method: 'GET',
@@ -15,23 +18,63 @@ function get_project_from_api(id) {
             // display_projects(JSON.parse(response))
             response = JSON.parse(response)
             document.getElementById("project_title").innerHTML = response["message"]["project"]["project_title"]
-            document.getElementById("task_count").innerHTML = response["message"]["project"]["task_count"] + " Remaining Tasks"
-            document.getElementById("summary-pie").style.setProperty("--p", response["message"]["project"]["total_completion"])
-            if (response["message"]["project"]["total_completion"] < 33) {
-                document.getElementById("summary-pie").style.setProperty("--c", "red")
-            } else if (response["message"]["project"]["total_completion"] < 66) {
-                document.getElementById("summary-pie").style.setProperty("--c", "orange")
-            } else {
-                document.getElementById("summary-pie").style.setProperty("--c", "green")
+            if (page == "overview") {
+                document.getElementById("task_count").innerHTML = response["message"]["project"]["task_count"] + " Remaining Tasks"
+                document.getElementById("summary-pie").style.setProperty("--p", response["message"]["project"]["total_completion"])
+                if (response["message"]["project"]["total_completion"] < 33) {
+                    document.getElementById("summary-pie").style.setProperty("--c", "red")
+                } else if (response["message"]["project"]["total_completion"] < 66) {
+                    document.getElementById("summary-pie").style.setProperty("--c", "orange")
+                } else {
+                    document.getElementById("summary-pie").style.setProperty("--c", "green")
+                }
+                document.getElementById("summary-pie").innerHTML = response["message"]["project"]["total_completion"] + "%"
+                document.getElementById("summary-label").innerHTML = "A total of " + response["message"]["project"]["total_hours"] + " hours have been assigned to this project. The exected completion date for the project is " + response["message"]["project"]["due_date"] + "."
+                update_task_display(response["message"]["tasks"])
+
+            } else if (page == "users") {
+                google.charts.load('current',{packages:['corechart', 'bar']});
+                google.charts.setOnLoadCallback(function () {drawHoursBarChart(response["message"]["user_assignment"])});
+            } else if (page == "progress") {
+
             }
-            document.getElementById("summary-pie").innerHTML = response["message"]["project"]["total_completion"] + "%"
-            document.getElementById("summary-label").innerHTML = "A total of " + response["message"]["project"]["total_hours"] + " hours have been assigned to this project. The exected completion date for the project is " + response["message"]["project"]["due_date"] + "."
-            update_task_display(response["message"]["tasks"])
         },
         error: function (error) {
             console.error(error); // log error to the console
         }
     })
+}
+
+function drawHoursBarChart(userData) {
+    let dataArray = [["Name", "Task Count", "Assigned Hours"]]
+    userData.forEach(row => {
+        dataArray.push([row["full_name"], parseInt(row["task_count"]), parseInt(row["total_hours"])])
+    })
+    console.log(dataArray)
+    const data = google.visualization.arrayToDataTable(dataArray);
+
+    var options = {
+        // width,
+        chart: {
+            title: 'User Task and Hour Allocation for this Project',
+            // subtitle: ''
+          },
+        bars: 'horizontal', // Required for Material Bar Charts.
+        series: {
+          0: { axis: 'Task_Count' }, 
+          1: { axis: 'Assigned_Hours' } // Bind series 1 to an axis named 'brightness'.
+        },
+        axes: {
+            x: {
+                Task_Count: {side: 'top', label: 'Count'}, // Bottom x-axis.
+                Assigned_Hours: { label: 'Hours'} // Top x-axis.
+            }
+          }
+      };
+
+    // Draw
+    var chart = new google.charts.Bar(document.getElementById('dual_x_div'));
+    chart.draw(data, options);
 }
 
 function update_task_display(tasksList) {
@@ -79,15 +122,6 @@ function update_task_display(tasksList) {
         task_container.appendChild(task_div)
 
     })
-
-    // <h5 class="task-name">Task: <?php echo htmlspecialchars($taskRow["task_title"]); ?></h5>
-    // <h5 class="project-name">Project: <?php echo htmlspecialchars($taskRow["project_title"]); ?></h5>
-    // <p class="task-due-date">Due Date: <?php echo htmlspecialchars($taskRow["due_date"]); ?></p>
-    // <p class="task-priority">Priority: <?php echo htmlspecialchars($taskRow["priority"]); ?></p>
-    // <p class="task-length">Estimated Length: <?php echo htmlspecialchars($taskRow["est_length"]); ?> hours</p>
-    // <div class="progress" style="height: 20px;">
-    //     <div class="progress-bar" role="progressbar" style="width: <?php echo htmlspecialchars($taskRow["completion_percentage"]); ?>%;" aria-valuenow="<?php echo htmlspecialchars($taskRow["completion_percentage"]); ?>" aria-valuemin="0" aria-valuemax="100"><?php echo htmlspecialchars($taskRow["completion_percentage"]); ?>% Complete</div>
-    // </div>
 }
 
 function toggleFilter(toggle) {
