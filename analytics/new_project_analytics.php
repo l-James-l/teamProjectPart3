@@ -38,7 +38,7 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
     <?php
     if (isset($_SESSION["user_id"])) {
         $currentPage = "analytics";
-        include "../../src/header.php";
+        include "../src/header.php";
     } else {
         header("location: ../../src/login.php");
     }
