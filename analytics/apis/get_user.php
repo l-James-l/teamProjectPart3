@@ -15,7 +15,7 @@ if ($conn) {
         $query->bindParam(":user_id", $_GET["user_ID"]);
         $result = $query->execute();
         if ($result) {
-            $final_json->project = $query->fetch();
+            $final_json->user = $query->fetch();
             $stmt = "select * from task where user_id = :user_id";
             if (isset($_GET["task_search"])) {
                 $search_string = $_GET["task_search"];
