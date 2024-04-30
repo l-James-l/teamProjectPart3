@@ -48,19 +48,19 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="?project_ID=<?php echo $_GET['projectToGet']?>&page=overview" class="nav-link <?php echo $page == "overview" ? "active" : "link-dark" ?>" aria-current="page">
+                    <a href="?projectToGet=<?php echo $_GET['projectToGet']?>&page=overview" class="nav-link <?php echo $page == "overview" ? "active" : "link-dark" ?>" aria-current="page">
                         <i class="bi bi-folder-fill"></i>
                         Overview
                     </a>
                 </li>
                 <li>
-                    <a href="?project_ID=<?php echo $_GET['projectToGet']?>&page=users" class="nav-link <?php echo $page == "users" ? "active" : "link-dark" ?>">
+                    <a href="?projectToGet=<?php echo $_GET['projectToGet']?>&page=users" class="nav-link <?php echo $page == "users" ? "active" : "link-dark" ?>">
                         <i class="bi bi-people-fill"></i>
                         Users Assignment
                     </a>
                 </li>
                 <li>
-                    <a href="?project_ID=<?php echo $_GET['projectToGet']?>&page=progress" class="nav-link <?php echo $page == "progress" ? "active" : "link-dark" ?>">
+                    <a href="?projectToGet=<?php echo $_GET['projectToGet']?>&page=progress" class="nav-link <?php echo $page == "progress" ? "active" : "link-dark" ?>">
                         <i class="bi bi-people-fill"></i>
                         Progression
                     </a>
