@@ -152,5 +152,5 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
 
 
 <script>
-    get_project_from_api(<?php echo $_GET["project_ID"]?>, "<?php echo $page?>")
+    get_project_from_api(<?php echo $_GET["projectToGet"]?>, "<?php echo $page?>")
 </script>
