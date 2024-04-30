@@ -7,7 +7,7 @@ function get_project_from_api(id) {
         task_filter_milestone: document.getElementById("milestoneToggleValue").value % 2 == 0 ? false : true
     }
     $.ajax({
-        url: '../apis/get_project.php',
+        url: 'apis/get_project.php',
         method: 'GET',
         data: data,
         success: function (response) {
