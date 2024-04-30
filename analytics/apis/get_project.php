@@ -1,5 +1,5 @@
 <?php
-include "db_connection.php";
+include "../../src/db_connection.php";
 try {
     $conn = new PDO("mysql:host=localhost;dbname=make_it_all", $username, $password);
 } catch (PDOException $e) {
