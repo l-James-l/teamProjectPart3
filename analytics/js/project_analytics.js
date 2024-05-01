@@ -57,7 +57,7 @@ function drawprogressLineChart(progressData) {
     processedDataArray = []
     progressData.forEach(row => {
         running_sum = running_sum + parseInt(row["hours_sum"])
-        processedDataArray.push[new Date(row["date"]), parseInt(row["hours_sum"]), running_sum]
+        processedDataArray.push([new Date(row["date"]), parseInt(row["hours_sum"]), running_sum])
     })
     data.addRows(processedDataArray)
 
