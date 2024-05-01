@@ -220,6 +220,43 @@
             messageDiv.innerHTML = `<div class="${type}-message">${message}</div>`;
             chatSection.appendChild(messageDiv);
         }
+
+        function fetchMessages() {
+            var chatId = document.getElementById("chat_id").value; 
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "fetch-messages.php?chat_id=" + chatId, true);
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    var response = JSON.parse(this.responseText);
+                    if (response.status === "success") {
+                        updateChatUI(response.messages);
+                    } else {
+                        console.error('Failed to fetch messages:', response.message);
+                    }
+                } else {
+                    console.error('Error in AJAX request');
+                }
+            };
+            xhr.onerror = function () {
+                console.error('Error in AJAX request');
+            };
+            xhr.send();
+        }
+
+        function updateChatUI(messages) {
+            var chatSection = document.querySelector(".chat-section");
+            chatSection.innerHTML = ''; // Clear existing messages
+
+            messages.forEach(function(message) {
+                var messageDiv = document.createElement("div");
+                messageDiv.classList.add("message-container", message.user_id == 1 ? "outgoing" : "incoming");
+                messageDiv.innerHTML = `<div class="${message.user_id == 1 ? "outgoing" : "incoming"}-message">${message.encrypted_message}</div>`;
+                chatSection.appendChild(messageDiv);
+            });
+
+            scrollToBottom(); // Ensure the newest messages are visible
+        }
+
         // Ensures that the chat section is scrolled to the bottom
         // when the page is loaded, making the latest messages visible.
         document.addEventListener("DOMContentLoaded", function () {
