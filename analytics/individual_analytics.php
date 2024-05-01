@@ -36,9 +36,9 @@ if (isset($_GET['userToGet'])) {
         <div class="container header-container">
             <img src="../src/imgs/logo.png" alt="Company Logo" id="page-logo">
             
-            <div id ="fullName"  class="header-title">
-                <div id = "role" class="header-subtitle"></div> 
-            </div>
+            <div id ="fullName"  class="header-title"></div>
+            <div id = "role" class="header-subtitle"></div> 
+            
             
 
             <div class="dropdown">
