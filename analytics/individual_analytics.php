@@ -36,8 +36,10 @@ if (isset($_GET['userToGet'])) {
         <div class="container header-container">
             <img src="../src/imgs/logo.png" alt="Company Logo" id="page-logo">
             
-            <div id ="fullName"  class="header-title"></div>
-            <div id = "role" class="header-subtitle"></div> 
+            <div id ="fullName"  class="header-title">
+                <div id = "role" class="header-subtitle"></div> 
+            </div>
+            
 
             <div class="dropdown">
                 <a href="#" class="d-block link-dark text-decoration-none user-dropdown dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
