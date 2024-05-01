@@ -40,7 +40,7 @@ if ($stmt->fetch()) {
 }
 $stmt->close();
 
-$sql = "SELECT projectID, completion_percentage, estimated_hours FROM Task WHERE user_ID = ?";
+$sql = "SELECT projectID, completion_percentage, estimated_hours FROM task WHERE user_ID = ?";
 $stmt = $conn->prepare($sql);
 if ($stmt === false) {
     echo json_encode(['status' => 'error', 'message' => 'MySQL prepare error: ' . $conn->error]);
