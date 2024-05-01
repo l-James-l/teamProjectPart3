@@ -66,7 +66,6 @@ function drawprogressLineChart(progressData) {
           title: 'Project Progress Over Time',
           subtitle: 'in hours commited'
         },
-        width: 900,
         height: 500
     };
 
