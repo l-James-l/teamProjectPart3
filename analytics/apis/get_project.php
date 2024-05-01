@@ -20,7 +20,7 @@ $final_json = json_decode("{}");
 // get the project details
 $stmt = "select project.project_id, project_title, project.due_date, sum(est_length) as total_hours, avg(completion_percentage) as total_completion, count(task_id) as task_count
     from project left join task on project.project_id = task.project_id  
-    where project.project_id = 3
+    where project.project_id = :project_id
     group by project.project_id";
     
 $query = $conn->prepare($stmt);
