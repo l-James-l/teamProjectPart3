@@ -54,7 +54,7 @@ if (isset($_GET['userToGet'])) {
                         </div>
                     </li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="login.php">Sign out</a></li>
+                    <li><a class="dropdown-item" href="../login.php">Sign out</a></li>
                 </ul>
             </div>
         </div>
