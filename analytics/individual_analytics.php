@@ -103,7 +103,7 @@ if (isset($_GET['userToGet'])) {
 
                     $sql = "SELECT t.task_title, p.project_title, t.due_date, t.priority, t.est_length, t.completion_percentage 
                             FROM task t 
-                            INNER JOIN project p ON t.projectID = p.projectID
+                            INNER JOIN project p ON t.project_id = p.project_id
                             WHERE t.user_id = ?";
                     $stmt = $conn->prepare($sql);
                     if ($stmt === false) {
