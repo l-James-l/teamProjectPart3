@@ -34,7 +34,7 @@ if (isset($_GET['userToGet'])) {
 <body>
     <header>
         <div class="container header-container">
-            <img src="content/logo.png" alt="Company Logo" id="page-logo">
+            <img src="../src/img/logo.png" alt="Company Logo" id="page-logo">
             
             <div id ="fullName"  class="header-title"></div>
             <div id = "role" class="header-subtitle"></div> 
@@ -47,7 +47,7 @@ if (isset($_GET['userToGet'])) {
                     <li>
                         <div class="dropdown-item dropdown-item-nohover">
                             <div style="white-space: normal;">
-                                <img src="content/icon.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                                <img src="../src/img/icon.png" alt="mdo" width="32" height="32" class="rounded-circle">
                                 <span style="padding-left: 10px;">John Doe</span>
                             </div>
                             <span>johndoe@example.com</span>
