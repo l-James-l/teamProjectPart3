@@ -157,6 +157,9 @@
                 return;
             }
 
+            addMessageToChat(message, 'outgoing');
+            scrollToBottom();
+    
             // Construct the POST data
             var formData = new FormData();
             formData.append('chat_id', chatId);
@@ -210,7 +213,13 @@
             xhr.send(formData);
         }
 
-
+        function addMessageToChat(message, type) {
+            var chatSection = document.querySelector(".chat-section");
+            var messageDiv = document.createElement("div");
+            messageDiv.classList.add("message-container", type);
+            messageDiv.innerHTML = `<div class="${type}-message">${message}</div>`;
+            chatSection.appendChild(messageDiv);
+        }
         // Ensures that the chat section is scrolled to the bottom
         // when the page is loaded, making the latest messages visible.
         document.addEventListener("DOMContentLoaded", function () {
