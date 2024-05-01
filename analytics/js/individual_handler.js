@@ -7,6 +7,7 @@ function fetchUserData(userID, callback) {
             return response.json();
         })
         .then(data => {
+            console.log('Parsed JSON data:', data);
             callback(data);
         })
         .catch(error => {
