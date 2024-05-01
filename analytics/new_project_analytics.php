@@ -138,7 +138,7 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
             <?php } else if ($page == "users") {?>
                 <div id="dual_x_div" style="width: -webkit-fill-available; height:400px"></div>
             <?php } else if ($page == "progress") {?>
-                <!-- TODO -->
+                <div id="progress_line_chart" style="width: -webkit-fill-available; height:400px"></div>
             <?php }?>
        
             

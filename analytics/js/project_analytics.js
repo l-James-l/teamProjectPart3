@@ -33,10 +33,11 @@ function get_project_from_api(id, page) {
                 update_task_display(response["message"]["tasks"])
 
             } else if (page == "users") {
-                google.charts.load('current',{packages:['corechart', 'bar']});
+                google.charts.load('current',{packages:['bar']});
                 google.charts.setOnLoadCallback(function () {drawHoursBarChart(response["message"]["user_assignment"])});
             } else if (page == "progress") {
-
+                google.charts.load('current', {'packages':['line']});
+                google.charts.setOnLoadCallback(function () {drawprogressLineChart(response["message"]["progress_log"])});
             }
         },
         error: function (error) {
@@ -44,6 +45,35 @@ function get_project_from_api(id, page) {
         }
     })
 }
+
+
+function drawprogressLineChart(progressData) {
+    var data = new google.visualization.DataTable();
+    data.addColumn('date', 'Date');
+    data.addColumn('number', 'Day to Day');
+    data.addColumn('number', 'Cumulative');
+
+    var running_sum = 0
+    processedDataArray = []
+    progressData.forEach(row => {
+        running_sum = running_sum + parseInt(row["hours_sum"])
+        processedDataArray.push[new Date(row["date"]), parseInt(row["hours_sum"]), running_sum]
+    })
+    data.addRows(processedDataArray)
+
+    var options = {
+        chart: {
+          title: 'Project Progress Over Time',
+          subtitle: 'in millions of dollars (USD)'
+        },
+        width: 900,
+        height: 500
+    };
+
+    var chart = new google.charts.Line(document.getElementById('progress_line_chart'));
+    chart.draw(data, google.charts.Line.convertOptions(options));
+}
+
 
 function drawHoursBarChart(userData) {
     let dataArray = [["Name", "Task Count", "Assigned Hours"]]
