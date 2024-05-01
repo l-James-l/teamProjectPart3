@@ -5,99 +5,12 @@ if (!isset($_SESSION["user_id"])) {
     header("location: login.php");
 } 
 
-
-// SQL data collection
-
 if (isset($_GET['userToGet'])) {
     $userID = $_GET['userToGet'];
 } else {
     header("location: ./analytics_landing_page.php");
 }
-
-// DB connection 
-$servername = "localhost";
-$username = "phpUser";
-$password = "p455w0rD";
-$dbname = "make_it_all";  
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-echo "Connected successfully";
-
-$stmt = $conn->prepare("SELECT first_name, surname, role FROM users WHERE user_ID = ?");
-if ($stmt === false) {
-    die('MySQL prepare error: ' . $conn->error);
-}
-$stmt->bind_param('i', $userID);
-$stmt->execute();
-
-$stmt->bind_result($firstName, $surname, $role);
-
-
-
-if ($stmt->fetch()) {
-    $fullName = $firstName . " " . $surname;
-    if ($role === 'Mgr') {
-        $role = 'Manager';
-    } elseif ($role === 'TL') {
-        $role = 'Team Leader';
-    } elseif ($role === 'Emp') {
-        $role = 'Employee';
-} else {
-    echo "No user found with the specified userID.";
-}
-}
-
-$stmt->close();
-
-$sql = "SELECT projectID, completion_percentage, estimated_hours FROM Tasks WHERE user_ID = ?";
-$stmt = $conn->prepare($sql);
-if ($stmt === false) {
-    die('MySQL prepare error: ' . $conn->error);
-}
-$stmt->bind_param('i', $userID);
-$stmt->execute();
-$stmt->bind_result($projectID, $completionPercentage, $estimatedHours);
-
-$completionPercentages = array();
-$estimatedHoursArray = array();
-$projectIDs = array();
-
-while ($stmt->fetch()) {
-    $completionPercentages[] = $completionPercentage;
-    $estimatedHoursArray[] = $estimatedHours;
-    $projectIDs[] = $projectID;
-}
-
-$stmt->close();
-
-$completionSum = array_sum($completionPercentages);
-if (count($completionPercentages) > 0) {
-    $overallCompletion = $completionSum / count($completionPercentages);
-} else {
-    $overallCompletion = 0; 
-}
-
-$hoursDoneArray = array();
-foreach ($completionPercentages as $index => $completionPercentage) {
-    $hoursDoneArray[$index] = $completionPercentage * $estimatedHoursArray[$index];
-    $hoursDone = array_sum($hoursDoneArray);
-    $hoursLeft = array_sum($estimatedHoursArray) - $hoursDone;
-}
-
-$projectCount = count(array_unique($projectIDs));
-$taskCount = count($completionPercentages);
-
-$conn->close();
-
 ?>
-
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -110,17 +23,21 @@ $conn->close();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+    <script src="js/individual_handler.js"></script>
     <link rel="stylesheet" href="stylesheets/individual.css">
 </head>
+
+<script>
+    fetchUserData(<?php echo $userID ?>, updateUserData);
+</script>
+
 <body>
-    <!-- <header>
+    <header>
         <div class="container header-container">
             <img src="content/logo.png" alt="Company Logo" id="page-logo">
             
-            <div class="header-title">
-                Analytics Dashboard - <?php //echo $fullName ?>
-                <div class="header-subtitle"><?php //echo $role ?></div> 
-            </div>
+            <div id ="fullName"  class="header-title"></div>
+            <div id = "role" class="header-subtitle"></div> 
 
             <div class="dropdown">
                 <a href="#" class="d-block link-dark text-decoration-none user-dropdown dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -141,15 +58,7 @@ $conn->close();
                 </ul>
             </div>
         </div>
-    </header> -->
-    <?php
-    if (isset($_SESSION["user_id"])) {
-        $currentPage = "analytics";
-        include "../src/header.php";
-    } else {
-        header("location: ../src/login.php");
-    }
-    ?>
+    </header>
 
     <div class="container-fluid">
         <div class="row">
@@ -158,19 +67,8 @@ $conn->close();
                     <div class="number-label">
                         Total Task Completion
                     </div>
-                    <div class="circle-percentage d-flex flex-column align-items-center justify-content-center" style="background-color: <?php 
-                            if ($overallCompletion < 40) {
-                                echo 'red';
-                            } elseif ($overallCompletion >= 40 && $overallCompletion <= 70) {
-                                echo 'yellow';
-                            } else {
-                                echo 'green';
-                            }
-                        ?>;">
-                            <div class="percentage-number" data-bs-toggle="tooltip" data-bs-placement="top" title="Hours Done: <?php echo $hoursDone?>, Hours Left: <?php echo $hoursLeft; ?>">
-                                <?php echo $overallCompletion; ?>
-                            </div>
-                        </div>
+                    <div id="circlePercentage" class="circle-percentage d-flex flex-column align-items-center justify-content-center">
+                            <div id="percentageNumber" class="percentage-number" data-bs-toggle="tooltip" data-bs-placement="top" title=""></div>
                     </div>
                 </div>
                 
@@ -184,15 +82,13 @@ $conn->close();
                     </div>
                     
                     <div class="hours-left d-flex flex-column align-items-center justify-content-center">
-                        <div class="hours-number" >
-                            <?php echo $hoursLeft ?>
-                        </div>
+                        <div id="hoursNumber" class="hours-number"></div>
                     </div>
                 </div>
             </div>
             <div class="col-md-7">
                 <header class="main-content-header">
-                    <h1>Current Tasks - <?php echo $taskCount ?> across <?php echo $projectCount ?> projects</h1>
+                    <h1 id="taskProjectInfo">Current Tasks -</h1>
                 </header>
                 <div class="task-container">
                 <?php
