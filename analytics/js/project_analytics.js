@@ -64,7 +64,7 @@ function drawprogressLineChart(progressData) {
     var options = {
         chart: {
           title: 'Project Progress Over Time',
-          subtitle: 'in millions of dollars (USD)'
+          subtitle: 'in hours commited'
         },
         width: 900,
         height: 500
