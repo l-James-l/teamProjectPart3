@@ -69,8 +69,12 @@ function drawprogressLineChart(progressData) {
         height: 500
     };
 
-    var chart = new google.charts.Line(document.getElementById('progress_line_chart'));
-    chart.draw(data, google.charts.Line.convertOptions(options));
+    if (processedDataArray.length > 0) {
+        var chart = new google.charts.Line(document.getElementById('progress_line_chart'));
+        chart.draw(data, google.charts.Line.convertOptions(options));
+    } else {
+        document.getElementById('progress_line_chart').innerHTML = "There has been no progress logged for this project yet."
+    }
 }
 
 
