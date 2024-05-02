@@ -59,7 +59,7 @@
                 <form id="send-message-form" action="send-message2.php" method="post" onsubmit="sendMessage(event)">
                     <input type="hidden" name="chat_id" id="chat_id" value="1">
                     <input type="text" name="message" id="message" placeholder="Type your message...">
-                    <button type="submit">Send Message</button>
+                    <button type="submit" id="send-message-button">Send message</button>
                 </form>  
             </div>
         </div>
