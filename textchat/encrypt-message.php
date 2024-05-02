@@ -20,25 +20,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Perform encryption
             $key = openssl_random_pseudo_bytes(32); // Generate a random encryption key
             $iv = openssl_random_pseudo_bytes(16); // Generate a random IV
-            // $encryptedMessage = openssl_encrypt($message, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv); (uncomment if encryption is needed)
+            // $encryptedMessage = openssl_encrypt($message, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
             
             // Encode the encrypted message using base64 
-            // $encodedMessage = base64_encode($encryptedMessage); (uncomment if needed to encrypt)
-            $encodedMessage = $message; // remove if encryption is needed
+            // $encodedMessage = base64_encode($encryptedMessage);
 
             // Encode the IV using base64
-            $encodedIV = base64_encode($iv);
+            // $encodedIV = base64_encode($iv);
             
             // Construct the SQL query with prepared statements
-            $sql = "INSERT INTO chat_log (chat_id, message, user_id, timestamp, message_iv)
-                    VALUES (?, ?, ?, NOW(), ?)";
+            $sql = "INSERT INTO chat_log (chat_id, message, user_id, timestamp)
+                    VALUES (?, ?, ?, NOW())";
 
             // Prepare the statement
             $stmt = mysqli_prepare($conn, $sql);
 
             if ($stmt) {
                 // Bind parameters
-                mysqli_stmt_bind_param($stmt, "isss", $chat_id, $encodedMessage, $user_id, $encodedIV);
+                mysqli_stmt_bind_param($stmt, "isss", $chat_id, $message, $user_id);
 
                 // Execute the statement
                 $result = mysqli_stmt_execute($stmt);
