@@ -10,8 +10,8 @@ $dbname = "make_it_all";
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
 if (isset($_GET['chat_id']) && !empty($_GET['chat_id'])) {
-    $chat_id = $_GET['chat_id'];  // Sanitize the input properly
-
+    $chat_id = 1;
+    echo cunt;
     // Prepare the SQL statement to prevent SQL injection
     $stmt = $conn->prepare("SELECT * FROM chat_log WHERE chat_id = :chat_id ORDER BY timestamp DESC");
     $stmt->bindParam(':chat_id', $chat_id);
