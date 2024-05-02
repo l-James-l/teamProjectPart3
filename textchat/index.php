@@ -52,42 +52,7 @@
             </div>
             
             <div id="chat-section" class="chat-section">
-                <div class="message-container incoming">
-                    <div class="incoming-message">Good morning! Have you had a chance to review the project proposal?</div>
-                </div>
-                <div class="message-container outgoing">
-                    <div class="outgoing-message">Yes, I went through it yesterday. Overall, it looks solid. Do you have any specific points you'd like to discuss?</div>
-                </div>
-                <div class="message-container incoming">
-                    <div class="incoming-message">I'm glad to hear that! I wanted to get your input on the budget allocation for marketing. Do you think we should allocate more funds there?</div>
-                </div>
-                <div class="message-container outgoing">
-                    <div class="outgoing-message">I think a slight increase in the marketing budget could be beneficial, considering our target audience. Let's discuss it further in the upcoming meeting.</div>
-                </div>
-                <div class="message-container incoming">
-                    <div class="incoming-message">Sounds good! Speaking of meetings, do you have a preferred time for our weekly team catch-up?</div>
-                </div>
-                <div class="message-container outgoing">
-                    <div class="outgoing-message">How about Tuesday mornings at 9 AM? Does that work for you?</div>
-                </div>
-                <div class="message-container incoming">
-                    <div class="incoming-message">Tuesday at 10 AM works for me. Let's schedule it and make it a recurring meeting. Also, I'll send you the updated project timeline later today.</div>
-                </div>
-                <div class="message-container outgoing">
-                    <div class="outgoing-message">Perfect! Looking forward to the updated timeline. If you need any help, feel free to reach out.</div>
-                </div>
-                <div class="message-container incoming">
-                    <div class="incoming-message">Great! By the way, I noticed some feedback from the client regarding the design mockups. Have you had a chance to go through those comments?</div>
-                </div>
-                <div class="message-container outgoing">
-                    <div class="outgoing-message">Yes, I've reviewed the client's feedback. I'll address the specific points and make the necessary revisions today. We want to ensure we meet their expectations.</div>
-                </div>
-                <div class="message-container incoming">
-                    <div class="incoming-message">Thanks for taking care of that! Let's aim to have the updated mockups ready for presentation by the end of the week. It will be crucial for our progress meeting on Friday.</div>
-                </div>
-                <div class="message-container outgoing">
-                    <div class="outgoing-message">Agreed. I'll prioritize the design revisions and coordinate with the design team to ensure we stay on track. Looking forward to a productive week!</div>
-                </div>    
+  
             </div>
             
             <div class="send-bar-section">
