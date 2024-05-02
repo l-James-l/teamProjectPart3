@@ -25,7 +25,6 @@
             <div class="message-list-sidebar-content">
                 <p id="message-list-title">Messages</p>
                 
-        
                 <div class="chat-preview selected-chat">
                     <p class="chat-name">John Doe</p>
                     <p class="chat-preview-text">Agreed. I'll prioritize the design revisions and coordinate with the design team to ensure we stay on track. Looking forward to a productive week!</p>
@@ -39,46 +38,7 @@
                 <div class="chat-preview">
                     <p class="chat-name">Bob Johnson</p>
                     <p class="chat-preview-text">Sure thing! Let's catch up tomorrow at 2 PM.</p>
-                </div>
-        
-                <div class="chat-preview">
-                    <p class="chat-name">Emily White</p>
-                    <p class="chat-preview-text">I've shared the latest report with you. Take a look when you have time.</p>
-                </div>
-                <div class="chat-preview">
-                    <p class="chat-name">Sarah Brown</p>
-                    <p class="chat-preview-text">Just wanted to update you on the client meeting scheduled for next week. Everything is set, and we're ready to go!</p>
-                </div>
-        
-                <div class="chat-preview">
-                    <p class="chat-name">Michael Johnson</p>
-                    <p class="chat-preview-text">Any updates on the budget proposal? Let's discuss it in our next team meeting.</p>
-                </div>
-                <div class="chat-preview">
-                    <p class="chat-name">Alexandra Davis</p>
-                    <p class="chat-preview-text">Just received feedback from the client on the latest design mockups. They're impressed with the changes and have a few minor suggestions. Will share the details in our design review meeting.</p>
-                </div>
-                
-                <div class="chat-preview">
-                    <p class="chat-name">Christopher White</p>
-                    <p class="chat-preview-text">Quick reminder: team training session tomorrow at 10 AM. Please review the materials shared earlier to make the most of the session.</p>
-                </div>
-                
-                <div class="chat-preview">
-                    <p class="chat-name">Emily Rodriguez</p>
-                    <p class="chat-preview-text">Important: The deadline for submitting project milestones is approaching. Make sure all team members are on track to meet their targets.</p>
-                </div>
-                
-                <div class="chat-preview">
-                    <p class="chat-name">Daniel Smith</p>
-                    <p class="chat-preview-text">Great news! Our social media campaign is gaining traction, and engagement has increased by 20% this week. Let's discuss strategies to maintain this momentum in our marketing meeting.</p>
-                </div>
-                
-                <div class="chat-preview">
-                    <p class="chat-name">Olivia Taylor</p>
-                    <p class="chat-preview-text">Reminder: HR has scheduled individual performance reviews for next week. Please prepare any self-assessment or achievements you'd like to discuss during the meeting.</p>
-                </div>
-                
+                </div>        
             </div>
         </div>
         
@@ -127,24 +87,17 @@
                 </div>
                 <div class="message-container outgoing">
                     <div class="outgoing-message">Agreed. I'll prioritize the design revisions and coordinate with the design team to ensure we stay on track. Looking forward to a productive week!</div>
-                </div>
-                
+                </div>    
             </div>
             
-
             <div class="send-bar-section">
                 <form id="send-message-form" action="send-message2.php" method="post" onsubmit="sendMessage(event)">
                     <input type="hidden" name="chat_id" id="chat_id" value="1">
                     <input type="text" name="message" id="message" placeholder="Type your message...">
                     <button type="submit">Send Message</button>
-                </form>
-                
+                </form>  
             </div>
-            
-            
-
         </div>
-
     </main>
     <script>
 

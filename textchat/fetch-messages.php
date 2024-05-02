@@ -34,8 +34,8 @@ if (isset($_GET['chat_id']) && !empty($_GET['chat_id'])) {
     $chat_id = $_GET['chat_id'];  // Sanitization with PDO, like how I did send-messages
 
     // Prepare the SQL statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM chat_log WHERE chat_id = :chat_id ORDER BY timestamp DESC");
-    $stmt->execute(['chat_id' => $chat_id]);
+    $stmt = $conn->prepare("SELECT * FROM chat_log WHERE chat_id = 1 ORDER BY timestamp DESC");
+    $stmt->execute();    
     
     // Fetch messages as an associative array
     $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
