@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_id = 1;  // Hardcoded user ID, for now, will replace with dynamic value later
 
         
-        $sql = "INSERT INTO chat_log (chat_id, encrypted_message, user_id, timestamp) VALUES (:chat_id, :message, :user_id, NOW())";
+        $sql = "INSERT INTO chat_log (chat_id, message, user_id, timestamp) VALUES (:chat_id, :message, :user_id, NOW())";
         $stmt = $conn->prepare($sql);
 
         
