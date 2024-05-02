@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between; 
+    justify-content: space-between;
     margin: 0px;
     border-bottom: solid 1px gray;
     min-width: 100%;
@@ -12,17 +12,17 @@
 }
 
 .header-title {
-    flex-grow: 1; 
-    text-align: center; 
-    font-size: 24px; 
-    color: #333; 
+    flex-grow: 1;
+    text-align: center;
+    font-size: 24px;
+    color: #333;
     font-weight: bold;
 }
 
 .header-subtitle {
-    font-size: 16px; 
-    color: #555; 
-    text-align: center; 
+    font-size: 16px;
+    color: #555;
+    text-align: center;
     margin-top: 4px;
 }
 
@@ -44,79 +44,78 @@
 }
 
 .sidebar {
-    padding: 20px; 
+    padding: 20px;
     background-color: #f8f9fa;
 }
 
 .sidebar-row {
-    background-color: #f8f9fa; 
-    padding: 10px; 
-    border-radius: 5px; 
-    flex: 1; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .number-label {
-    font-size: 16px; 
-    color: #333; 
-    margin-bottom: 10px; 
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
     font-weight: bold;
 }
 
 .circle-percentage {
     width: 150px;
-    height: 150px; 
-    color: white; 
-    border-radius: 50%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
+    height: 150px;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 36px;
-    font-weight: bold; 
+    font-weight: bold;
     border: 4px solid white;
 }
 
 .hours-left {
     width: 150px;
-    height: 150px; 
-    background-color: blue; 
-    color: white; 
-    border-radius: 50%; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
+    height: 150px;
+    background-color: blue;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 24px;
-    font-weight: bold; 
+    font-weight: bold;
     border: 4px solid white;
 }
 
 
 .sidebar-row:first-child {
-    border: 2px solid black; 
+    border: 2px solid black;
     background-color: gainsboro;
 }
 
 .sidebar-row:last-child {
-    border: 2px solid black; 
+    border: 2px solid black;
     background-color: gainsboro;
 }
 
 .main-content-header h1 {
-    color: #333; 
-    padding: 20px 0; 
-    border-bottom: 2px solid #ccc; 
-    margin-bottom: 20px; 
+    color: #333;
+    padding: 20px 0;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 20px;
 }
 
 .task-container {
-    height: 325px; 
-    overflow-y: auto; 
-    padding: 15px; 
-    border: 1px solid #ccc; 
-    margin-top: 20px; 
-    background-color: #f8f9fa; 
+    overflow-y: auto;
+    padding: 15px;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+    background-color: #f8f9fa;
 }
 
 .task-box {
@@ -126,16 +125,18 @@
 
 
 
-.task-info h5, .task-info h6, .task-info p {
+.task-info h5,
+.task-info h6,
+.task-info p {
     margin-bottom: 0.5rem;
 }
 
-.task-info h5 {  
-    color: #007bff; 
+.task-info h5 {
+    color: #007bff;
 }
 
-.task-info h6 {  
-    color: #343a40;  
+.task-info h6 {
+    color: #343a40;
 }
 
 .progress {
@@ -143,7 +144,52 @@
 }
 
 .progress-bar {
-    background-color: #28a745;  
+    background-color: #28a745;
     text-align: center;
     color: white;
+}
+
+@property --p {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 1;
+}
+
+.pie {
+    --p: 20;
+    --b: 22px;
+    --c: darkred;
+    --w: 150px;
+
+    width: var(--w);
+    aspect-ratio: 1;
+    position: relative;
+    display: inline-grid;
+    margin: 5px;
+    place-content: center;
+    font-size: 25px;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
+.pie:before,
+.pie:after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+}
+
+.pie:before {
+    inset: 0;
+    background:
+        radial-gradient(farthest-side, var(--c) 98%, #0000) top/var(--b) var(--b) no-repeat,
+        conic-gradient(var(--c) calc(var(--p)*1%), #0000 0);
+    -webkit-mask: radial-gradient(farthest-side, #0000 calc(99% - var(--b)), #000 calc(100% - var(--b)));
+    mask: radial-gradient(farthest-side, #0000 calc(99% - var(--b)), #000 calc(100% - var(--b)));
+}
+
+.pie:after {
+    inset: calc(50% - var(--b)/2);
+    background: var(--c);
+    transform: rotate(calc(var(--p)*3.6deg)) translateY(calc(50% - var(--w)/2));
 }

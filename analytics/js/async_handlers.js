@@ -86,7 +86,7 @@ function display_projects(responseJson) {
         // the link item that contains everything else
         let link_body = document.createElement("a")
         link_body.classList.add("list-group-item", "list-group-item-action", "flex-column", "align-items-start")
-        link_body.href = "./project_analytics.php?projectToGet="+project["project_id"]
+        link_body.href = "./new_project_analytics.php?projectToGet="+project["project_id"]
 
         let title_row = document.createElement("div")
         title_row.classList.add("d-flex", "w-100", "justify-content-between")
