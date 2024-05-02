@@ -179,17 +179,16 @@
 
 
 
-        // Function to fetch messages from the server
         function fetchMessages() {
             var chatContainer = document.getElementById('chat-section');
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'fetch-messages.php?chat_id=1', true); // Replace '1' with the desired chat ID
+            xhr.open('GET', 'fetch-messages.php?chat_id=1', true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
+                        console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
-                            // Update the chat container with the received messages
                             chatContainer.innerHTML = response.messages;
                         } else {
                             console.error('Error fetching messages:', response.message);
@@ -201,6 +200,7 @@
             };
             xhr.send();
         }
+
 
         // Call fetchMessages function when the page loads
         fetchMessages();
