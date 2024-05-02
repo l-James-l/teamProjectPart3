@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $stmt = $conn->prepare("SELECT * FROM chat_log WHERE chat_id = ?");
         if ($stmt === false) {
             // Handle prepare statement error
-            echo json_encode(array("status" => "error", "message" => "Prepare statement failed"));
+            echo json_encode(array("status" => "error", "message" => "Prepare statement failed: " . $conn->error));
             exit;
         }
 
@@ -35,6 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             // Perform decryption
             $decryptedMessage = openssl_decrypt($decodedMessage, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $decodedIV);
+
+            if ($decryptedMessage === false) {
+                // Handle decryption error
+                echo json_encode(array("status" => "error", "message" => "Decryption failed"));
+                exit;
+            }
 
             // Assign decrypted message to the message array
             $message['message'] = $decryptedMessage;
