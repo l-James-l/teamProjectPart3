@@ -101,7 +101,114 @@
     </main>
     <script>
 
+        // Call fetchMessages function when the page loads
+        fetchMessages();
+
         function sendMessage(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var chatId = document.getElementById("chat_id").value;
+            var message = document.getElementById("message").value;
+
+            // Basic validation
+            if (!message.trim()) {
+                console.log("Message is empty.");
+                return;
+            }
+
+            addMessageToChat(message, 'outgoing');
+            scrollToBottom();
+
+            // Construct the POST data
+            var formData = new FormData();
+            formData.append('chat_id', chatId);
+            formData.append('message', message);
+
+            // Create and send an AJAX request to send-message.php
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "send-message.php", true); // Change URL to your send-message.php endpoint
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    console.log("Message sent successfully: ", this.responseText);
+                    // You may want to call scrollToBottom() to scroll the chat into view.
+                } else {
+                    console.error('An error occurred during the AJAX request to send-message.php');
+                }
+            };
+            xhr.onerror = function () {
+                console.error('An error occurred during the AJAX request to send-message.php');
+            };
+            xhr.send(formData);
+
+            // Clear the message input
+            document.getElementById("message").value = '';
+        }
+
+        function addMessageToChat(message, type) {
+            var chatSection = document.querySelector(".chat-section");
+            var messageDiv = document.createElement("div");
+            messageDiv.classList.add("message-container", type);
+            messageDiv.innerHTML = `<div class="${type}-message">${message}</div>`;
+            chatSection.appendChild(messageDiv);
+        }
+
+
+        function fetchMessages() {
+            var chatContainer = document.getElementById('chat-section');
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'fetch-messages.php?chat_id=1', true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log('Response:', xhr.responseText); // Log the response
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.status === 'success') {
+                            updateChatUI(response.messages);
+                        } else {
+                            console.error('Error fetching messages:', response.message);
+                        }
+                    } else {
+                        console.error('Error fetching messages:', xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        function updateChatUI(messages) {
+            var chatSection = document.getElementById("chat-section");
+            chatSection.innerHTML = ''; // Clear existing messages
+
+            messages.forEach(function(message) {
+                var messageDiv = document.createElement("div");
+                var messageType = message.user_id == 1 ? "outgoing" : "incoming";
+                messageDiv.classList.add("message-container", messageType);
+                var messageContent = messageDiv.appendChild(document.createElement("div"));
+                messageContent.classList.add(messageType + "-message");
+                messageContent.textContent = message.message; // assuming message field contains the message content
+                chatSection.appendChild(messageDiv);
+            });
+
+            scrollToBottom(); // Ensure the newest messages are visible
+        }
+
+        // Ensures that the chat section is scrolled to the bottom
+        // when the page is loaded, making the latest messages visible.
+        document.addEventListener("DOMContentLoaded", function () {
+            var chatSection = document.getElementById("chat-section");
+            chatSection.scrollTop = chatSection.scrollHeight;
+        });
+
+        // Scrolls the chat section to the bottom, ensuring visibility
+        // of the most recent messages. Call this function when a new
+        // message is sent or received, or when a new chat is loaded.
+        function scrollToBottom() {
+            var chatSection = document.getElementById("chat-section");
+            chatSection.scrollTop = chatSection.scrollHeight;
+        }
+
+                // Use this send message function witht he encrypt message funciton if encryption is to be used
+                function sendMessage(event) {
             event.preventDefault(); // Prevent the default form submission
 
             var chatId = document.getElementById("chat_id").value;
@@ -146,7 +253,6 @@
 
         // Function to send the encrypted message to send-message.php
         function sendEncryptedMessage(chatId, encryptedMessage) {
-            console.log("Sending encrypted message to send-message.php...");
             // Construct the POST data
             var formData = new FormData();
             formData.append('chat_id', chatId);
@@ -167,92 +273,6 @@
                 console.error('An error occurred during the AJAX request to send-message.php');
             };
             xhr.send(formData);
-        }
-
-        function addMessageToChat(message, type) {
-            var chatSection = document.querySelector(".chat-section");
-            var messageDiv = document.createElement("div");
-            messageDiv.classList.add("message-container", type);
-            messageDiv.innerHTML = `<div class="${type}-message">${message}</div>`;
-            chatSection.appendChild(messageDiv);
-        }
-
-
-        function fetchMessages() {
-            var chatContainer = document.getElementById('chat-section');
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'fetch-messages.php?chat_id=1', true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        console.log('Response:', xhr.responseText); // Log the response
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.status === 'success') {
-                            updateChatUI(response.messages);
-                        } else {
-                            console.error('Error fetching messages:', response.message);
-                        }
-                    } else {
-                        console.error('Error fetching messages:', xhr.statusText);
-                    }
-                }
-            };
-            xhr.send();
-        }
-
-
-
-
-        // Call fetchMessages function when the page loads
-        fetchMessages();
-
-        // function updateChatUI(messages) {
-        //     var chatSection = document.querySelector(".chat-section");
-        //     chatSection.innerHTML = ''; // Clear existing messages
-
-        //     messages.forEach(function(message) {
-        //         var messageDiv = document.createElement("div");
-        //         messageDiv.classList.add("message-container", message.user_id == 1 ? "outgoing" : "incoming");
-        //         messageDiv.innerHTML = `<div class="${message.user_id == 1 ? "outgoing" : "incoming"}-message">${message.encrypted_message}</div>`;
-        //         chatSection.appendChild(messageDiv);
-        //     });
-
-        //     scrollToBottom(); // Ensure the newest messages are visible
-        // }
-
-        function updateChatUI(messages) {
-            var chatSection = document.getElementById("chat-section");
-            chatSection.innerHTML = ''; // Clear existing messages
-
-            messages.forEach(function(message) {
-                var messageDiv = document.createElement("div");
-                var messageType = message.user_id == 1 ? "outgoing" : "incoming";
-                messageDiv.classList.add("message-container", messageType);
-                var messageContent = messageDiv.appendChild(document.createElement("div"));
-                messageContent.classList.add(messageType + "-message");
-                messageContent.textContent = message.message; // assuming message field contains the message content
-                chatSection.appendChild(messageDiv);
-            });
-
-            scrollToBottom(); // Ensure the newest messages are visible
-        }
-
-
-
-        // Ensures that the chat section is scrolled to the bottom
-        // when the page is loaded, making the latest messages visible.
-        document.addEventListener("DOMContentLoaded", function () {
-            var chatSection = document.getElementById("chat-section");
-            chatSection.scrollTop = chatSection.scrollHeight;
-        });
-
-
-        // Scrolls the chat section to the bottom, ensuring visibility
-        // of the most recent messages. Call this function when a new
-        // message is sent or received, or when a new chat is loaded.
-        function scrollToBottom() {
-            var chatSection = document.getElementById("chat-section");
-            chatSection.scrollTop = chatSection.scrollHeight;
         }
         
     </script>
