@@ -51,7 +51,7 @@
                 <hr class="divider">
             </div>
             
-            <div id="chat-section">
+            <div id="chat-section" class="chat-section">
                 <div class="message-container incoming">
                     <div class="incoming-message">Good morning! Have you had a chance to review the project proposal?</div>
                 </div>

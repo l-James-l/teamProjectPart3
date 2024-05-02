@@ -186,7 +186,7 @@ main {
     margin-left: 20px;
 }
 
-#chat-section {
+.chat-section {
     height: 100%;
     display: flex;
     flex-direction: column;
