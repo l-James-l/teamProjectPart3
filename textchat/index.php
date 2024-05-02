@@ -89,6 +89,8 @@
                     <div class="outgoing-message">Agreed. I'll prioritize the design revisions and coordinate with the design team to ensure we stay on track. Looking forward to a productive week!</div>
                 </div>    
             </div>
+
+            <button onclick="fetchMessages()">Click me</button>
             
             <div class="send-bar-section">
                 <form id="send-message-form" action="send-message2.php" method="post" onsubmit="sendMessage(event)">
