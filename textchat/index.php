@@ -68,7 +68,7 @@
                     <div class="incoming-message">Sounds good! Speaking of meetings, do you have a preferred time for our weekly team catch-up?</div>
                 </div>
                 <div class="message-container outgoing">
-                    <div class="outgoing-message">How about Tuesday mornings at 10 AM? Does that work for you?</div>
+                    <div class="outgoing-message">How about Tuesday mornings at 9 AM? Does that work for you?</div>
                 </div>
                 <div class="message-container incoming">
                     <div class="incoming-message">Tuesday at 10 AM works for me. Let's schedule it and make it a recurring meeting. Also, I'll send you the updated project timeline later today.</div>
