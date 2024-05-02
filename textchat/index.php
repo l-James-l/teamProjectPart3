@@ -51,7 +51,7 @@
                 <hr class="divider">
             </div>
             
-            <div class="chat-section">
+            <div id="chat-section">
                 <div class="message-container incoming">
                     <div class="incoming-message">Good morning! Have you had a chance to review the project proposal?</div>
                 </div>
@@ -220,7 +220,7 @@
         // }
 
         function updateChatUI(messages) {
-            var chatSection = document.querySelector(".chat-section");
+            var chatSection = document.getElementById("chat-section");
             chatSection.innerHTML = ''; // Clear existing messages
 
             messages.forEach(function(message) {
@@ -239,7 +239,7 @@
         // Ensures that the chat section is scrolled to the bottom
         // when the page is loaded, making the latest messages visible.
         document.addEventListener("DOMContentLoaded", function () {
-            var chatSection = document.querySelector(".chat-section");
+            var chatSection = document.getElementById("chat-section");
             chatSection.scrollTop = chatSection.scrollHeight;
         });
 
@@ -248,7 +248,7 @@
         // of the most recent messages. Call this function when a new
         // message is sent or received, or when a new chat is loaded.
         function scrollToBottom() {
-            var chatSection = document.querySelector(".chat-section");
+            var chatSection = document.getElementById("chat-section");
             chatSection.scrollTop = chatSection.scrollHeight;
         }
         
