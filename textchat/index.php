@@ -189,7 +189,19 @@
                         console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
-                            chatContainer.innerHTML = response.messages;
+                            // Clear existing messages
+                            chatContainer.innerHTML = '';
+                            // Loop through messages and append them to the chat section
+                            response.messages.forEach(function(message) {
+                                var messageDiv = document.createElement("div");
+                                var messageType = message.user_id == 1 ? "outgoing" : "incoming";
+                                messageDiv.classList.add("message-container", messageType);
+                                // Assuming message content is stored in a field named 'message_content'
+                                messageDiv.innerHTML = `<div class="${messageType}-message">${message.message_content}</div>`;
+                                chatContainer.appendChild(messageDiv);
+                            });
+                            // Scroll to bottom after appending messages
+                            scrollToBottom();
                         } else {
                             console.error('Error fetching messages:', response.message);
                         }
@@ -200,6 +212,7 @@
             };
             xhr.send();
         }
+
 
 
         // Call fetchMessages function when the page loads
