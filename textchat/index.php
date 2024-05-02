@@ -204,7 +204,7 @@
 
 
         // Call fetchMessages function when the page loads
-        fetchMessages();
+        // fetchMessages();
 
         // function updateChatUI(messages) {
         //     var chatSection = document.querySelector(".chat-section");
