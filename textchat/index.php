@@ -20,9 +20,16 @@
             <a href="settings.html" class="groups-sidebar-item">Settings</a>
         </div>
 
-        <div class="message-list-sidebar">
-            <div class="message-list-sidebar-content">
-                <p id="message-list-title">Messages</p>
+        <div class="main-section">
+            <div>
+                <div class="topbar-section">
+                    <p id="current-conversation-name">John Doe</p>
+                    <div id="close-chat-button">X</div>
+                </div>
+                <hr class="divider">
+            </div>
+            
+            <div class="chat-section">
                 <?php
                 // Include database connection
                 include_once(__DIR__ . '/../src/db_connection.php');
@@ -41,9 +48,8 @@
                         $sender_id = $row['sender_id'];
                         $message = $row['message'];
                         $message_class = ($sender_id == $user_id) ? 'outgoing' : 'incoming';
-                        echo "<div class='chat-preview $message_class'>";
-                        echo "<p class='chat-name'>$sender_id</p>";
-                        echo "<p class='chat-preview-text'>$message</p>";
+                        echo "<div class='message-container $message_class'>";
+                        echo "<div class='message'>$message</div>";
                         echo "</div>";
                     }
                 } else {
@@ -53,20 +59,6 @@
                 // Close database connection
                 mysqli_close($conn);
                 ?>
-            </div>
-        </div>
-
-        <div class="main-section">
-            <div>
-                <div class="topbar-section">
-                    <p id="current-conversation-name">John Doe</p>
-                    <div id="close-chat-button">X</div>
-                </div>
-                <hr class="divider">
-            </div>
-            
-            <div class="chat-section">
-                <!-- Messages will be dynamically added here -->
             </div>
             
             <div class="send-bar-section">
