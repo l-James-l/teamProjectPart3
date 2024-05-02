@@ -3,7 +3,11 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include_once(__DIR__ . '/../src/db_connection.php');
+$servername = "localhost";
+$username = "phpUser";
+$password = "p455w0rD";
+$dbname = "make_it_all"; 
+$conn = mysqli_connect($servername, $username, $password, $dbname);
 
 if (isset($_GET['chat_id']) && !empty($_GET['chat_id'])) {
     $chat_id = $_GET['chat_id'];  // Sanitize the input properly
