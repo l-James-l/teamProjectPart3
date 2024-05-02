@@ -118,45 +118,15 @@
 
             addMessageToChat(message, 'outgoing');
             scrollToBottom();
-    
+
             // Construct the POST data
             var formData = new FormData();
             formData.append('chat_id', chatId);
             formData.append('message', message);
 
-            // Create and send an AJAX request to encrypt-message.php
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "encrypt-message.php", true); // Change URL to encrypt-message.php
-            xhr.onload = function () {
-                if (this.status === 200) {
-                    console.log("Encryption successful.");
-                    // Once encryption is done, send the encrypted message to send-message.php
-                    var encryptedMessage = this.responseText;
-                    console.log("Encrypted message: ", encryptedMessage);
-                    sendEncryptedMessage(chatId, encryptedMessage);
-                } else {
-                    console.error('An error occurred during the AJAX request to encrypt-message.php');
-                }
-            };
-            xhr.onerror = function () {
-                console.error('An error occurred during the AJAX request to encrypt-message.php');
-            };
-            xhr.send(formData);
-
-            // Clear the message input
-            document.getElementById("message").value = '';
-        }
-
-        // Function to send the encrypted message to send-message.php
-        function sendEncryptedMessage(chatId, encryptedMessage) {
-            // Construct the POST data
-            var formData = new FormData();
-            formData.append('chat_id', chatId);
-            formData.append('message', encryptedMessage);
-
             // Create and send an AJAX request to send-message.php
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "send-message2.php", true); // URL remains send-message.php
+            xhr.open("POST", "send-message2.php", true);
             xhr.onload = function () {
                 if (this.status === 200) {
                     console.log("Message sent successfully: ", this.responseText);
@@ -169,7 +139,78 @@
                 console.error('An error occurred during the AJAX request to send-message.php');
             };
             xhr.send(formData);
+
+            // Clear the message input
+            document.getElementById("message").value = '';
         }
+
+
+        // function sendMessage(event) {
+        //     event.preventDefault(); // Prevent the default form submission
+
+        //     var chatId = document.getElementById("chat_id").value;
+        //     var message = document.getElementById("message").value;
+
+        //     // Basic validation
+        //     if (!message.trim()) {
+        //         console.log("Message is empty.");
+        //         return;
+        //     }
+
+        //     addMessageToChat(message, 'outgoing');
+        //     scrollToBottom();
+    
+        //     // Construct the POST data
+        //     var formData = new FormData();
+        //     formData.append('chat_id', chatId);
+        //     formData.append('message', message);
+
+        //     // Create and send an AJAX request to encrypt-message.php
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.open("POST", "encrypt-message.php", true); // Change URL to encrypt-message.php
+        //     xhr.onload = function () {
+        //         if (this.status === 200) {
+        //             console.log("Encryption successful.");
+        //             // Once encryption is done, send the encrypted message to send-message.php
+        //             var encryptedMessage = this.responseText;
+        //             console.log("Encrypted message: ", encryptedMessage);
+        //             sendEncryptedMessage(chatId, encryptedMessage);
+        //         } else {
+        //             console.error('An error occurred during the AJAX request to encrypt-message.php');
+        //         }
+        //     };
+        //     xhr.onerror = function () {
+        //         console.error('An error occurred during the AJAX request to encrypt-message.php');
+        //     };
+        //     xhr.send(formData);
+
+        //     // Clear the message input
+        //     document.getElementById("message").value = '';
+        // }
+
+        // // Function to send the encrypted message to send-message.php
+        // function sendEncryptedMessage(chatId, encryptedMessage) {
+        //     // Construct the POST data
+        //     var formData = new FormData();
+        //     formData.append('chat_id', chatId);
+        //     formData.append('message', encryptedMessage);
+
+        //     // Create and send an AJAX request to send-message.php
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.open("POST", "send-message2.php", true); // URL remains send-message.php
+        //     xhr.onload = function () {
+        //         if (this.status === 200) {
+        //             console.log("Message sent successfully: ", this.responseText);
+        //             // You may want to call scrollToBottom() to scroll the chat into view.
+        //         } else {
+        //             console.error('An error occurred during the AJAX request to send-message.php');
+        //         }
+        //     };
+        //     xhr.onerror = function () {
+        //         console.error('An error occurred during the AJAX request to send-message.php');
+        //     };
+        //     xhr.send(formData);
+        // }
 
 
 
