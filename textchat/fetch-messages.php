@@ -9,18 +9,31 @@ $password = "p455w0rD";
 $dbname = "make_it_all"; 
 $conn = mysqli_connect($servername, $username, $password, $dbname);
 
+if ($conn === false) {
+    // Handle database connection error
+    echo json_encode(array("status" => "error", "message" => "Database connection failed"));
+    exit;
+}
+
 if (isset($_GET['chat_id']) && !empty($_GET['chat_id'])) {
-    $chat_id = 1;
+    $chat_id = $_GET['chat_id'];
     // Prepare the SQL statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM chat_log WHERE chat_id = :chat_id ORDER BY timestamp DESC");
-    $stmt->bindParam(':chat_id', $chat_id);
+    $stmt = $conn->prepare("SELECT * FROM chat_log WHERE chat_id = ?");
+    if ($stmt === false) {
+        // Handle prepare statement error
+        echo json_encode(array("status" => "error", "message" => "Prepare statement failed"));
+        exit;
+    }
+    
+    $stmt->bind_param("i", $chat_id); // 'i' indicates integer type
     $stmt->execute();    
     
     // Fetch messages as an associative array
-    $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $result = $stmt->get_result();
+    $messages = $result->fetch_all(MYSQLI_ASSOC);
     
     // Return the messages as JSON
-    echo json_encode(array("status" => "success", "messages" => "Success"));
+    echo json_encode(array("status" => "success", "messages" => $messages));
 } else {
     // Chat ID not provided or empty
     echo json_encode(array("status" => "error", "message" => "Chat ID not provided"));
