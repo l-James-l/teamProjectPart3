@@ -20,10 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Perform encryption
             $key = openssl_random_pseudo_bytes(32); // Generate a random encryption key
             $iv = openssl_random_pseudo_bytes(16); // Generate a random IV
-            $encryptedMessage = openssl_encrypt($message, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
+            // $encryptedMessage = openssl_encrypt($message, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv); (uncomment if encryption is needed)
             
-            // Encode the encrypted message using base64
-            $encodedMessage = base64_encode($encryptedMessage);
+            // Encode the encrypted message using base64 
+            // $encodedMessage = base64_encode($encryptedMessage); (uncomment if needed to encrypt)
+            $encodedMessage = $message; // remove if encryption is needed
 
             // Encode the IV using base64
             $encodedIV = base64_encode($iv);
