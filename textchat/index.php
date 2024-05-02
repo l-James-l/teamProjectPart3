@@ -205,19 +205,36 @@
         // Call fetchMessages function when the page loads
         fetchMessages();
 
+        // function updateChatUI(messages) {
+        //     var chatSection = document.querySelector(".chat-section");
+        //     chatSection.innerHTML = ''; // Clear existing messages
+
+        //     messages.forEach(function(message) {
+        //         var messageDiv = document.createElement("div");
+        //         messageDiv.classList.add("message-container", message.user_id == 1 ? "outgoing" : "incoming");
+        //         messageDiv.innerHTML = `<div class="${message.user_id == 1 ? "outgoing" : "incoming"}-message">${message.encrypted_message}</div>`;
+        //         chatSection.appendChild(messageDiv);
+        //     });
+
+        //     scrollToBottom(); // Ensure the newest messages are visible
+        // }
+
         function updateChatUI(messages) {
             var chatSection = document.querySelector(".chat-section");
             chatSection.innerHTML = ''; // Clear existing messages
 
             messages.forEach(function(message) {
                 var messageDiv = document.createElement("div");
-                messageDiv.classList.add("message-container", message.user_id == 1 ? "outgoing" : "incoming");
-                messageDiv.innerHTML = `<div class="${message.user_id == 1 ? "outgoing" : "incoming"}-message">${message.encrypted_message}</div>`;
+                var messageType = message.user_id == 1 ? "outgoing" : "incoming";
+                messageDiv.classList.add("message-container", messageType);
+                var messageContent = decryptMessage(message.message, message.message_iv); // You need to decrypt the message here
+                messageDiv.innerHTML = `<div class="${messageType}-message">${messageContent}</div>`;
                 chatSection.appendChild(messageDiv);
             });
 
             scrollToBottom(); // Ensure the newest messages are visible
         }
+
 
         // Ensures that the chat section is scrolled to the bottom
         // when the page is loaded, making the latest messages visible.
