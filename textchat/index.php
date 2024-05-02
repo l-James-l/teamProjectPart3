@@ -178,7 +178,6 @@
         }
 
 
-
         function fetchMessages() {
             var chatContainer = document.getElementById('chat-section');
             var xhr = new XMLHttpRequest();
@@ -189,19 +188,7 @@
                         console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
-                            // Clear existing messages
-                            chatContainer.innerHTML = '';
-                            // Loop through messages and append them to the chat section
-                            response.messages.forEach(function(message) {
-                                var messageDiv = document.createElement("div");
-                                var messageType = message.user_id == 1 ? "outgoing" : "incoming";
-                                messageDiv.classList.add("message-container", messageType);
-                                // Assuming message content is stored in a field named 'message_content'
-                                messageDiv.innerHTML = `<div class="${messageType}-message">${message.message_content}</div>`;
-                                chatContainer.appendChild(messageDiv);
-                            });
-                            // Scroll to bottom after appending messages
-                            scrollToBottom();
+                            updateChatUI(response.messages);
                         } else {
                             console.error('Error fetching messages:', response.message);
                         }
@@ -212,6 +199,7 @@
             };
             xhr.send();
         }
+
 
 
 
@@ -240,13 +228,15 @@
                 var messageDiv = document.createElement("div");
                 var messageType = message.user_id == 1 ? "outgoing" : "incoming";
                 messageDiv.classList.add("message-container", messageType);
-                var messageContent = decryptMessage(message.message, message.message_iv); // You need to decrypt the message here
-                messageDiv.innerHTML = `<div class="${messageType}-message">${messageContent}</div>`;
+                var messageContent = messageDiv.appendChild(document.createElement("div"));
+                messageContent.classList.add(messageType + "-message");
+                messageContent.textContent = message.message; // assuming message field contains the message content
                 chatSection.appendChild(messageDiv);
             });
 
             scrollToBottom(); // Ensure the newest messages are visible
         }
+
 
 
         // Ensures that the chat section is scrolled to the bottom
