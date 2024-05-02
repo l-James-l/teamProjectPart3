@@ -20,7 +20,7 @@ if (isset($_GET['chat_id']) && !empty($_GET['chat_id'])) {
     $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     // Return the messages as JSON
-    echo json_encode(array("status" => "success", "messages" => $messages));
+    echo json_encode(array("status" => "success", "messages" => "Success"));
 } else {
     // Chat ID not provided or empty
     echo json_encode(array("status" => "error", "message" => "Chat ID not provided"));
