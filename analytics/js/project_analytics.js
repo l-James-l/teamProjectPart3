@@ -81,25 +81,6 @@ function drawprogressLineChart(progressData) {
 function drawHoursBarChart(userData) {
     const all_graphs_container = document.getElementById("users_graphs_container")
 
-    var options = {
-        // width,
-        chart: {
-            title: 'Task, Assigned Hours and Logged Hours',
-            // subtitle: ''
-          },
-        bars: 'horizontal', // Required for Material Bar Charts.
-        // series: {
-        //   0: { axis: 'Task_Count' }, 
-        //   1: { axis: 'Assigned_Hours' } // Bind series 1 to an axis named 'brightness'.
-        // },
-        // axes: {
-        //     x: {
-        //         Task_Count: {side: 'top', label: 'Count'}, // Bottom x-axis.
-        //         Assigned_Hours: { label: 'Hours'} // Top x-axis.
-        //     }
-        //   }
-      };
-
       Object.keys(userData).forEach(username => {
         let userTasks = userData[username]
         let data = [["Task Title", "Estimated Duration", "Logged Hours"]]
@@ -108,11 +89,19 @@ function drawHoursBarChart(userData) {
         });
         data = google.visualization.arrayToDataTable(data);
 
+        var options = {
+            // width,
+            chart: {
+                title: 'Task, Assigned Hours and Logged Hours for ' + username,
+              },
+            bars: 'horizontal'
+          };
+
         let this_graph_div = document.createElement("div")
         this_graph_div.style["width"] = "-webkit-fill-available"
         this_graph_div.innerHTML = username
         // this_graph_div.id = username + String(Date.now())
-        // this_graph_div.style["height"] = "200px"
+        this_graph_div.style["height"] = userTasks.length * 100 + "px"
         all_graphs_container.appendChild(this_graph_div)
 
         var chart = new google.charts.Bar(this_graph_div);
