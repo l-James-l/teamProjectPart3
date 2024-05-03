@@ -3,7 +3,7 @@ function get_project_from_api(id, page) {
         project_ID: id
     }
     if (page == "overview") {
-        data["task_search"] = document.getElementById("searchbar").value, 
+        data["search"] = document.getElementById("searchbar").value, 
         data["sort_value"] = document.getElementById("sortValue").value,
         data["sort_order"] = document.getElementById("sortOrder").value,
         data["task_filter_milestone"] =  document.getElementById("milestoneToggleValue").value % 2 == 0 ? false : true,

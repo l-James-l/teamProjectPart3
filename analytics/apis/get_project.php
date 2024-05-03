@@ -37,8 +37,8 @@ $final_json->project = $query->fetch();
 
 // get the list of tasks in this project
 $stmt = "select * from task where project_id = :project_id";
-if (isset($_GET["task_search"])) {
-    $search_string = $_GET["task_search"];
+if (isset($_GET["search"])) {
+    $search_string = $_GET["search"];
     $stmt = $stmt . " and task_title like '%$search_string%'";
 }
 
@@ -84,15 +84,22 @@ if (!$result) {
 $final_json->tasks = $query->fetchAll();
 
 // get the user assignment for this project
-// $stmt = "select users.user_id, concat(first_name, ' ', surname) as full_name, count(task_id) as task_count, sum(est_length) as total_hours 
-// from users left join task on users.user_id = task.user_id 
-// where project_id = :project_id
-// group by users.user_id";
 
 $stmt = "select concat(first_name, ' ', surname) as full_name, task.task_id, task_title, task.est_length, (case when isnull(total_logged_hrs) then 0 else total_logged_hrs end) as total_logged_hrs  
 from users left join task on task.user_id = users.user_id 
 left join (select task_id, sum(hours_logged) as total_logged_hrs from task_progress_log group by task_id) as log2 on task.task_id = log2.task_id 
 where task.project_id = :project_id";
+
+if (isset($_GET["search"])) {
+    $search_strings = explode(" ", $_GET["search"]);
+    if (count($search_string) > 0) {
+        $stmt = $stmt . " and ("; 
+        foreach ($search_strings as $ss) {
+            $stmt = $stmt . "full_name like '%$search_string%' or task_title like '%$search_string%' or";
+        }
+        $stmt = substr($stmt, 0, -2) + ")";
+    }
+}
 
 $query = $conn->prepare($stmt);
 $query->bindParam(":project_id", $_GET["project_ID"]);

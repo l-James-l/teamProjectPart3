@@ -148,6 +148,10 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
 
             <?php } else if ($page == "users") {?>
                 <!-- <div id="dual_x_div" style="width: -webkit-fill-available; height:400px"></div> -->
+                <div class="col-6" style="padding-bottom: 10px; padding-left: unset">
+                    <input id='searchbar' type="search" class="form-control" placeholder="Search..."
+                        oninput="get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')" aria-label="Search">
+                </div>
                 <div class="accordion" id="users_graphs_container"></div>
             <?php } else if ($page == "progress") {?>
                 <div id="progress_line_chart" style="width: -webkit-fill-available; height:400px"></div>
