@@ -92,7 +92,7 @@ where task.project_id = :project_id";
 
 if (isset($_GET["search"])) {
     $search_strings = explode(" ", $_GET["search"]);
-    if (count($search_string) > 0) {
+    if (count($search_strings) > 0) {
         $stmt = $stmt . " and ("; 
         foreach ($search_strings as $ss) {
             $stmt = $stmt . "full_name like '%$search_string%' or task_title like '%$search_string%' or";
