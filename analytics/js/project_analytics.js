@@ -84,6 +84,7 @@ function drawprogressLineChart(progressData) {
 
 function drawHoursBarChart(userData) {
     const all_graphs_container = document.getElementById("users_graphs_container")
+    all_graphs_container.innerHTML = ""
 
     let i = 1
     Object.keys(userData).forEach(username => {
