@@ -79,31 +79,72 @@ function drawprogressLineChart(progressData) {
 
 
 function drawHoursBarChart(userData) {
-    let dataArray = [["Name", "Task Count", "Assigned Hours"]]
-    userData.forEach(row => {
-        dataArray.push([row["full_name"], parseInt(row["task_count"]), parseInt(row["total_hours"])])
-    })
-    console.log(dataArray)
-    const data = google.visualization.arrayToDataTable(dataArray);
+    const all_graphs_container = document.getElementById("users_graphs_container")
 
     var options = {
         // width,
         chart: {
-            title: 'User Task and Hour Allocation for this Project',
+            title: 'Task, Assigned Hours and Logged Hours',
             // subtitle: ''
           },
         bars: 'horizontal', // Required for Material Bar Charts.
-        series: {
-          0: { axis: 'Task_Count' }, 
-          1: { axis: 'Assigned_Hours' } // Bind series 1 to an axis named 'brightness'.
-        },
-        axes: {
-            x: {
-                Task_Count: {side: 'top', label: 'Count'}, // Bottom x-axis.
-                Assigned_Hours: { label: 'Hours'} // Top x-axis.
-            }
-          }
+        // series: {
+        //   0: { axis: 'Task_Count' }, 
+        //   1: { axis: 'Assigned_Hours' } // Bind series 1 to an axis named 'brightness'.
+        // },
+        // axes: {
+        //     x: {
+        //         Task_Count: {side: 'top', label: 'Count'}, // Bottom x-axis.
+        //         Assigned_Hours: { label: 'Hours'} // Top x-axis.
+        //     }
+        //   }
       };
+
+    userData.keys().forEach(username => {
+        let userTasks = userData[username]
+        let data = [["Task Title", "Estimated Duration", "Logged Hours"]]
+        userTasks.forEach(task => {
+            data.push([task["task_title"], task["est_length"], task["total_logged_hrs"]])
+        });
+        data = google.visualization.arrayToDataTable(data);
+
+        let this_graph_div = document.createElement("div")
+        this_graph_div.style[width] = "-webkit-fill-available"
+        this_graph_div.innerHTML = username
+        // this_graph_div.id = username + String(Date.now())
+        // this_graph_div.style[height]
+        all_graphs_container.appendChild(this_graph_div)
+
+        var chart = new google.charts.Bar(this_graph_div);
+        chart.draw(data, options);
+    });
+
+
+    // let dataArray = [["Name", "Task Count", "Assigned Hours"]]
+    // userData.forEach(row => {
+    //     dataArray.push([row["full_name"], parseInt(row["task_count"]), parseInt(row["total_hours"])])
+    // })
+    // console.log(dataArray)
+    // const data = google.visualization.arrayToDataTable(dataArray);
+
+    // var options = {
+    //     // width,
+    //     chart: {
+    //         title: 'User Task and Hour Allocation for this Project',
+    //         // subtitle: ''
+    //       },
+    //     bars: 'horizontal', // Required for Material Bar Charts.
+    //     series: {
+    //       0: { axis: 'Task_Count' }, 
+    //       1: { axis: 'Assigned_Hours' } // Bind series 1 to an axis named 'brightness'.
+    //     },
+    //     axes: {
+    //         x: {
+    //             Task_Count: {side: 'top', label: 'Count'}, // Bottom x-axis.
+    //             Assigned_Hours: { label: 'Hours'} // Top x-axis.
+    //         }
+    //       }
+    //   };
 
     // Draw
     var chart = new google.charts.Bar(document.getElementById('dual_x_div'));

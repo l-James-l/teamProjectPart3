@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 
@@ -136,7 +137,8 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
             </div>
 
             <?php } else if ($page == "users") {?>
-                <div id="dual_x_div" style="width: -webkit-fill-available; height:400px"></div>
+                <!-- <div id="dual_x_div" style="width: -webkit-fill-available; height:400px"></div> -->
+                <div id="users_graphs_container"></div>
             <?php } else if ($page == "progress") {?>
                 <div id="progress_line_chart" style="width: -webkit-fill-available; height:400px"></div>
             <?php }?>
