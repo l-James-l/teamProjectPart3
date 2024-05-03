@@ -91,9 +91,9 @@ left join (select task_id, sum(hours_logged) as total_logged_hrs from task_progr
 where task.project_id = :project_id";
 
 if (isset($_GET["search"])) {
-    $search_strings = explode(" ", $_GET["search"]);
-    print($search_strings);
-    print(count($search_strings));
+    $search_strings = preg_split('@ @', $_GET["search"], -1, PREG_SPLIT_NO_EMPTY);
+    // print($search_strings);
+    // print(count($search_strings));
     if (count($search_strings) > 0) {
         $stmt = $stmt . " and ("; 
         foreach ($search_strings as $ss) {
@@ -105,7 +105,7 @@ if (isset($_GET["search"])) {
     }
 }
 
-print($stmt);
+// print($stmt);
 $query = $conn->prepare($stmt);
 $query->bindParam(":project_id", $_GET["project_ID"]);
 $result = $query->execute();
