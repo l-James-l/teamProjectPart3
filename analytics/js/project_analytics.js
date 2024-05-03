@@ -124,7 +124,7 @@ function drawHoursBarChart(userData) {
 
         let this_graph_div = document.createElement("div")
         this_graph_div.style["width"] = "-webkit-fill-available"
-        this_graph_div.style["height"] = String(Math.max(200, Object.keys(userTasks).length * 100)) + "px"
+        this_graph_div.style["height"] = String(Math.max(150, Object.keys(userTasks).length * 100)) + "px"
         this_graph_div.classList.add("accordion-body")
         content_div.appendChild(this_graph_div)
         accordion_item.appendChild(content_div)
