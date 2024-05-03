@@ -100,11 +100,11 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
                                     <button class="dropdown-item d-flex justify-content-between" type="button" onclick="toggleFilter('milestone');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">
                                         Milestones Only <i id="milestoneToggleIcon" class="bi bi-x"></i>
                                     </button>
-                                    <input type="hidden" id="completeToggleValue" value=0>
+                                    <input type="hidden" id="milestoneToggleValue" value=0>
                                     <button class="dropdown-item d-flex justify-content-between" type="button" onclick="toggleFilter('complete');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">
                                         Show Completed <i id="completeToggleIcon" class="bi bi-tick"></i>
                                     </button>
-                                    <input type="hidden" id="incompleteToggleValue" value=1>
+                                    <input type="hidden" id="completeToggleValue" value=1>
                                     <button class="dropdown-item d-flex justify-content-between" type="button" onclick="toggleFilter('incomplete');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">
                                         Show Incomplete <i id="incompleteToggleIcon" class="bi bi-x"></i>
                                     </button>
