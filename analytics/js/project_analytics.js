@@ -149,7 +149,11 @@ function update_task_display(tasksList) {
 
         let task_title = document.createElement("h5")
         task_title.classList.add("task-name")
-        task_title.innerHTML = "Task: " + task["task_title"]
+        if (task["is_milestone"]) {
+            task_title.innerHTML = "Milestone: " + task["task_title"]
+        } else {
+            task_title.innerHTML = "Task: " + task["task_title"]
+        }
         task_div.appendChild(task_title)
 
         let due_date = document.createElement("p")
