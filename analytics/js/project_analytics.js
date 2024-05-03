@@ -83,9 +83,9 @@ function drawHoursBarChart(userData) {
 
       Object.keys(userData).forEach(username => {
         let userTasks = userData[username]
-        let data = [["Task Title", "Estimated Duration", "Logged Hours"]]
+        let data = [[username, "Estimated Duration", "Logged Hours"]]
         Object.values(userTasks).forEach(task => {
-            data.push([task["task_title"], parseInt(task["est_length"]), parseInt(task["total_logged_hrs"])])
+            data.push([task["title"], parseInt(task["est_length"]), parseInt(task["total_logged_hrs"])])
         });
         data = google.visualization.arrayToDataTable(data);
 
