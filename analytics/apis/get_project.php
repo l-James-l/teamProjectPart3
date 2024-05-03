@@ -41,8 +41,15 @@ if (isset($_GET["task_search"])) {
     $search_string = $_GET["task_search"];
     $stmt = $stmt . " and task_title like '%$search_string%'";
 }
+
 if (isset($_GET["task_filter_milestone"]) && $_GET["task_filter_milestone"] == "true") {
     $stmt = $stmt . " and is_milestone = true";
+}
+if (isset($_GET["complete_filter"]) && $_GET["complete_filter"] == "true" && !((isset($_GET["incomplete_filter"]) && $_GET["incomplete_filter"] == "true"))) {
+    $stmt = $stmt . " and completion_percentage = 100";
+}
+if (isset($_GET["incomplete_filter"]) && $_GET["incomplete_filter"] == "true" && !(isset($_GET["complete_filter"]) && $_GET["complete_filter"] == "true")) {
+    $stmt = $stmt . " and completion_percentage < 100";
 }
 
 if (isset($_GET["sort_value"])) {
