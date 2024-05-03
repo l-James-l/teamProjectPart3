@@ -101,6 +101,7 @@ if (isset($_GET["search"])) {
     }
 }
 
+println($stmt);
 $query = $conn->prepare($stmt);
 $query->bindParam(":project_id", $_GET["project_ID"]);
 $result = $query->execute();
