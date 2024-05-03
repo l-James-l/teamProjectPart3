@@ -104,7 +104,7 @@ function drawHoursBarChart(userData) {
         let userTasks = userData[username]
         let data = [["Task Title", "Estimated Duration", "Logged Hours"]]
         Object.values(userTasks).forEach(task => {
-            data.push([task["task_title"], task["est_length"], task["total_logged_hrs"]])
+            data.push([task["task_title"], parseInt(task["est_length"]), parseInt(task["total_logged_hrs"])])
         });
         data = google.visualization.arrayToDataTable(data);
 
@@ -112,7 +112,7 @@ function drawHoursBarChart(userData) {
         this_graph_div.style["width"] = "-webkit-fill-available"
         this_graph_div.innerHTML = username
         // this_graph_div.id = username + String(Date.now())
-        // this_graph_div.style[height]
+        this_graph_div.style["height"] = "200px"
         all_graphs_container.appendChild(this_graph_div)
 
         var chart = new google.charts.Bar(this_graph_div);
