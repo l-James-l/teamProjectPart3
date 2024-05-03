@@ -98,7 +98,7 @@ function drawHoursBarChart(userData) {
 
         var options = {
             chart: {
-                title: 'Task, Assigned Hours and Logged Hours for ' + username,
+                title: 'Hours Assigned and Logged for ' + username,
               },
             bars: 'horizontal'
           };
