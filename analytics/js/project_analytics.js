@@ -109,7 +109,7 @@ function drawHoursBarChart(userData) {
         data = google.visualization.arrayToDataTable(data);
 
         let this_graph_div = document.createElement("div")
-        this_graph_div.style[width] = "-webkit-fill-available"
+        this_graph_div.style["width"] = "-webkit-fill-available"
         this_graph_div.innerHTML = username
         // this_graph_div.id = username + String(Date.now())
         // this_graph_div.style[height]
