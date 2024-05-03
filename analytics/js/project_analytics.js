@@ -10,7 +10,7 @@ function get_project_from_api(id, page) {
         data["complete_filter"] =  document.getElementById("completeToggleValue").value % 2 == 0 ? false : true,
         data["incomplete_filter"] =  document.getElementById("incompleteToggleValue").value % 2 == 0 ? false : true
     } else if (page == "users") {
-        data["search"] = document.getElementById("searchbar").value, 
+        data["search"] = document.getElementById("searchbar").value
     }
     
     $.ajax({
