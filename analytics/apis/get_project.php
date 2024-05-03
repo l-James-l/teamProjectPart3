@@ -97,7 +97,7 @@ if (isset($_GET["search"])) {
         foreach ($search_strings as $ss) {
             $stmt = $stmt . "full_name like '%$ss%' or task_title like '%$ss%' or";
         }
-        // $stmt = substr($stmt, 0, -2) + ")";
+        $stmt = rtrim($stmt, "or") + ")"; 
     }
 }
 
