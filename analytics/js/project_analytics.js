@@ -100,7 +100,7 @@ function drawHoursBarChart(userData) {
         //   }
       };
 
-    userData.keys().forEach(username => {
+      Object.keys(userData).forEach(username => {
         let userTasks = userData[username]
         let data = [["Task Title", "Estimated Duration", "Logged Hours"]]
         userTasks.forEach(task => {
