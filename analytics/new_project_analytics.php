@@ -148,8 +148,8 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
 
             <?php } else if ($page == "users") {?>
                 <!-- <div id="dual_x_div" style="width: -webkit-fill-available; height:400px"></div> -->
-                <div class="col-6" style="padding-bottom: 10px; padding-left: unset">
-                    <input id='searchbar' type="search" class="form-control" placeholder="Search..."
+                <div style="padding-bottom: 10px; padding-left: unset">
+                    <input id='searchbar' type="search" class="form-control" placeholder="Search for tasks or users. To search for multiple seperate terms with a space."
                         oninput="get_project_from_api(<?php echo $_GET['projectToGet']?>, 'users')" aria-label="Search">
                 </div>
                 <div class="accordion" id="users_graphs_container"></div>
