@@ -103,7 +103,7 @@ function drawHoursBarChart(userData) {
 
         let card_header = document.createElement("h2")
         card_header.classList.add("accordion-header")
-        card.id = 'header-x'+i.toString()
+        card_header.id = 'header-x'+i.toString()
 
         let collapse_button = document.createElement("button")
         collapse_button.classList.add("accordion-button")
