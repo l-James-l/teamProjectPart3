@@ -95,7 +95,7 @@ if (isset($_GET["search"])) {
     if (count($search_strings) > 0) {
         $stmt = $stmt . " and ("; 
         foreach ($search_strings as $ss) {
-            if ($ss != "" || $ss != " ") {
+            if ($ss != "" && $ss != " ") {
                 $stmt = $stmt . "concat(first_name, ' ', surname) like '%$ss%' or task_title like '%$ss%' or ";
             }
         }
