@@ -123,6 +123,8 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
                                     onclick="change_sort_value('priority');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Priority</button>
                                 <button class="dropdown-item" type="button"
                                     onclick="change_sort_value('est_length');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Hours</button>
+                                <button class="dropdown-item" type="button"
+                                    onclick="change_sort_value('completion_percentage');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Completion</button>
                                 <input type="hidden" id="sortValue" value="due_date">
                             </div>
                         </div>

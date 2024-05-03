@@ -62,6 +62,9 @@ if (isset($_GET["sort_value"])) {
     else if ($_GET["sort_value"] == "est_length") {
         $stmt = $stmt . " order by est_length "; 
     }
+    else if ($_GET["sort_value"] == "completion_percentage") {
+        $stmt = $stmt . " order by completion_percentage "; 
+    }
 } else {
     $stmt = $stmt . " order by due_date"; 
 }
