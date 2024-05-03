@@ -81,8 +81,10 @@ function drawprogressLineChart(progressData) {
 function drawHoursBarChart(userData) {
     const all_graphs_container = document.getElementById("users_graphs_container")
 
-      Object.keys(userData).forEach(username => {
+    let i = 1
+    Object.keys(userData).forEach(username => {
         let userTasks = userData[username]
+
         let data = [[username, "Estimated Duration", "Logged Hours"]]
         Object.values(userTasks).forEach(task => {
             data.push([task["title"], parseInt(task["est_length"]), parseInt(task["total_logged_hrs"])])
@@ -96,14 +98,43 @@ function drawHoursBarChart(userData) {
             bars: 'horizontal'
           };
 
+        let accordion_item = document.createElement("div")
+        accordion_item.classList.add("accordion-item")
+
+        let card_header = document.createElement("h2")
+        card_header.classList.add("accordion-header")
+        card.id = 'header-x'+i.toString()
+
+        let collapse_button = document.createElement("button")
+        collapse_button.classList.add("accordion-button")
+        collapse_button.type = "button"
+        collapse_button.setAttribute("data-bs-toggle", "collapse")
+        collapse_button.setAttribute("data-bs-target", "#content-x"+i.toString())
+        collapse_button.setAttribute("aria-expanded", "true")
+        collapse_button.setAttribute("aria-controls", "content-x"+i.toString())
+        collapse_button.innerHTML = username
+
+        card_header.appendChild(collapse_button)
+        accordion_item.appendChild(card_header)
+
+        let content_div = document.createElement("div")
+        content_div.classList.add("accordion-collapse", "collapse", "show")
+        content_div.id = "content-x"+i.toString()
+        content_div.setAttribute("aria-labelledby", "panelsStayOpen-headingOne")
+
         let this_graph_div = document.createElement("div")
         this_graph_div.style["width"] = "-webkit-fill-available"
-        this_graph_div.innerHTML = username
         this_graph_div.style["height"] = String(Math.max(200, Object.keys(userTasks).length * 100)) + "px"
-        all_graphs_container.appendChild(this_graph_div)
+        this_graph_div.classList.add("accordion-body")
+        content_div.appendChild(this_graph_div)
+        accordion_item.appendChild(content_div)
+        
+        all_graphs_container.appendChild(accordion_item)
 
         var chart = new google.charts.Bar(this_graph_div);
         chart.draw(data, options);
+
+        i++
     });
 }
 
