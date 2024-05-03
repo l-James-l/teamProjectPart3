@@ -102,6 +102,7 @@ function drawHoursBarChart(userData) {
         this_graph_div.innerHTML = username
         // this_graph_div.id = username + String(Date.now())
         this_graph_div.style["height"] = String(userTasks.length * 100) + "px"
+        console.log(String(userTasks.length * 100) + "px")
         all_graphs_container.appendChild(this_graph_div)
 
         var chart = new google.charts.Bar(this_graph_div);
@@ -136,8 +137,6 @@ function drawHoursBarChart(userData) {
     //   };
 
     // Draw
-    var chart = new google.charts.Bar(document.getElementById('dual_x_div'));
-    chart.draw(data, options);
 }
 
 function update_task_display(tasksList) {
