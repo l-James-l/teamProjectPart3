@@ -92,6 +92,8 @@ where task.project_id = :project_id";
 
 if (isset($_GET["search"])) {
     $search_strings = explode(" ", $_GET["search"]);
+    print($search_strings);
+    print(count($search_strings));
     if (count($search_strings) > 0) {
         $stmt = $stmt . " and ("; 
         foreach ($search_strings as $ss) {
