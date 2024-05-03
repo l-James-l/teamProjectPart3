@@ -152,7 +152,7 @@ function update_task_display(tasksList) {
 
         let task_title = document.createElement("h5")
         task_title.classList.add("task-name")
-        if (task["is_milestone"]) {
+        if (task["is_milestone"] == '1' || task["is_milestone"] == 1) {
             task_title.innerHTML = "Milestone: " + task["task_title"]
         } else {
             task_title.innerHTML = "Task: " + task["task_title"]
