@@ -100,7 +100,7 @@ function drawHoursBarChart(userData) {
             chart: {
                 title: 'Task, Assigned Hours and Logged Hours for ' + username,
               },
-            bars: 'horizontal'
+            bars: 'vertical'
           };
 
         let accordion_item = document.createElement("div")
