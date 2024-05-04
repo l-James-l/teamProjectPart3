@@ -228,56 +228,6 @@
             xhr.send();
         }
 
-        // Function to fetch chats from the server
-        function fetchChats() {
-            var chatContainer = document.getElementById('chat-section');
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'fetch-chats.php', true); // Fetch chats from the server
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        console.log('Response:', xhr.responseText); // Log the response
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.status === 'success') {
-                            updateMessageListUI(response.chats); // Update UI with fetched chats
-                        } else {
-                            console.error('Error fetching chats:', response.message);
-                        }
-                    } else {
-                        console.error('Error fetching chats:', xhr.statusText);
-                    }
-                }
-            };
-            xhr.send();
-        }
-
-        // Function to update the message list UI with fetched chats
-        function updateMessageListUI(chats) {
-            var chatList = document.querySelector('.message-list-sidebar-content');
-            chatList.innerHTML = ''; // Clear existing chat list
-
-            chats.forEach(function(chat) {
-                var chatPreview = document.createElement('div');
-                chatPreview.classList.add('chat-preview');
-                if (chat.is_selected) {
-                    chatPreview.classList.add('selected-chat');
-                }
-
-                var chatName = document.createElement('p');
-                chatName.classList.add('chat-name');
-                chatName.textContent = chat.other_user_name;
-
-                var chatPreviewText = document.createElement('p');
-                chatPreviewText.classList.add('chat-preview-text');
-                chatPreviewText.textContent = chat.last_message;
-
-                chatPreview.appendChild(chatName);
-                chatPreview.appendChild(chatPreviewText);
-                chatList.appendChild(chatPreview);
-            });
-        }
-
-
 
         function updateChatUI(messages) {
             var chatSection = document.getElementById("chat-section");
@@ -295,6 +245,61 @@
 
             scrollToBottom(); // Ensure the newest messages are visible
         }
+
+        // Function to fetch chats from the server
+        function fetchChats() {
+            var chatListContainer = document.querySelector('.message-list-sidebar-content'); // Adjust selector based on your HTML structure
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'fetch-chats.php?user_id=1', true); // Send user_id along with the request
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log('Response:', xhr.responseText); // Log the response
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.status === 'success') {
+                            updateMessageListUI(response.chats, chatListContainer); // Update UI with fetched chats
+                        } else {
+                            console.error('Error fetching chats:', response.message);
+                        }
+                    } else {
+                        console.error('Error fetching chats:', xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        // Function to update the message list UI with fetched chats
+        function updateMessageListUI(chats, container) {
+            container.innerHTML = ''; // Clear existing chat list
+
+            // Sort chats by most recent message timestamp
+            chats.sort(function(a, b) {
+                return new Date(b.recent_message_timestamp) - new Date(a.recent_message_timestamp);
+            });
+
+            chats.forEach(function(chat) {
+                var chatPreview = document.createElement('div');
+                chatPreview.classList.add('chat-preview');
+
+                var chatName = document.createElement('p');
+                chatName.classList.add('chat-name');
+                chatName.textContent = chat.chat_name; // Display chat name instead of other_user_name
+
+                var chatPreviewText = document.createElement('p');
+                chatPreviewText.classList.add('chat-preview-text');
+                chatPreviewText.textContent = chat.recent_message;
+
+                chatPreview.appendChild(chatName);
+                chatPreview.appendChild(chatPreviewText);
+                container.appendChild(chatPreview);
+            });
+        }
+
+        // Call fetchChats function when the page loads
+        window.onload = function() {
+            fetchChats();
+        };
 
         // Ensures that the chat section is scrolled to the bottom
         // when the page is loaded, making the latest messages visible.
