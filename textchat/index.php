@@ -213,13 +213,14 @@
                 
                 // Add an event listener to load the chat messages when clicked
                 chatPreview.addEventListener('click', function() {
-                    loadChatMessages(chat.chat_id);
+                    loadChatMessages(chat.chat_id); // Call loadChatMessages function with chat id
                 });
 
                 // Append the chat preview to the container
                 container.appendChild(chatPreview);
             });
         }
+
 
 
 
@@ -237,6 +238,33 @@
             var chatSection = document.getElementById("chat-section");
             chatSection.scrollTop = chatSection.scrollHeight;
         }
+
+        // Function to load messages for a specific chat
+        function loadChatMessages(chatId) {
+            var chatSection = document.getElementById("chat-section");
+            chatSection.innerHTML = ''; // Clear existing messages
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'fetch-messages.php?chat_id=' + chatId, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log('Response:', xhr.responseText); // Log the response
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.status === 'success') {
+                            updateChatUI(response.messages);
+                            document.getElementById("current-conversation-name").textContent = response.chat_name; // Update the chat name
+                        } else {
+                            console.error('Error fetching messages:', response.message);
+                        }
+                    } else {
+                        console.error('Error fetching messages:', xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+
 
 
         // function sendMessage(event) {
