@@ -15,17 +15,18 @@ if ($conn === false) {
     exit;
 }
 
-// Prepare the SQL statement to prevent SQL injection
-$stmt = $conn->prepare("SELECT cl.message_id, cl.message, cl.timestamp, u.user_id, u.username
-                        FROM chat_log cl
-                        INNER JOIN (
-                            SELECT MAX(message_id) AS max_message_id, user_id
-                            FROM chat_log
-                            WHERE chat_id = ?
-                            GROUP BY user_id
-                        ) recent ON cl.message_id = recent.max_message_id
-                        INNER JOIN users u ON cl.user_id = u.user_id
-                        WHERE cl.chat_id = ?");
+// Check if chat_id is provided, otherwise set default to 1
+$chat_id = isset($_GET['chat_id']) ? $_GET['chat_id'] : 1;
+
+// Prepare the SQL statement
+$stmt = $conn->prepare("SELECT c.chat_id, c.chat_name, m.message, m.timestamp, u.first_name, u.surname
+                        FROM chat c
+                        LEFT JOIN chat_log m ON c.chat_id = m.chat_id
+                        LEFT JOIN users u ON m.user_id = u.user_id
+                        WHERE c.chat_id = ?
+                        GROUP BY c.chat_id
+                        ORDER BY m.timestamp DESC
+                        LIMIT 3"); // Adjust the LIMIT as needed
 
 if ($stmt === false) {
     // Handle prepare statement error
@@ -33,16 +34,33 @@ if ($stmt === false) {
     exit;
 }
 
-// Check if chat_id is provided, otherwise set default to 1
-$chat_id = isset($_GET['chat_id']) ? $_GET['chat_id'] : 1;
-
-$stmt->bind_param("ii", $chat_id, $chat_id); // 'i' indicates integer type
+$stmt->bind_param("i", $chat_id); // 'i' indicates integer type
 $stmt->execute();    
 
-// Fetch messages as an associative array
 $result = $stmt->get_result();
-$messages = $result->fetch_all(MYSQLI_ASSOC);
 
-// Return the messages as JSON
-echo json_encode(array("status" => "success", "messages" => $messages));
+if ($result === false) {
+    // Handle query error
+    echo json_encode(array("status" => "error", "message" => "Query execution failed: " . $conn->error));
+    exit;
+}
+
+$chats = array();
+
+while ($row = $result->fetch_assoc()) {
+    // Format the timestamp
+    $timestamp = date("Y-m-d H:i:s", strtotime($row['timestamp']));
+
+    // Add chat details to the array
+    $chats[] = array(
+        "chat_id" => $row['chat_id'],
+        "chat_name" => $row['chat_name'],
+        "last_message" => $row['message'],
+        "last_message_timestamp" => $timestamp,
+        "other_user_name" => $row['first_name'] . ' ' . $row['surname']
+    );
+}
+
+// Return the chats as JSON
+echo json_encode(array("status" => "success", "chats" => $chats));
 ?>
