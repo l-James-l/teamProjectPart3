@@ -120,7 +120,7 @@ function drawHoursBarChart(userData) {
         collapse_button.innerHTML = username
 
         let user_link_button = document.createElement("button")
-        user_link_button.onclick = document.location = "./individual_analytics.php?userToGet="+userData[username]["user_id"]
+        user_link_button.onclick = function() {document.location = "./individual_analytics.php?userToGet="+userData[username]["user_id"]}
         user_link_button.classList.add("btn", "btn-primary")
         user_link_button.style["margin-left"] = "30px"
         user_link_button.innerHTML = "View User Details"
