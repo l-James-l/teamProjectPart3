@@ -197,8 +197,8 @@
             container.innerHTML = ''; // Clear existing chat list
 
             // Display the name of the current chat at the top
-            var currentChatName = document.querySelector('.current-conversation-name');
-            currentChatName.textContent = "Current Chat"; // Change this to the appropriate name if needed
+            // var currentChatName = document.querySelector('.current-conversation-name');
+            // currentChatName.textContent = "Current Chat"; // Change this to the appropriate name if needed
 
             // Iterate over each chat
             chats.forEach(function(chat) {
