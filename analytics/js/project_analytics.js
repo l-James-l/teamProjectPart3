@@ -115,12 +115,17 @@ function drawHoursBarChart(userData) {
 
         let collapse_button = document.createElement("button")
         collapse_button.classList.add("accordion-button")
+        collapse_button.style["display"] = "flex"
         collapse_button.type = "button"
         collapse_button.setAttribute("data-bs-toggle", "collapse")
         collapse_button.setAttribute("data-bs-target", "#content-x"+i.toString())
         collapse_button.setAttribute("aria-expanded", "true")
         collapse_button.setAttribute("aria-controls", "content-x"+i.toString())
-        collapse_button.innerHTML = username
+
+        let username_span = document.createElement("span")
+        username_span.classList.add("col-3")
+        username_span.innerHTML = username
+        collapse_button.appendChild(username_span)
 
         let user_link_button = document.createElement("button")
         user_link_button.onclick = function() {document.location = "./individual_analytics.php?userToGet="+userData[username]["user_id"]}
