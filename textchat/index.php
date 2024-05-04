@@ -76,9 +76,6 @@
     </main>
     <script>
 
-        // Call fetchMessages function when the page loads
-        fetchMessages();
-
         // Call fetchChats function when the page loads
         fetchChats();
 
