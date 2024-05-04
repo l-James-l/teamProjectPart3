@@ -228,17 +228,18 @@
             xhr.send();
         }
 
+        // Function to fetch chats from the server
         function fetchChats() {
             var chatContainer = document.getElementById('chat-section');
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'fetch-chats.php', true); // Remove the hardcoded chat_id
+            xhr.open('GET', 'fetch-chats.php', true); // Fetch chats from the server
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
-                            updateMessageListUI(response.chats);
+                            updateMessageListUI(response.chats); // Update UI with fetched chats
                         } else {
                             console.error('Error fetching chats:', response.message);
                         }
@@ -250,6 +251,7 @@
             xhr.send();
         }
 
+        // Function to update the message list UI with fetched chats
         function updateMessageListUI(chats) {
             var chatList = document.querySelector('.message-list-sidebar-content');
             chatList.innerHTML = ''; // Clear existing chat list
