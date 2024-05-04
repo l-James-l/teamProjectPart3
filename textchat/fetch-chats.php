@@ -24,7 +24,7 @@ $stmt = $conn->prepare("SELECT cl.message_id, cl.message, cl.timestamp, u.user_i
                             WHERE chat_id = ?
                             GROUP BY user_id
                         ) recent ON cl.message_id = recent.max_message_id
-                        INNER JOIN user u ON cl.user_id = u.user_id
+                        INNER JOIN users u ON cl.user_id = u.user_id
                         WHERE cl.chat_id = ?");
 
 if ($stmt === false) {
