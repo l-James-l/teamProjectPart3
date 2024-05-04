@@ -35,7 +35,7 @@
             <div class="message-list-sidebar-content">
                 <p id="message-list-title">Messages</p>
                 
-                <div class="chat-preview selected-chat">
+                <!-- <div class="chat-preview selected-chat">
                     <p class="chat-name">John Doe</p>
                     <p class="chat-preview-text">Agreed. I'll prioritize the design revisions and coordinate with the design team to ensure we stay on track. Looking forward to a productive week!</p>
                 </div>
@@ -48,7 +48,7 @@
                 <div class="chat-preview">
                     <p class="chat-name">Bob Johnson</p>
                     <p class="chat-preview-text">Sure thing! Let's catch up tomorrow at 2 PM.</p>
-                </div>        
+                </div>         -->
             </div>
         </div>
         
