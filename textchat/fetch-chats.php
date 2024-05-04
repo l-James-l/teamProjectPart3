@@ -15,18 +15,33 @@ if ($conn === false) {
     exit;
 }
 
-// Check if chat_id is provided, otherwise set default to 1
-$chat_id = isset($_GET['chat_id']) ? $_GET['chat_id'] : 1;
+// Check if user_id is provided, otherwise set default to 1
+$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : 1;
 
 // Prepare the SQL statement
-$stmt = $conn->prepare("SELECT c.chat_id, c.chat_name, m.message, m.timestamp, u.first_name, u.surname
-                        FROM chat c
-                        LEFT JOIN chat_log m ON c.chat_id = m.chat_id
-                        LEFT JOIN users u ON m.user_id = u.user_id
-                        WHERE c.chat_id = ?
-                        GROUP BY c.chat_id
-                        ORDER BY m.timestamp DESC
-                        LIMIT 3"); // Adjust the LIMIT as needed
+$stmt = $conn->prepare("SELECT 
+    c.chat_id,
+    c.chat_name,
+    c.is_group,
+    cr.user_id,
+    cl.message AS recent_message,
+    cl.timestamp
+FROM 
+    Chat c
+INNER JOIN 
+    Chat_relation cr ON c.chat_id = cr.chat_id
+INNER JOIN 
+    (SELECT 
+         chat_id,
+         MAX(timestamp) AS max_timestamp
+     FROM 
+         Chat_log
+     GROUP BY 
+         chat_id) latest_msg ON c.chat_id = latest_msg.chat_id
+INNER JOIN 
+    Chat_log cl ON latest_msg.chat_id = cl.chat_id AND latest_msg.max_timestamp = cl.timestamp
+WHERE 
+    cr.user_id = ?"); 
 
 if ($stmt === false) {
     // Handle prepare statement error
@@ -34,7 +49,7 @@ if ($stmt === false) {
     exit;
 }
 
-$stmt->bind_param("i", $chat_id); // 'i' indicates integer type
+$stmt->bind_param("i", $user_id); // 'i' indicates integer type
 $stmt->execute();    
 
 $result = $stmt->get_result();
@@ -55,9 +70,10 @@ while ($row = $result->fetch_assoc()) {
     $chats[] = array(
         "chat_id" => $row['chat_id'],
         "chat_name" => $row['chat_name'],
-        "last_message" => $row['message'],
-        "last_message_timestamp" => $timestamp,
-        "other_user_name" => $row['first_name'] . ' ' . $row['surname']
+        "is_group" => $row['is_group'],
+        "user_id" => $row['user_id'],
+        "recent_message" => $row['recent_message'],
+        "recent_message_timestamp" => $timestamp
     );
 }
 
