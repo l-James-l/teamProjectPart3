@@ -23,25 +23,21 @@ $stmt = $conn->prepare("SELECT
     c.chat_id,
     c.chat_name,
     c.is_group,
-    cr.user_id,
     cl.message AS recent_message,
     cl.timestamp
 FROM 
     chat c
 INNER JOIN 
-    chat_relation cr ON c.chat_id = cr.chat_id
-INNER JOIN 
-    (SELECT 
-         chat_id,
-         MAX(timestamp) AS max_timestamp
-     FROM 
-         chat_log
-     GROUP BY 
-         chat_id) latest_msg ON c.chat_id = latest_msg.chat_id
-INNER JOIN 
-    chat_log cl ON latest_msg.chat_id = cl.chat_id AND latest_msg.max_timestamp = cl.timestamp
+    chat_log cl ON c.chat_id = cl.chat_id
 WHERE 
-    cr.user_id = ?"); 
+    EXISTS (
+        SELECT 1 
+        FROM chat_relation cr 
+        WHERE c.chat_id = cr.chat_id 
+        AND cr.user_id = ?
+    )
+GROUP BY 
+    c.chat_id"); 
 
 if ($stmt === false) {
     // Handle prepare statement error
@@ -71,7 +67,6 @@ while ($row = $result->fetch_assoc()) {
         "chat_id" => $row['chat_id'],
         "chat_name" => $row['chat_name'],
         "is_group" => $row['is_group'],
-        "user_id" => $row['user_id'],
         "recent_message" => $row['recent_message'],
         "recent_message_timestamp" => $timestamp
     );
