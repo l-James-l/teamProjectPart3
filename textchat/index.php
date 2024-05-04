@@ -79,6 +79,14 @@
         // Call fetchMessages function when the page loads
         fetchMessages();
 
+        document.addEventListener("DOMContentLoaded", function () {
+            // Fetch chats when the page loads
+            fetchChats();
+        });
+
+        // Call fetchChats function when the page loads
+        fetchChats();
+
         function sendMessage(event) {
             event.preventDefault(); // Prevent the default form submission
 
