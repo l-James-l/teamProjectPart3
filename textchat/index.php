@@ -195,7 +195,7 @@
         // Function to update the message list UI with fetched chats
         function updateMessageListUI(chats, container) {
             container.innerHTML = ''; // Clear existing chat list
-            
+
             // Iterate over each chat
             chats.forEach(function(chat) {
                 var chatPreview = document.createElement('div');
@@ -255,6 +255,18 @@
                         if (response.status === 'success') {
                             updateChatUI(response.messages);
                             document.getElementById("current-conversation-name").textContent = response.chat_name; // Update the chat name
+
+                            // Remove the 'selected-chat' class from all chat previews
+                            var chatPreviews = document.querySelectorAll('.chat-preview');
+                            chatPreviews.forEach(function(chatPreview) {
+                                chatPreview.classList.remove('selected-chat');
+                            });
+
+                            // Add the 'selected-chat' class to the currently selected chat preview
+                            var selectedChatPreview = document.querySelector('.chat-preview[data-chat-id="' + chatId + '"]');
+                            if (selectedChatPreview) {
+                                selectedChatPreview.classList.add('selected-chat');
+                            }
                         } else {
                             console.error('Error fetching messages:', response.message);
                         }
@@ -265,6 +277,7 @@
             };
             xhr.send();
         }
+
 
 
 
