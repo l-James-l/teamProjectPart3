@@ -28,10 +28,13 @@ CASE
         INNER JOIN chat_relation cr2 ON u.user_id = cr2.user_id 
         WHERE cr2.chat_id = c.chat_id AND u.user_id != 1
     ) 
-END AS chat_name
+END AS chat_name,
+MAX(cl.timestamp) AS recent_timestamp
 FROM chat c
 INNER JOIN chat_relation cr ON c.chat_id = cr.chat_id
-WHERE cr.user_id = 1;"); 
+LEFT JOIN chat_log cl ON c.chat_id = cl.chat_id
+WHERE cr.user_id = 1
+GROUP BY c.chat_id, c.chat_name;"); 
 
 if ($stmt === false) {
     // Handle prepare statement error
@@ -54,15 +57,13 @@ $chats = array();
 
 while ($row = $result->fetch_assoc()) {
     // Format the timestamp
-    $timestamp = date("Y-m-d H:i:s", strtotime($row['timestamp']));
+    $timestamp = date("Y-m-d H:i:s", strtotime($row['recent_timestamp']));
 
     // Add chat details to the array
     $chats[] = array(
         "chat_id" => $row['chat_id'],
         "chat_name" => $row['chat_name'],
-        "is_group" => $row['is_group'],
-        "recent_message" => $row['recent_message'],
-        "recent_message_timestamp" => $timestamp
+        "recent_timestamp" => $timestamp
     );
 }
 
