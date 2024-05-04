@@ -33,8 +33,8 @@ MAX(cl.timestamp) AS recent_timestamp
 FROM chat c
 INNER JOIN chat_relation cr ON c.chat_id = cr.chat_id
 LEFT JOIN chat_log cl ON c.chat_id = cl.chat_id
-WHERE cr.user_id = 1
-GROUP BY c.chat_id, c.chat_name;"); 
+WHERE cr.user_id = ?
+GROUP BY c.chat_id, c.chat_name"); 
 
 if ($stmt === false) {
     // Handle prepare statement error
