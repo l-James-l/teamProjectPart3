@@ -20,24 +20,26 @@ $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : 1;
 
 // Prepare the SQL statement
 $stmt = $conn->prepare("SELECT 
-    c.chat_id,
-    c.chat_name,
-    c.is_group,
-    cl.message AS recent_message,
-    cl.timestamp
+c.chat_id,
+c.chat_name,
+c.is_group,
+cr.user_id,
+MAX(cl.message) AS recent_message, -- Aggregate the message column
+MAX(cl.timestamp) AS timestamp -- Aggregate the timestamp column
 FROM 
-    chat c
+chat c
 INNER JOIN 
-    chat_log cl ON c.chat_id = cl.chat_id
+chat_relation cr ON c.chat_id = cr.chat_id
+INNER JOIN 
+chat_log cl ON c.chat_id = cl.chat_id
 WHERE 
-    EXISTS (
-        SELECT 1 
-        FROM chat_relation cr 
-        WHERE c.chat_id = cr.chat_id 
-        AND cr.user_id = ?
-    )
+cr.user_id = ?
 GROUP BY 
-    c.chat_id"); 
+c.chat_id,
+c.chat_name,
+c.is_group,
+cr.user_id;
+"); 
 
 if ($stmt === false) {
     // Handle prepare statement error
