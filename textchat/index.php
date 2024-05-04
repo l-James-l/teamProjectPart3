@@ -55,7 +55,7 @@
         <div class="main-section">
             <div>
                 <div class="topbar-section">
-                    <p id="current-conversation-name">John Doe</p>
+                    <p id="current-conversation-name"></p>
                     <div id="close-chat-button">X</div>
                 </div>
                 <hr class="divider">
@@ -196,9 +196,7 @@
         function updateMessageListUI(chats, container) {
             container.innerHTML = ''; // Clear existing chat list
 
-            // Display the name of the current chat at the top
-            // var currentChatName = document.querySelector('.current-conversation-name');
-            // currentChatName.textContent = "Current Chat"; // Change this to the appropriate name if needed
+
 
             // Iterate over each chat
             chats.forEach(function(chat) {
@@ -223,6 +221,10 @@
                 // Append the chat preview to the container
                 container.appendChild(chatPreview);
             });
+
+            // Display the name of the current chat at the top
+            var currentChatName = document.querySelector('.current-conversation-name');
+            currentChatName.textContent = "Current Chat"; // Change this to the appropriate name if needed
         }
 
 
