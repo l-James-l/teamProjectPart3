@@ -151,6 +151,8 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
                 <div style="padding-bottom: 10px; padding-left: unset">
                     <input id='searchbar' type="search" class="form-control" placeholder="Search for tasks or users. To search for multiple, seperate terms with a space."
                         oninput="get_project_from_api(<?php echo $_GET['projectToGet']?>, 'users')" aria-label="Search">
+                    
+                    <!--div filled with js  -->
                 </div>
                 <div class="accordion" id="users_graphs_container"></div>
             <?php } else if ($page == "progress") {?>

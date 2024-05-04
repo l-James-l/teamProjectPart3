@@ -119,6 +119,12 @@ function drawHoursBarChart(userData) {
         collapse_button.setAttribute("aria-controls", "content-x"+i.toString())
         collapse_button.innerHTML = username
 
+        let user_link_button = document.createElement("button")
+        user_link_button.href = "./individual_analytics.php?userToGet="+userData[username]["user_id"]
+        user_link_button.classList.add("btn")
+        user_link_button.innerHTML = "View User Details"
+        collapse_button.appendChild(user_link_button)
+
         card_header.appendChild(collapse_button)
         accordion_item.appendChild(card_header)
 

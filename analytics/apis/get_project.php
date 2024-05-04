@@ -85,7 +85,7 @@ $final_json->tasks = $query->fetchAll();
 
 // get the user assignment for this project
 
-$stmt = "select concat(first_name, ' ', surname) as full_name, task.task_id, task_title, task.est_length, (case when isnull(total_logged_hrs) then 0 else total_logged_hrs end) as total_logged_hrs  
+$stmt = "select users.user_id, concat(first_name, ' ', surname) as full_name, task.task_id, task_title, task.est_length, (case when isnull(total_logged_hrs) then 0 else total_logged_hrs end) as total_logged_hrs  
 from users left join task on task.user_id = users.user_id 
 left join (select task_id, sum(hours_logged) as total_logged_hrs from task_progress_log group by task_id) as log2 on task.task_id = log2.task_id 
 where task.project_id = :project_id";
@@ -118,6 +118,7 @@ $final_json->user_assignment = json_decode("{}");
 foreach ($query_result_json as $row) {
     $currentTask = json_decode("{}");
     $currentTask->title=$row["task_title"];
+    $currentTask->user_id=$row["user_id"];
     $currentTask->est_length=$row["est_length"];
     $currentTask->total_logged_hrs=$row["total_logged_hrs"];
     $userID = $row['full_name'];
