@@ -123,7 +123,7 @@ function drawHoursBarChart(userData) {
         collapse_button.setAttribute("aria-controls", "content-x"+i.toString())
 
         let username_span = document.createElement("span")
-        username_span.classList.add("col-1")
+        username_span.classList.add("col-2")
         username_span.innerHTML = username
         collapse_button.appendChild(username_span)
 
