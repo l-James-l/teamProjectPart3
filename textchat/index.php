@@ -220,6 +220,55 @@
             xhr.send();
         }
 
+        function fetchChats() {
+            var chatContainer = document.getElementById('chat-section');
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'fetch-chats.php', true); // Remove the hardcoded chat_id
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log('Response:', xhr.responseText); // Log the response
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.status === 'success') {
+                            updateMessageListUI(response.chats);
+                        } else {
+                            console.error('Error fetching chats:', response.message);
+                        }
+                    } else {
+                        console.error('Error fetching chats:', xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        function updateMessageListUI(chats) {
+            var chatList = document.querySelector('.message-list-sidebar-content');
+            chatList.innerHTML = ''; // Clear existing chat list
+
+            chats.forEach(function(chat) {
+                var chatPreview = document.createElement('div');
+                chatPreview.classList.add('chat-preview');
+                if (chat.is_selected) {
+                    chatPreview.classList.add('selected-chat');
+                }
+
+                var chatName = document.createElement('p');
+                chatName.classList.add('chat-name');
+                chatName.textContent = chat.other_user_name;
+
+                var chatPreviewText = document.createElement('p');
+                chatPreviewText.classList.add('chat-preview-text');
+                chatPreviewText.textContent = chat.last_message;
+
+                chatPreview.appendChild(chatName);
+                chatPreview.appendChild(chatPreviewText);
+                chatList.appendChild(chatPreview);
+            });
+        }
+
+
+
         function updateChatUI(messages) {
             var chatSection = document.getElementById("chat-section");
             chatSection.innerHTML = ''; // Clear existing messages
