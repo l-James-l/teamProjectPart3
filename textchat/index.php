@@ -56,7 +56,7 @@
             </div>
             
             <div class="send-bar-section">
-                <form id="send-message-form" action="send-message2.php" method="post" onsubmit="sendMessage(event)">
+                <form id="send-message-form" action="send-message.php" method="post" onsubmit="sendMessage(event)">
                     <input type="hidden" name="chat_id" id="chat_id" value="1">
                     <input type="text" name="message" id="message" placeholder="Type your message...">
                     <button type="submit">Send Message</button>
@@ -91,7 +91,7 @@
 
             // Create and send an AJAX request to send-message.php
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "send-message2.php", true);
+            xhr.open("POST", "send-message.php", true);
             xhr.onload = function () {
                 if (this.status === 200) {
                     console.log("Message sent successfully: ", this.responseText);
@@ -162,7 +162,7 @@
 
         //     // Create and send an AJAX request to send-message.php
         //     var xhr = new XMLHttpRequest();
-        //     xhr.open("POST", "send-message2.php", true); // URL remains send-message.php
+        //     xhr.open("POST", "send-message.php", true); // URL remains send-message.php
         //     xhr.onload = function () {
         //         if (this.status === 200) {
         //             console.log("Message sent successfully: ", this.responseText);
