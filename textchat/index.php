@@ -204,28 +204,30 @@
             chats.forEach(function(chat) {
                 var chatPreview = document.createElement('div');
                 chatPreview.classList.add('chat-preview');
+                
+                // Set the data attribute to store the chat id
+                chatPreview.dataset.chatId = chat.chat_id;
 
                 var chatName = document.createElement('p');
                 chatName.classList.add('chat-name');
                 chatName.textContent = chat.chat_name;
 
-                var chatPreviewText = document.createElement('p');
-                chatPreviewText.classList.add('chat-preview-text');
-                chatPreviewText.textContent = chat.recent_message;
-
-                // Append chat name and recent message to the chat preview
+                // Append chat name to the chat preview
                 chatPreview.appendChild(chatName);
-                chatPreview.appendChild(chatPreviewText);
                 
                 // Add an event listener to load the chat messages when clicked
                 chatPreview.addEventListener('click', function() {
-                    loadChatMessages(chat.chat_id);
+                    loadChatMessages(chat.chat_id); // Call loadChatMessages function with chat id
                 });
 
                 // Append the chat preview to the container
                 container.appendChild(chatPreview);
             });
         }
+
+
+
+
 
         // Ensures that the chat section is scrolled to the bottom
         // when the page is loaded, making the latest messages visible.
@@ -267,6 +269,8 @@
             };
             xhr.send();
         }
+
+
 
         // function sendMessage(event) {
         //     event.preventDefault(); // Prevent the default form submission
