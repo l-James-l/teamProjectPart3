@@ -3,10 +3,14 @@ function get_project_from_api(id, page) {
         project_ID: id
     }
     if (page == "overview") {
-        data["task_search"] = document.getElementById("searchbar").value, 
+        data["search"] = document.getElementById("searchbar").value, 
         data["sort_value"] = document.getElementById("sortValue").value,
         data["sort_order"] = document.getElementById("sortOrder").value,
-        data["task_filter_milestone"] =  document.getElementById("milestoneToggleValue").value % 2 == 0 ? false : true
+        data["task_filter_milestone"] =  document.getElementById("milestoneToggleValue").value % 2 == 0 ? false : true,
+        data["complete_filter"] =  document.getElementById("completeToggleValue").value % 2 == 0 ? false : true,
+        data["incomplete_filter"] =  document.getElementById("incompleteToggleValue").value % 2 == 0 ? false : true
+    } else if (page == "users") {
+        data["search"] = document.getElementById("searchbar").value
     }
     
     $.ajax({
@@ -79,35 +83,64 @@ function drawprogressLineChart(progressData) {
 
 
 function drawHoursBarChart(userData) {
-    let dataArray = [["Name", "Task Count", "Assigned Hours"]]
-    userData.forEach(row => {
-        dataArray.push([row["full_name"], parseInt(row["task_count"]), parseInt(row["total_hours"])])
-    })
-    console.log(dataArray)
-    const data = google.visualization.arrayToDataTable(dataArray);
+    const all_graphs_container = document.getElementById("users_graphs_container")
+    all_graphs_container.innerHTML = ""
 
-    var options = {
-        // width,
-        chart: {
-            title: 'User Task and Hour Allocation for this Project',
-            // subtitle: ''
-          },
-        bars: 'horizontal', // Required for Material Bar Charts.
-        series: {
-          0: { axis: 'Task_Count' }, 
-          1: { axis: 'Assigned_Hours' } // Bind series 1 to an axis named 'brightness'.
-        },
-        axes: {
-            x: {
-                Task_Count: {side: 'top', label: 'Count'}, // Bottom x-axis.
-                Assigned_Hours: { label: 'Hours'} // Top x-axis.
-            }
-          }
-      };
+    let i = 1
+    Object.keys(userData).forEach(username => {
+        let userTasks = userData[username]
 
-    // Draw
-    var chart = new google.charts.Bar(document.getElementById('dual_x_div'));
-    chart.draw(data, options);
+        let data = [[username, "Estimated Duration", "Logged Hours"]]
+        Object.values(userTasks).forEach(task => {
+            data.push([task["title"], parseInt(task["est_length"]), parseInt(task["total_logged_hrs"])])
+        });
+        data = google.visualization.arrayToDataTable(data);
+
+        var options = {
+            chart: {
+                title: 'Hours Assigned and Logged for ' + username,
+              },
+            bars: 'horizontal'
+          };
+
+        let accordion_item = document.createElement("div")
+        accordion_item.classList.add("accordion-item")
+
+        let card_header = document.createElement("h2")
+        card_header.classList.add("accordion-header")
+        card_header.id = 'header-x'+i.toString()
+
+        let collapse_button = document.createElement("button")
+        collapse_button.classList.add("accordion-button")
+        collapse_button.type = "button"
+        collapse_button.setAttribute("data-bs-toggle", "collapse")
+        collapse_button.setAttribute("data-bs-target", "#content-x"+i.toString())
+        collapse_button.setAttribute("aria-expanded", "true")
+        collapse_button.setAttribute("aria-controls", "content-x"+i.toString())
+        collapse_button.innerHTML = username
+
+        card_header.appendChild(collapse_button)
+        accordion_item.appendChild(card_header)
+
+        let content_div = document.createElement("div")
+        content_div.classList.add("accordion-collapse", "collapse", "show")
+        content_div.id = "content-x"+i.toString()
+        content_div.setAttribute("aria-labelledby", "panelsStayOpen-headingOne")
+
+        let this_graph_div = document.createElement("div")
+        this_graph_div.style["width"] = "-webkit-fill-available"
+        this_graph_div.style["height"] = String(Math.max(150, Object.keys(userTasks).length * 100)) + "px"
+        this_graph_div.classList.add("accordion-body")
+        content_div.appendChild(this_graph_div)
+        accordion_item.appendChild(content_div)
+        
+        all_graphs_container.appendChild(accordion_item)
+
+        var chart = new google.charts.Bar(this_graph_div);
+        chart.draw(data, options);
+
+        i++
+    });
 }
 
 function update_task_display(tasksList) {
@@ -119,7 +152,11 @@ function update_task_display(tasksList) {
 
         let task_title = document.createElement("h5")
         task_title.classList.add("task-name")
-        task_title.innerHTML = "Task: " + task["task_title"]
+        if (task["is_milestone"] == '1' || task["is_milestone"] == 1) {
+            task_title.innerHTML = "Milestone: " + task["task_title"]
+        } else {
+            task_title.innerHTML = "Task: " + task["task_title"]
+        }
         task_div.appendChild(task_title)
 
         let due_date = document.createElement("p")

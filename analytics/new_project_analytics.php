@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 
@@ -97,9 +98,17 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
                                 data-bs-toggle="dropdown" data-bs-auto-close="outside" style="width: 90%;">Filter</button>
                                 <div class="dropdown-menu" aria-labelledby="filterDropdownMenuButton">
                                     <button class="dropdown-item d-flex justify-content-between" type="button" onclick="toggleFilter('milestone');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">
-                                        milestones <i id="milestoneToggleIcon" class="bi bi-x"></i>
+                                        Milestones Only <i id="milestoneToggleIcon" class="bi bi-x"></i>
                                     </button>
                                     <input type="hidden" id="milestoneToggleValue" value=0>
+                                    <button class="dropdown-item d-flex justify-content-between" type="button" onclick="toggleFilter('complete');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">
+                                        Show Completed <i id="completeToggleIcon" class="bi bi-x"></i>
+                                    </button>
+                                    <input type="hidden" id="completeToggleValue" value=0>
+                                    <button class="dropdown-item d-flex justify-content-between" type="button" onclick="toggleFilter('incomplete');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">
+                                        Show Incomplete <i id="incompleteToggleIcon" class="bi bi-check"></i>
+                                    </button>
+                                    <input type="hidden" id="incompleteToggleValue" value=1>
                                 </div>
                         </div>
 
@@ -114,6 +123,8 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
                                     onclick="change_sort_value('priority');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Priority</button>
                                 <button class="dropdown-item" type="button"
                                     onclick="change_sort_value('est_length');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Hours</button>
+                                <button class="dropdown-item" type="button"
+                                    onclick="change_sort_value('completion_percentage');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Completion</button>
                                 <input type="hidden" id="sortValue" value="due_date">
                             </div>
                         </div>
@@ -136,7 +147,12 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
             </div>
 
             <?php } else if ($page == "users") {?>
-                <div id="dual_x_div" style="width: -webkit-fill-available; height:400px"></div>
+                <!-- <div id="dual_x_div" style="width: -webkit-fill-available; height:400px"></div> -->
+                <div style="padding-bottom: 10px; padding-left: unset">
+                    <input id='searchbar' type="search" class="form-control" placeholder="Search for tasks or users. To search for multiple, seperate terms with a space."
+                        oninput="get_project_from_api(<?php echo $_GET['projectToGet']?>, 'users')" aria-label="Search">
+                </div>
+                <div class="accordion" id="users_graphs_container"></div>
             <?php } else if ($page == "progress") {?>
                 <div id="progress_line_chart" style="width: -webkit-fill-available; height:400px"></div>
             <?php }?>

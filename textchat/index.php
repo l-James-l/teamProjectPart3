@@ -1,3 +1,13 @@
+<!-- <?php
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
+// session_start()
+// if(isset($_SESSION['user_id'])) {
+//     include 'fetch-messages.php'; 
+// }
+
+?> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,7 +69,7 @@
                 <form id="send-message-form" action="send-message.php" method="post" onsubmit="sendMessage(event)">
                     <input type="hidden" name="chat_id" id="chat_id" value="1">
                     <input type="text" name="message" id="message" placeholder="Type your message...">
-                    <button type="submit">Send Message</button>
+                    <button type="submit" id="send-message-button">Send message</button>
                 </form>  
             </div>
         </div>
