@@ -79,11 +79,6 @@
         // Call fetchMessages function when the page loads
         fetchMessages();
 
-        document.addEventListener("DOMContentLoaded", function () {
-            // Fetch chats when the page loads
-            fetchChats();
-        });
-
         // Call fetchChats function when the page loads
         fetchChats();
 
@@ -125,6 +120,118 @@
 
             // Clear the message input
             document.getElementById("message").value = '';
+        }
+
+        function addMessageToChat(message, type) {
+            var chatSection = document.querySelector(".chat-section");
+            var messageDiv = document.createElement("div");
+            messageDiv.classList.add("message-container", type);
+            messageDiv.innerHTML = `<div class="${type}-message">${message}</div>`;
+            chatSection.appendChild(messageDiv);
+        }
+
+        function fetchMessages() {
+            var chatContainer = document.getElementById('chat-section');
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'fetch-messages.php?chat_id=1', true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log('Response:', xhr.responseText); // Log the response
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.status === 'success') {
+                            updateChatUI(response.messages);
+                        } else {
+                            console.error('Error fetching messages:', response.message);
+                        }
+                    } else {
+                        console.error('Error fetching messages:', xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        function updateChatUI(messages) {
+            var chatSection = document.getElementById("chat-section");
+            chatSection.innerHTML = ''; // Clear existing messages
+
+            messages.forEach(function(message) {
+                var messageDiv = document.createElement("div");
+                var messageType = message.user_id == 1 ? "outgoing" : "incoming";
+                messageDiv.classList.add("message-container", messageType);
+                var messageContent = messageDiv.appendChild(document.createElement("div"));
+                messageContent.classList.add(messageType + "-message");
+                messageContent.textContent = message.message; // assuming message field contains the message content
+                chatSection.appendChild(messageDiv);
+            });
+
+            scrollToBottom(); // Ensure the newest messages are visible
+        }
+
+        // Function to fetch chats from the server
+        function fetchChats() {
+            var chatListContainer = document.querySelector('.message-list-sidebar-content'); // Adjust selector based on your HTML structure
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'fetch-chats.php?user_id=1', true); // Send user_id along with the request
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log('Response:', xhr.responseText); // Log the response
+                        var response = JSON.parse(xhr.responseText);
+                        if (response.status === 'success') {
+                            updateMessageListUI(response.chats, chatListContainer); // Update UI with fetched chats
+                        } else {
+                            console.error('Error fetching chats:', response.message);
+                        }
+                    } else {
+                        console.error('Error fetching chats:', xhr.statusText);
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        // Function to update the message list UI with fetched chats
+        function updateMessageListUI(chats, container) {
+            container.innerHTML = ''; // Clear existing chat list
+
+            // Sort chats by most recent message timestamp
+            chats.sort(function(a, b) {
+                return new Date(b.recent_message_timestamp) - new Date(a.recent_message_timestamp);
+            });
+
+            chats.forEach(function(chat) {
+                var chatPreview = document.createElement('div');
+                chatPreview.classList.add('chat-preview');
+
+                var chatName = document.createElement('p');
+                chatName.classList.add('chat-name');
+                chatName.textContent = chat.chat_name; // Display chat name instead of other_user_name
+
+                var chatPreviewText = document.createElement('p');
+                chatPreviewText.classList.add('chat-preview-text');
+                chatPreviewText.textContent = chat.recent_message;
+
+                chatPreview.appendChild(chatName);
+                chatPreview.appendChild(chatPreviewText);
+                container.appendChild(chatPreview);
+            });
+        }
+
+        // Ensures that the chat section is scrolled to the bottom
+        // when the page is loaded, making the latest messages visible.
+        document.addEventListener("DOMContentLoaded", function () {
+            var chatSection = document.getElementById("chat-section");
+            chatSection.scrollTop = chatSection.scrollHeight;
+        });
+
+        // Scrolls the chat section to the bottom, ensuring visibility
+        // of the most recent messages. Call this function when a new
+        // message is sent or received, or when a new chat is loaded.
+        function scrollToBottom() {
+            var chatSection = document.getElementById("chat-section");
+            chatSection.scrollTop = chatSection.scrollHeight;
         }
 
 
@@ -194,129 +301,6 @@
         //     };
         //     xhr.send(formData);
         // }
-
-
-
-        function addMessageToChat(message, type) {
-            var chatSection = document.querySelector(".chat-section");
-            var messageDiv = document.createElement("div");
-            messageDiv.classList.add("message-container", type);
-            messageDiv.innerHTML = `<div class="${type}-message">${message}</div>`;
-            chatSection.appendChild(messageDiv);
-        }
-
-
-        function fetchMessages() {
-            var chatContainer = document.getElementById('chat-section');
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'fetch-messages.php?chat_id=1', true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        console.log('Response:', xhr.responseText); // Log the response
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.status === 'success') {
-                            updateChatUI(response.messages);
-                        } else {
-                            console.error('Error fetching messages:', response.message);
-                        }
-                    } else {
-                        console.error('Error fetching messages:', xhr.statusText);
-                    }
-                }
-            };
-            xhr.send();
-        }
-
-
-        function updateChatUI(messages) {
-            var chatSection = document.getElementById("chat-section");
-            chatSection.innerHTML = ''; // Clear existing messages
-
-            messages.forEach(function(message) {
-                var messageDiv = document.createElement("div");
-                var messageType = message.user_id == 1 ? "outgoing" : "incoming";
-                messageDiv.classList.add("message-container", messageType);
-                var messageContent = messageDiv.appendChild(document.createElement("div"));
-                messageContent.classList.add(messageType + "-message");
-                messageContent.textContent = message.message; // assuming message field contains the message content
-                chatSection.appendChild(messageDiv);
-            });
-
-            scrollToBottom(); // Ensure the newest messages are visible
-        }
-
-        // Function to fetch chats from the server
-        function fetchChats() {
-            var chatListContainer = document.querySelector('.message-list-sidebar-content'); // Adjust selector based on your HTML structure
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'fetch-chats.php?user_id=1', true); // Send user_id along with the request
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        console.log('Response:', xhr.responseText); // Log the response
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.status === 'success') {
-                            updateMessageListUI(response.chats, chatListContainer); // Update UI with fetched chats
-                        } else {
-                            console.error('Error fetching chats:', response.message);
-                        }
-                    } else {
-                        console.error('Error fetching chats:', xhr.statusText);
-                    }
-                }
-            };
-            xhr.send();
-        }
-
-        // Function to update the message list UI with fetched chats
-        function updateMessageListUI(chats, container) {
-            container.innerHTML = ''; // Clear existing chat list
-
-            // Sort chats by most recent message timestamp
-            chats.sort(function(a, b) {
-                return new Date(b.recent_message_timestamp) - new Date(a.recent_message_timestamp);
-            });
-
-            chats.forEach(function(chat) {
-                var chatPreview = document.createElement('div');
-                chatPreview.classList.add('chat-preview');
-
-                var chatName = document.createElement('p');
-                chatName.classList.add('chat-name');
-                chatName.textContent = chat.chat_name; // Display chat name instead of other_user_name
-
-                var chatPreviewText = document.createElement('p');
-                chatPreviewText.classList.add('chat-preview-text');
-                chatPreviewText.textContent = chat.recent_message;
-
-                chatPreview.appendChild(chatName);
-                chatPreview.appendChild(chatPreviewText);
-                container.appendChild(chatPreview);
-            });
-        }
-
-        // Call fetchChats function when the page loads
-        window.onload = function() {
-            fetchChats();
-        };
-
-        // Ensures that the chat section is scrolled to the bottom
-        // when the page is loaded, making the latest messages visible.
-        document.addEventListener("DOMContentLoaded", function () {
-            var chatSection = document.getElementById("chat-section");
-            chatSection.scrollTop = chatSection.scrollHeight;
-        });
-
-        // Scrolls the chat section to the bottom, ensuring visibility
-        // of the most recent messages. Call this function when a new
-        // message is sent or received, or when a new chat is loaded.
-        function scrollToBottom() {
-            var chatSection = document.getElementById("chat-section");
-            chatSection.scrollTop = chatSection.scrollHeight;
-        }
-
-        
     </script>
 </body>
 </html>

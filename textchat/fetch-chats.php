@@ -27,19 +27,19 @@ $stmt = $conn->prepare("SELECT
     cl.message AS recent_message,
     cl.timestamp
 FROM 
-    Chat c
+    chat c
 INNER JOIN 
-    Chat_relation cr ON c.chat_id = cr.chat_id
+    chat_relation cr ON c.chat_id = cr.chat_id
 INNER JOIN 
     (SELECT 
          chat_id,
          MAX(timestamp) AS max_timestamp
      FROM 
-         Chat_log
+         chat_log
      GROUP BY 
          chat_id) latest_msg ON c.chat_id = latest_msg.chat_id
 INNER JOIN 
-    Chat_log cl ON latest_msg.chat_id = cl.chat_id AND latest_msg.max_timestamp = cl.timestamp
+    chat_log cl ON latest_msg.chat_id = cl.chat_id AND latest_msg.max_timestamp = cl.timestamp
 WHERE 
     cr.user_id = ?"); 
 
