@@ -38,6 +38,13 @@ if ($stmt === false) {
 $stmt->bind_param("ii", $chat_id, $chat_id); // 'i' indicates integer type
 $stmt->execute();    
 
+if ($stmt->errno) {
+    // Handle execute error
+    echo json_encode(array("status" => "error", "message" => "Execute statement failed: " . $stmt->error));
+    exit;
+}
+
+
 // Fetch messages as an associative array
 $result = $stmt->get_result();
 $messages = $result->fetch_all(MYSQLI_ASSOC);
