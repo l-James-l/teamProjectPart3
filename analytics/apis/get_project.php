@@ -113,17 +113,22 @@ if (!$result) {
     echo json_encode(array("status" => "error", "message" => "user data query failed"));
     exit;
 } 
+
 $query_result_json = $query->fetchAll();
 $final_json->user_assignment = json_decode("{}");
+
 foreach ($query_result_json as $row) {
+    $username = $row['full_name'];
+    $final_json->user_assignment->$username->user_id = $row["user_id"];
+
     $currentTask = json_decode("{}");
     $currentTask->title=$row["task_title"];
     $currentTask->user_id=$row["user_id"];
     $currentTask->est_length=$row["est_length"];
     $currentTask->total_logged_hrs=$row["total_logged_hrs"];
-    $userID = $row['full_name'];
+
     $taskID = $row["task_id"];
-    $final_json->user_assignment->$userID->$taskID = $currentTask;
+    $final_json->user_assignment->$username->$taskID = $currentTask;
 }
 // {user_id: {task_id: {}, task_id: {}}, user_id: {task_id: {}, ...}, ...}
 // get the progress log
