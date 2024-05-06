@@ -32,20 +32,20 @@ if (isset($_GET['userToGet'])) {
 
 <header>
     <div class="container header-container">
-        <img src="content/logo.png" alt="Company Logo" id="page-logo">
+        <img src="../src/imgs/logo.png" alt="Company Logo" id="page-logo">
         
         <div id ="fullName"  class="header-title"></div>
         <div id = "role" class="header-subtitle"></div> 
 
         <div class="dropdown">
             <a href="#" class="d-block link-dark text-decoration-none user-dropdown dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="content/icon.png" alt="mdo" width="42" height="42" class="rounded-circle">
+                <img src="../src/imgs/icon.png" alt="mdo" width="42" height="42" class="rounded-circle">
             </a>
             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                 <li>
                     <div class="dropdown-item dropdown-item-nohover">
                         <div style="white-space: normal;">
-                            <img src="content/icon.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                            <img src="../src/imgs/icon.png" alt="mdo" width="32" height="32" class="rounded-circle">
                             <span style="padding-left: 10px;">John Doe</span>
                         </div>
                         <span>johndoe@example.com</span>
@@ -74,7 +74,6 @@ if (isset($_GET['userToGet'])) {
             </div>
         </div>
 
-        <!-- Main Content -->
         <div class="col-md-8 col-lg-9">
             <div id="overview">
                 <header class="mb-3">
