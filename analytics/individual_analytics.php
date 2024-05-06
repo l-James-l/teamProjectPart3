@@ -64,8 +64,8 @@ if (isset($_GET['userToGet'])) {
 
 <div class="sidebar bg-light p-4">
     <h4>Analytics Dashboard</h4>
-    <ul class="nav flex-column sidebar-row">
-        <li class="nav-item">
+    <ul class="nav flex-column">
+        <li class="nav-item sidebar-row">
             <a href="?userToGet=<?php echo $userID; ?>&page=overview" class="nav-link <?php echo isset($_GET['page']) && $_GET['page'] == 'overview' ? 'active' : ''; ?>">Overview</a>
         </li>
         <li class="nav-item sidebar-row">
@@ -89,10 +89,10 @@ if (isset($_GET['userToGet'])) {
                         <div id="percentageNumber" class="percentage-number" data-bs-toggle="tooltip" data-bs-placement="top" title=""></div>
                     </div>
                 </div>
-                <div class="sidebar-row flex-fill">
+                <div class="flex-fill">
                     <p></p>
                 </div>
-                <div class="sidebar-row flex-fill d-flex flex-column align-items-center justify-content-center">
+                <div class="flex-fill d-flex flex-column align-items-center justify-content-center">
                     <div class="number-label">Current Remaining Assigned Hours</div>
                     <div class="hours-left d-flex flex-column align-items-center justify-content-center">
                         <div id="hoursNumber" class="hours-number"></div>
