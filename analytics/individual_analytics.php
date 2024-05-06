@@ -162,28 +162,38 @@ if (isset($_GET['userToGet'])) {
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const links = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('div[id]');
 
-var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
+    console.log(links.length + " links found");  // Check how many links are picked up
+    console.log(sections.length + " sections found");  // Check how many sections are picked up
 
-    document.addEventListener("DOMContentLoaded", function() {
-        const links = document.querySelectorAll('.nav-link');
-        const sections = document.querySelectorAll('div[id]');
+    links.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log("Clicked: " + this.getAttribute('href'));  // Log which link is clicked
 
-        links.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                links.forEach(lnk => lnk.classList.remove('active'));
-                this.classList.add('active');
-                sections.forEach(section => section.classList.add('hidden'));
-                const activeSection = document.querySelector(this.getAttribute('href'));
-                activeSection.classList.remove('hidden');
+            links.forEach(lnk => lnk.classList.remove('active'));
+            this.classList.add('active');
+
+            sections.forEach(section => {
+                section.classList.add('hidden');
+                console.log("Hiding section: " + section.id);  // Log section hiding action
             });
+
+            const activeSection = document.querySelector(this.getAttribute('href'));
+            if (activeSection) {
+                activeSection.classList.remove('hidden');
+                console.log("Showing section: " + activeSection.id);  // Log section showing action
+            } else {
+                console.log("No section found for: " + this.getAttribute('href'));  // Error handling if no section found
+            }
         });
     });
+});
 </script>
+
 
 </body>
 </html>
