@@ -67,7 +67,6 @@ if (isset($_GET['userToGet'])) {
     <div class="row">
         <div class="col-md-3">
             <div class="sidebar bg-light p-4">
-                <h4>Analytics Dashboard</h4>
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a href="?userToGet=<?php echo $userID; ?>&page=overview" class="nav-link <?php echo isset($_GET['page']) && $_GET['page'] == 'overview' ? 'active' : ''; ?>">Overview</a>
