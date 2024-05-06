@@ -25,8 +25,8 @@
     </header>
     <main>
         <div class="groups-sidebar">
-            <div class="groups-sidebar-item">1-1</div>
-            <div class="groups-sidebar-item">Group</div>
+            <div class="groups-sidebar-item" onclick="fetchChats(0);">1-1</div>
+            <div class="groups-sidebar-item" onclick="fetchChats(1);">Group</div>
             <a href="settings.html" class="groups-sidebar-item">Settings</a>
         </div>
 
@@ -166,24 +166,21 @@
             scrollToBottom(); // Ensure the newest messages are visible
         }
 
-        // Function to fetch chats from the server
-        function fetchChats() {
-            var chatListContainer = document.querySelector('.message-list-sidebar-content'); // Adjust selector based on your HTML structure
+        // Fetch chats based on group type (1-1 or Group)
+        function fetchChats(isGroup) {
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'fetch-chats.php?user_id=1', true); // Send user_id along with the request
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        console.log('Response:', xhr.responseText); // Log the response
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.status === 'success') {
-                            updateMessageListUI(response.chats, chatListContainer); // Update UI with fetched chats
-                        } else {
-                            console.error('Error fetching chats:', response.message);
-                        }
+            xhr.open('GET', `fetch-chats.php?user_id=1&is_group=${isGroup}`, true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.status === 'success') {
+                        updateChatListUI(response.chats);
+                        console.log("Chats fetched successfully.");
                     } else {
-                        console.error('Error fetching chats:', xhr.statusText);
+                        console.error('Failed to fetch chats:', response.message);
                     }
+                } else {
+                    console.error('Error in AJAX request:', xhr.statusText);
                 }
             };
             xhr.send();

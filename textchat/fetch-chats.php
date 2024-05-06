@@ -17,6 +17,7 @@ if ($conn === false) {
 
 // Check if user_id is provided, otherwise set default to 1
 $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : 1;
+$is_group = isset($_GET['is_group']) ? $_GET['is_group'] : null;
 
 // Prepare the SQL statement
 $stmt = $conn->prepare("SELECT c.chat_id, 
