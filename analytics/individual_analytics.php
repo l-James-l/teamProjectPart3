@@ -7,6 +7,10 @@ if (!isset($_SESSION["user_id"])) {
 
 if (isset($_GET['userToGet'])) {
     $userID = $_GET['userToGet'];
+    if (!isset($_GET['page'])) {
+        $_GET['page'] = "overview";
+    }
+    
 } else {
     header("location: ./analytics_landing_page.php");
 }
@@ -60,11 +64,11 @@ if (isset($_GET['userToGet'])) {
 
 <div class="sidebar bg-light p-4">
     <h4>Analytics Dashboard</h4>
-    <ul class="nav flex-column">
+    <ul class="nav flex-column sidebar-row">
         <li class="nav-item">
             <a href="?userToGet=<?php echo $userID; ?>&page=overview" class="nav-link <?php echo isset($_GET['page']) && $_GET['page'] == 'overview' ? 'active' : ''; ?>">Overview</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item sidebar-row">
             <a href="?userToGet=<?php echo $userID; ?>&page=tasks" class="nav-link <?php echo isset($_GET['page']) && $_GET['page'] == 'tasks' ? 'active' : ''; ?>">Tasks</a>
         </li>
     </ul>
