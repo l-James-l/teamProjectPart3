@@ -111,7 +111,7 @@ if (isset($_GET['userToGet'])) {
         $sql = "SELECT t.task_title, p.project_title, t.due_date, t.priority, t.est_length, t.completion_percentage 
                 FROM task t 
                 INNER JOIN project p ON t.project_ID = p.project_ID
-                WHERE t.userID = ?";
+                WHERE t.user_ID = ?";
         $stmt = $conn->prepare($sql);
         if ($stmt === false) {
             die('MySQL prepare error: ' . $conn->error);
