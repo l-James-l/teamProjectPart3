@@ -118,13 +118,13 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
                                 data-bs-toggle="dropdown" style="width: 90%;">Sort</button>
                             <div class="dropdown-menu" aria-labelledby="filterDropdownMenuButton">
                                 <button class="dropdown-item" type="button"
-                                    onclick="change_sort_value('due_date');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Due Date<i id="due_dateToggleIcon" class="bi bi-check"></i></button>
+                                    onclick="change_sort_value('due_date');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Due Date<i id="due_dateToggleIcon" class="sortOption bi bi-check"></i></button>
                                 <button class="dropdown-item" type="button"
-                                    onclick="change_sort_value('priority');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Priority<i id="priorityToggleIcon" class="bi"></i></button>
+                                    onclick="change_sort_value('priority');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Priority<i id="priorityToggleIcon" class="sortOption bi"></i></button>
                                 <button class="dropdown-item" type="button"
-                                    onclick="change_sort_value('est_length');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Hours<i id="est_lengthToggleIcon" class="bi"></i></button>
+                                    onclick="change_sort_value('est_length');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Hours<i id="est_lengthToggleIcon" class="sortOption bi"></i></button>
                                 <button class="dropdown-item" type="button"
-                                    onclick="change_sort_value('completion_percentage');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Completion<i id="completion_percentageToggleIcon" class="bi"></i></button>
+                                    onclick="change_sort_value('completion_percentage');get_project_from_api(<?php echo $_GET['projectToGet']?>, 'overview')">Completion<i id="completion_percentageToggleIcon" class="sortOption bi"></i></button>
                                 <input type="hidden" id="sortValue" value="due_date">
                             </div>
                         </div>
