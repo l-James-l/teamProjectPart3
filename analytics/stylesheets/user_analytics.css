@@ -46,12 +46,17 @@
 .sidebar {
     padding: 20px;
     background-color: #f8f9fa;
-    width: 280px; 
-    position: fixed;
-    height: -webkit-fill-available;
-
 }
 
+.sidebar-row {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .number-label {
     font-size: 16px;
@@ -88,21 +93,16 @@
 }
 
 
-.sidebar-row.active {
-    background-color: blue;
-    color: white; /
+.sidebar-row:first-child {
+    border: 2px solid black;
+    background-color: gainsboro;
 }
 
-
-.sidebar-row {
-    background-color: #f8f9fa;
-    padding: 10px;
-    border-radius: 5px;
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.sidebar-row:last-child {
+    border: 2px solid black;
+    background-color: gainsboro;
 }
+
 .main-content-header h1 {
     color: #333;
     padding: 20px 0;
