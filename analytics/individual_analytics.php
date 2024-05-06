@@ -23,7 +23,6 @@ if (isset($_GET['userToGet'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="stylesheets/individual_analytics.css">
     <link rel="stylesheet" href="stylesheets/user_analytics.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/individual_handler.js"></script>
@@ -88,8 +87,8 @@ if (isset($_GET['userToGet'])) {
                     <h1>General Overview</h1>
                 </header>
                 <div class="row">
-                    <div class="col-md-5 sidebar">
-                        <div class="sidebar-row flex-fill d-flex flex-column align-items-center justify-content-center">
+                    <div class="col-md-5">
+                        <div class="flex-fill d-flex flex-column align-items-center justify-content-center">
                             <div class="number-label">Total Task Completion</div>
                             <div id="circlePercentage" class="circle-percentage d-flex flex-column align-items-center justify-content-center">
                                 <div id="percentageNumber" class="percentage-number" data-bs-toggle="tooltip" data-bs-placement="top" title=""></div>
