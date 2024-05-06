@@ -218,8 +218,8 @@ function toggleFilter(toggle) {
 
 function change_sort_value(new_value) {
     document.getElementById("sortValue").value = new_value
-    document.getElementById(new_value+"ToggleIcon").classList.toggle("bi-check")
     Array.from(document.getElementsByClassName("sortOption")).forEach(function (sortOption) {sortOption.classList.remove("bi-check")})
+    document.getElementById(new_value+"ToggleIcon").classList.toggle("bi-check")
 }
 
 function change_sort_order(new_order) {
