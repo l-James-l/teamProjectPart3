@@ -25,8 +25,8 @@
     </header>
     <main>
         <div class="groups-sidebar">
-            <div class="groups-sidebar-item" onclick="fetchChats(0);">1-1</div>
-            <div class="groups-sidebar-item" onclick="fetchChats(1);">Group</div>
+            <div class="groups-sidebar-item" >1-1</div>
+            <div class="groups-sidebar-item" >Group</div>
             <a href="settings.html" class="groups-sidebar-item">Settings</a>
         </div>
 
@@ -160,6 +160,13 @@
                 var messageContent = messageDiv.appendChild(document.createElement("div"));
                 messageContent.classList.add(messageType + "-message");
                 messageContent.textContent = message.message; // assuming message field contains the message content
+               
+                if (message.user_id == 1) {
+                var deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Delete";
+                deleteBtn.onclick = function() { deleteMessage(message.message_id); };
+                messageDiv.appendChild(deleteBtn);
+            }
                 chatSection.appendChild(messageDiv);
             });
 
@@ -219,7 +226,27 @@
         }
 
 
+        function deleteMessage(messageId) {
+            var formData = new FormData();
+            formData.append('message_id', messageId);
 
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "delete-message.php", true);
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    // Message deleted successfully
+                    console.log("Message deleted");
+                    fetchMessages(); // Refresh messages to reflect deletion
+                } else {
+                    // Handle errors, such as message not found or server error
+                    console.error('Failed to delete message:', this.status);
+                }
+            };
+            xhr.onerror = function () {
+                console.error('Error during the AJAX request to delete the message.');
+            };
+            xhr.send(formData);
+        }
 
 
         // Ensures that the chat section is scrolled to the bottom
