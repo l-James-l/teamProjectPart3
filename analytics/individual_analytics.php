@@ -107,7 +107,7 @@ if (isset($_GET['userToGet'])) {
             </div>
             <div id="tasks" class="hidden">
                 <header class="main-content-header">
-                    <h1>Current Tasks -</h1>
+                    <h1 id="taskProjectInfo"></h1>
                 </header>
                 <div class="task-container">
                     <?php
