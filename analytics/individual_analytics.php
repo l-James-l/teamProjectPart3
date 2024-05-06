@@ -23,7 +23,7 @@ if (isset($_GET['userToGet'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="stylesheets/individual.css">
+    <link rel="stylesheet" href="stylesheets/user_analytics.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/individual_handler.js"></script>
 </head>
@@ -31,6 +31,7 @@ if (isset($_GET['userToGet'])) {
 <script>
     fetchUserData(<?php echo $userID ?>, updateUserData);
 </script>
+
 
 <body>
 
