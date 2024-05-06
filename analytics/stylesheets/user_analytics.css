@@ -8,7 +8,7 @@
     min-width: 100%;
     background-color: #cfcfcf;
     padding: 10px;
-    padding-bottom: 0px;
+    padding-bottom: 10px;
 }
 
 .header-title {
@@ -47,14 +47,16 @@
     padding: 20px;
     background-color: #f8f9fa;
     width: 280px; 
-    position: fixed;
+    position: fixed; 
     top: 80px; 
     left: 0;
+    height: -webkit-fill-available;
 }
 
 .main-content {
     margin-left: 280px; 
     padding: 20px;
+    height: -webkit-fill-available;
 }
 
 
