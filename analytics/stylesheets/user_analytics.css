@@ -112,7 +112,7 @@
     padding: 30px;
     margin-bottom: 30px;
     border: 1px solid #ccc;
-    background-color: #f8f9fa;
+    background-color: white;
 }
 
 .general-overview .box {
@@ -137,3 +137,4 @@
     border-bottom: 2px solid #ccc;
     margin-bottom: 20px;
 }
+
