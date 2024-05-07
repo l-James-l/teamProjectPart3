@@ -28,6 +28,7 @@ function updateUserData(userData) {
     var completionPercentage = userData.data.statistics.overallCompletion;
     var percentageElement = document.getElementById('overviewPercentageNumber');
     percentageElement.innerText = completionPercentage + '%'; 
+    percentageElement.style.fontWeight = 'bold';
 
     if (completionPercentage < 40) {
         percentageElement.style.color = 'red';
