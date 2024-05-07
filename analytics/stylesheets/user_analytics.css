@@ -109,18 +109,18 @@
 .hidden { display: none; }
 
 .general-overview {
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
     border: 1px solid #ccc; 
     background-color: #f8f9fa; 
 }
 
 .general-overview .box {
-    margin-bottom: 15px; 
+    margin-bottom: 30px; 
     border: 1px solid #ccc; 
 }
 
 .general-overview .number-label, .general-overview .percentage-number, .general-overview .hours-info {
-    font-size: 16px; 
+    font-size: 30px; 
     color: #333; 
 }
