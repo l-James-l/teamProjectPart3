@@ -39,7 +39,7 @@ if (!isset($currentPage)) {
                     <a class="headerLink <?php echo $currentPage=='analytics' ? 'current-page': 'default' ?>" href="../analytics/analytics_landing_page.php?lf=projects">Analytics</a>
                 </li>
                 <li class="sub-system-link <?php echo $currentPage=='chat' ? 'current-page': '' ?>">
-                    <a class="headerLink <?php echo $currentPage=='chat' ? 'current-page': 'default' ?>" href="../textchat/index2.html">Chat</a>
+                    <a class="headerLink <?php echo $currentPage=='chat' ? 'current-page': 'default' ?>" href="../textchat/index.php">Chat</a>
                 </li>
             </ul>
 
