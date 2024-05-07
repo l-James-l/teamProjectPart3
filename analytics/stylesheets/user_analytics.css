@@ -111,16 +111,22 @@
 .general-overview {
     padding: 30px;
     margin-bottom: 30px;
-    border: 1px solid #ccc; 
-    background-color: #f8f9fa; 
+    border: 1px solid #ccc;
+    background-color: #f8f9fa;
 }
 
 .general-overview .box {
-    margin-bottom: 30px; 
+    background-color: #f8f9fa;
     border: 1px solid #ccc; 
+    border-radius: 5px; 
+    padding: 20px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.general-overview .number-label, .general-overview .percentage-number, .general-overview .hours-info {
-    font-size: 30px; 
-    color: #333; 
+.general-overview .box, .task-box {
+    font-size: 30px;
+    color: #333;
 }
