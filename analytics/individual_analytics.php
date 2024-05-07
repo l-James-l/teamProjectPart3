@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION["user_id"])) {
-    header("location: login.php");
+    header("location: ../src/login.php");
 } 
 
 if (isset($_GET['userToGet'])) {
@@ -83,27 +83,40 @@ if (isset($_GET['userToGet'])) {
             if (isset($_GET['page']) && $_GET['page'] == 'overview') {
             ?>
                 <header class="mb-3">
-                    <h1>General Overview</h1>
                 </header>
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="flex-fill d-flex flex-column align-items-center justify-content-center">
-                            <div class="number-label">Total Task Completion</div>
-                            <div id="circlePercentage" class="circle-percentage d-flex flex-column align-items-center justify-content-center">
-                                <div id="percentageNumber" class="percentage-number" data-bs-toggle="tooltip" data-bs-placement="top" title=""></div>
-                            </div>
-                        </div>
-                        <div class="flex-fill">
-                            <p></p>
-                        </div>
-                        <div class="flex-fill d-flex flex-column align-items-center justify-content-center">
-                            <div class="number-label">Current Remaining Assigned Hours</div>
-                            <div class="hours-left d-flex flex-column align-items-center justify-content-center">
-                                <div id="hoursNumber" class="hours-number"></div>
+                <div class="container">
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <div class="box bg-light-grey p-3 d-flex flex-column align-items-center justify-content-center">
+                            <div class="hours-info" id="hoursSummary">
                             </div>
                         </div>
                     </div>
                 </div>
+                
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <div class="box bg-light-grey p-3 d-flex flex-column align-items-center justify-content-center">
+                            <div class="current-task-completion d-flex flex-column align-items-center justify-content-center">
+                                <span id="taskCompletionText">Current task completion: </span>
+                                <span id="percentageNumber" class="percentage-number"></span>%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <div class="box bg-light-grey p-3 d-flex flex-column align-items-center justify-content-center">
+                                <div class="hours-left d-flex flex-column align-items-center justify-content-center">
+                                    <div id="taskProjectInfo" class="taskProjectInfo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             <?php
             } elseif (isset($_GET['page']) && $_GET['page'] == 'tasks') {
             ?>
@@ -179,3 +192,4 @@ document.addEventListener("DOMContentLoaded", function() {
 
 </body>
 </html>
+
