@@ -16,14 +16,18 @@ function fetchUserData(userID, callback) {
 }
 
 function updateUserData(userData) {
+
     document.getElementById('fullName').innerText = userData.data.userDetails.fullName;
     document.getElementById('role').innerText = userData.data.userDetails.role;
 
-    var completionPercentage = userData.data.statistics.overallCompletion;
-    var percentageElement = document.getElementById('percentageNumber');
+    var hoursCompleted = userData.data.statistics.hoursDone;
+    var hoursRemaining = userData.data.statistics.hoursLeft;
+    var hoursSummaryElement = document.getElementById('overviewHoursSummary');
+    hoursSummaryElement.innerText = `${hoursCompleted} hours completed, ${hoursRemaining} hours remaining`;
 
-    document.getElementById('hoursNumber').innerText = userData.data.statistics.hoursLeft;
-    document.getElementById('taskProjectInfo').innerText = `${userData.data.statistics.taskCount} tasks assigned across ${userData.data.statistics.projectCount} projects`;
+    var completionPercentage = userData.data.statistics.overallCompletion;
+    var percentageElement = document.getElementById('overviewPercentageNumber');
+    percentageElement.innerText = completionPercentage + '%'; 
 
     if (completionPercentage < 40) {
         percentageElement.style.color = 'red';
@@ -32,6 +36,11 @@ function updateUserData(userData) {
     } else {
         percentageElement.style.color = 'green';
     }
+
+    var taskCount = userData.data.statistics.taskCount;
+    var projectCount = userData.data.statistics.projectCount;
+    var taskProjectInfoElement = document.getElementById('overviewTaskProjectInfo');
+    taskProjectInfoElement.innerText = `${taskCount} tasks assigned across ${projectCount} projects`;
 }
 
 
