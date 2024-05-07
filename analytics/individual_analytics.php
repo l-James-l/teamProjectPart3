@@ -83,7 +83,7 @@ if (isset($_GET['userToGet'])) {
             if (isset($_GET['page']) && $_GET['page'] == 'overview') {
             ?>
                 <header class="mb-3">
-                    <h1 class="text-center">Overview</h1>
+                    <h1 class="overviewhead">Overview</h1>
                 </header>
                 <div class="container">
                     <div class="container general-overview"> 
@@ -100,7 +100,7 @@ if (isset($_GET['userToGet'])) {
                             <div class="col-md-12">
                                 <div class="box bg-light-grey p-3">
                                         <span>Current task completion: </span>
-                                        <span id="overviewPercentageNumber" class="percentage-number"></span>%
+                                        <span id="overviewPercentageNumber" class="percentage-number"></span>
                                 </div>
                             </div>
                         </div>
