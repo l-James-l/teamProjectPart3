@@ -83,6 +83,7 @@ if (isset($_GET['userToGet'])) {
             if (isset($_GET['page']) && $_GET['page'] == 'overview') {
             ?>
                 <header class="mb-3">
+                    <h1 class="text-center">Overview</h1>
                 </header>
                 <div class="container">
                 <div class="container general-overview"> 
@@ -123,7 +124,7 @@ if (isset($_GET['userToGet'])) {
             } elseif (isset($_GET['page']) && $_GET['page'] == 'tasks') {
             ?>
                 <header class="main-content-header">
-                    <h1 id="taskProjectInfo">Tasks</h1>
+                    <h1>Tasks</h1>
                 </header>
                 <div class="task-container">
                     <?php
