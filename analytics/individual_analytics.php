@@ -86,38 +86,36 @@ if (isset($_GET['userToGet'])) {
                     <h1 class="text-center">Overview</h1>
                 </header>
                 <div class="container">
-                <div class="container general-overview"> 
-                    <div class="row mb-2">
-                        <div class="col-md-12">
-                            <div class="box bg-light-grey p-3 d-flex flex-column align-items-center justify-content-center">
-                                <div class="hours-info" id="overviewHoursSummary">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-2">
-                        <div class="col-md-12">
-                            <div class="box bg-light-grey p-3 d-flex flex-column align-items-center justify-content-center">
-                                <div class="circle-percentage d-flex flex-column align-items-center justify-content-center">
-                                    <span id="taskCompletionText">Current task completion: </span>
-                                    <span id="overviewPercentageNumber" class="percentage-number"></span>%
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                        
-                    <div class="row mb-2">
-                        <div class="col-md-12">
-                            <div class="box bg-light-grey p-3 d-flex flex-column align-items-center justify-content-center">
-                                <div class="hours-left d-flex flex-column align-items-center justify-content-center">
-                                    <div id="overviewTaskProjectInfo" class="taskProjectInfo">
+                    <div class="container general-overview"> 
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="box bg-light-grey p-3">
+                                    <div class="hours-info" id="overviewHoursSummary">
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="box bg-light-grey p-3">
+                                        <span>Current task completion: </span>
+                                        <span id="overviewPercentageNumber" class="percentage-number"></span>%
+                                </div>
+                            </div>
+                        </div>
+                            
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="box bg-light-grey p-3">
+                                        <div id="overviewTaskProjectInfo" class="taskProjectInfo">
+                                        </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
 
 
             <?php
