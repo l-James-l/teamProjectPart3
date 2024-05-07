@@ -1,5 +1,5 @@
 function fetchUserData(userID, callback) {
-    fetch(`api/getUserDetails.php?userID=${userID}`)
+    fetch(`apis/getUserDetails.php?userID=${userID}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
