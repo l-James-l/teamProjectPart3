@@ -70,9 +70,11 @@ session_start();
             if (selectedChatId) {
                 loadChatMessages(selectedChatId);
                 highlightSelectedChat(selectedChatId);
+                fetchMessages(); // Start fetching new messages
 
             }
         });
+
 
 
         function sendMessage(event) {
@@ -130,6 +132,7 @@ session_start();
         function fetchMessages() {
             var chatContainer = document.getElementById('chat-section');
             var xhr = new XMLHttpRequest();
+            var lastMessageId = getLastMessageId(); // Implement a function to get the ID of the last displayed message
             xhr.open('GET', 'fetch-chats.php?user_id=<?php echo $user_id; ?>', true);
 
             xhr.onreadystatechange = function() {
@@ -150,6 +153,8 @@ session_start();
             };
             xhr.send();
         }
+
+
 
         function updateChatUI(messages, userId) {
             var chatSection = document.getElementById("chat-section");
@@ -188,6 +193,11 @@ session_start();
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
                             updateMessageListUI(response.chats, chatListContainer); // Update UI with fetched chats
+                            
+                            // Fetch new messages for the first chat
+                            if (response.chats.length > 0) {
+                                fetchNewMessages(response.chats[0].chat_id); // Fetch messages for the first chat
+                            }
                         } else {
                             console.error('Error fetching chats:', response.message);
                         }
@@ -198,6 +208,18 @@ session_start();
             };
             xhr.send();
         }
+
+        function getLastMessageId() {
+            // Assuming your messages have a unique ID assigned to them, you can retrieve the ID of the last displayed message
+            var lastMessageElement = document.querySelector(".chat-section .message-container:last-child");
+            if (lastMessageElement) {
+                return lastMessageElement.dataset.messageId; // Assuming the message ID is stored in a 'data-message-id' attribute
+            } else {
+                return null; // If no messages are displayed, return null
+            }
+        }
+
+
 
 
         // Function to update the message list UI with fetched chats
