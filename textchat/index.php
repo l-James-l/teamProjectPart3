@@ -67,6 +67,7 @@ session_start();
                 loadChatMessages(selectedChatId);
                 highlightSelectedChat(selectedChatId);
                 fetchMessages(); // Start fetching new messages
+                fetchChats(); // Start fetching new messages
 
                 // Auto-update messages every 5 seconds (adjust interval as needed)
                 setInterval(fetchMessages, 5000);
