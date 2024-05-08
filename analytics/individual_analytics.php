@@ -3,13 +3,18 @@ session_start();
 
 if (!isset($_SESSION["user_id"])) {
     header("location: ../src/login.php");
-    exit(); // Ensure no further code is executed after redirect
-}
+} 
 
-if (isset($_GET["page"])) {
-    $page = $_GET["page"];
+if (isset($_GET['userToGet'])) {
+    $userID = $_GET['userToGet'];
+    if (isset($_GET['page'])) {
+        $page = $_GET['page'];
+    } else {
+        $page = 'overview';  
+    }
+    
 } else {
-    $page = "overview";
+    header("location: ./analytics_landing_page.php");
 }
 ?>
 
@@ -20,11 +25,16 @@ if (isset($_GET["page"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics Landing Page</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="stylesheets/analytics_landing_page.css">
+    <link rel="stylesheet" href="stylesheets/user_analytics.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/individual_handler.js"></script>
 </head>
+
+
 <body>
+<script>
+    fetchUserData(<?php echo $userID ?>, updateUserData);
+</script>
     <?php
     $currentPage = "analytics"; 
     include "../src/header.php"; 
@@ -35,13 +45,13 @@ if (isset($_GET["page"])) {
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="?projectToGet=<?php echo $_GET['projectToGet'] ?? '' ?>&page=overview" class="nav-link <?php echo $page == "overview" ? "active" : "link-dark" ?>" aria-current="page">
+                    <a href="?userToGet=<?php echo $_GET['userToGet'] ?? '' ?>&page=overview" class="nav-link <?php echo $page == "overview" ? "active" : "link-dark" ?>" aria-current="page">
                         <i class="bi bi-folder-fill"></i>
                         Overview
                     </a>
                 </li>
                 <li>
-                    <a href="?projectToGet=<?php echo $_GET['projectToGet'] ?? '' ?>&page=tasks" class="nav-link <?php echo $page == "tasks" ? "active" : "link-dark" ?>">
+                    <a href="?userToGet=<?php echo $_GET['userToGet'] ?? '' ?>&page=tasks" class="nav-link <?php echo $page == "tasks" ? "active" : "link-dark" ?>">
                         <i class="bi bi-list-check"></i>
                         Tasks
                     </a>
@@ -53,34 +63,32 @@ if (isset($_GET["page"])) {
             <?php if ($page == "overview") { ?>
                 <div class="col-md-9">
                     <header class="mb-3">
-                        <h1 class="overviewhead">Overview</h1>
+                        <h1 class="sectionT" id="fullName"></h1>
+                        <h2 id="role" class="subheadingT"></h2>
                     </header>
                     <div class="container">
-                        <div class="container general-overview"> 
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <div class="box bg-light-grey p-3">
-                                        <div class="hours-info" id="overviewHoursSummary">
-                                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="statBox bg-light-grey p-3">
+                                    <div class="hours-info" id="overviewHoursSummary">
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="statBox bg-light-grey p-3">
+                                    <span>Current task completion: </span>
+                                    <span id="overviewPercentageNumber" class="percentage-number"></span>
+                                </div>
+                            </div>
+                        </div>
                             
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <div class="box bg-light-grey p-3">
-                                            <span>Current task completion: </span>
-                                            <span id="overviewPercentageNumber" class="percentage-number"></span>
-                                    </div>
-                                </div>
-                            </div>
-                                
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <div class="box bg-light-grey p-3">
-                                            <div id="overviewTaskProjectInfo" class="taskProjectInfo">
-                                                <!-- Dynamic project info content -->
-                                            </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="statBox bg-light-grey p-3">
+                                    <div id="overviewTaskProjectInfo" class="taskProjectInfo">
                                     </div>
                                 </div>
                             </div>
@@ -88,8 +96,55 @@ if (isset($_GET["page"])) {
                     </div>
                 </div>
             <?php } elseif ($page == "tasks") { ?>
-                <h2>Tasks</h2>
-                <!-- Content for Tasks -->
+                <header class="main-content-header">
+                    <h1 class = "sectionT">Tasks</h1>
+                </header>
+                <div class="task-container">
+                    <?php
+                    $servername = "localhost";
+                    $username = "phpUser";
+                    $password = "p455w0rD";
+                    $dbname = "make_it_all";  
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
+
+                    $sql = "SELECT t.task_title, p.project_title, t.due_date, t.priority, t.est_length, t.completion_percentage 
+                            FROM task t 
+                            INNER JOIN project p ON t.project_ID = p.project_ID
+                            WHERE t.user_ID = ?";
+                    $stmt = $conn->prepare($sql);
+                    if ($stmt === false) {
+                        die('MySQL prepare error: ' . $conn->error);
+                    }
+                    $stmt->bind_param('i', $userID);
+                    $stmt->execute();
+                    $stmt->bind_result($taskName, $projectName, $dueDate, $priority, $estimatedLength, $completionPercentage);
+
+                    while ($stmt->fetch()) {
+                        ?>
+                        <div class="task-box bg-light border rounded p-3 mb-2">
+                            <div class="task-info">
+                                <h5 class="task-name">Task: <?php echo htmlspecialchars($taskName); ?></h5>
+                                <h5 class="project-name">Project: <?php echo htmlspecialchars($projectName); ?></h5>
+                                <p class="task-due-date">Due Date: <?php echo htmlspecialchars($dueDate); ?></p>
+                                <p class="task-priority">Priority: <?php echo htmlspecialchars($priority); ?></p>
+                                <p class="task-length">Estimated Length: <?php echo htmlspecialchars($estimatedLength); ?> hours</p>
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar" role="progressbar" style="width: <?php echo htmlspecialchars($completionPercentage); ?>%;" aria-valuenow="<?php echo htmlspecialchars($completionPercentage); ?>" aria-valuemin="0" aria-valuemax="100">
+                                        <?php echo htmlspecialchars($completionPercentage); ?>% Complete
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                    }
+
+                    $stmt->close();
+                    $conn->close();
+                    ?>
+                </div>
             <?php } ?>
         </div>
     </div>

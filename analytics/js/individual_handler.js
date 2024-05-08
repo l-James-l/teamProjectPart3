@@ -17,8 +17,23 @@ function fetchUserData(userID, callback) {
 
 function updateUserData(userData) {
 
-    document.getElementById('fullName').innerText = userData.data.userDetails.fullName;
-    document.getElementById('role').innerText = userData.data.userDetails.role;
+    document.getElementById('fullName').innerText = "Overview - " + userData.data.userDetails.fullName;
+    
+    var roleText = '';
+    switch (userData.data.userDetails.role) {
+        case 'Mgr':
+            roleText = 'Manager';
+            break;
+        case 'Emp':
+            roleText = 'Employee';
+            break;
+        case 'TL':
+            roleText = 'Team Leader';
+            break;
+        default:
+            roleText = 'Role Undefined'; 
+    }
+    document.getElementById('role').innerText = roleText;
 
     var hoursCompleted = userData.data.statistics.hoursDone;
     var hoursRemaining = userData.data.statistics.hoursLeft;
@@ -27,7 +42,7 @@ function updateUserData(userData) {
 
     var completionPercentage = userData.data.statistics.overallCompletion;
     var percentageElement = document.getElementById('overviewPercentageNumber');
-    percentageElement.innerText = completionPercentage + '%'; 
+    percentageElement.innerText = completionPercentage + '%';
     percentageElement.style.fontWeight = 'bold';
 
     if (completionPercentage < 40) {
@@ -43,5 +58,6 @@ function updateUserData(userData) {
     var taskProjectInfoElement = document.getElementById('overviewTaskProjectInfo');
     taskProjectInfoElement.innerText = `${taskCount} tasks assigned across ${projectCount} projects`;
 }
+
 
 
