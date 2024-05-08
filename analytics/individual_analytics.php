@@ -64,33 +64,31 @@ if (isset($_GET['userToGet'])) {
                 <div class="col-md-9">
                     <header class="mb-3">
                         <h1 class="sectionT" id="fullName"></h1>
-                        <h2 id="role" class="subheading"></h2>
+                        <h2 id="role" class="subheadingT"></h2>
                     </header>
                     <div class="container">
-                        <div class="container general-overview"> 
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <div class="box bg-light-grey p-3">
-                                        <div class="hours-info" id="overviewHoursSummary">
-                                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="statBox bg-light-grey p-3">
+                                    <div class="hours-info" id="overviewHoursSummary">
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="statBox bg-light-grey p-3">
+                                    <span>Current task completion: </span>
+                                    <span id="overviewPercentageNumber" class="percentage-number"></span>
+                                </div>
+                            </div>
+                        </div>
                             
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <div class="box bg-light-grey p-3">
-                                            <span>Current task completion: </span>
-                                            <span id="overviewPercentageNumber" class="percentage-number"></span>
-                                    </div>
-                                </div>
-                            </div>
-                                
-                            <div class="row mb-2">
-                                <div class="col-md-12">
-                                    <div class="box bg-light-grey p-3">
-                                            <div id="overviewTaskProjectInfo" class="taskProjectInfo">
-                                            </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <div class="statBox bg-light-grey p-3">
+                                    <div id="overviewTaskProjectInfo" class="taskProjectInfo">
                                     </div>
                                 </div>
                             </div>
