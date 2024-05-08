@@ -131,7 +131,7 @@ $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define 
                         console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
-                            updateChatUI(response.essages, <?php echo $user_id; ?>);
+                            updateChatUI(response.messages, <?php echo $user_id; ?>);
 
                         } else {
                             console.error('Error fetching messages:', response.message);
@@ -144,44 +144,29 @@ $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define 
             xhr.send();
         }
 
-        function updateChatUI(response) {
-    var chatSection = document.getElementById("chat-section");
-    chatSection.innerHTML = ''; // Clear existing messages
+        function updateChatUI(messages, userId) {
+            var chatSection = document.getElementById("chat-section");
+            chatSection.innerHTML = ''; // Clear existing messages
 
-    // Parse the response JSON
-    try {
-        var parsedResponse = JSON.parse(response);
-    } catch (error) {
-        console.error('Error parsing response JSON:', error);
-        return;
-    }
+            messages.forEach(function(message) {
+                var messageDiv = document.createElement("div");
+                var messageType = message.user_id == userId ? "outgoing" : "incoming";
+                messageDiv.classList.add("message-container", messageType);
+                var messageContent = messageDiv.appendChild(document.createElement("div"));
+                messageContent.classList.add(messageType + "-message");
+                messageContent.textContent = message.message; // assuming message field contains the message content
 
-    // Check if the response contains a "messages" array
-    if (parsedResponse && parsedResponse.messages && Array.isArray(parsedResponse.messages)) {
-        parsedResponse.messages.forEach(function(message) {
-            var messageDiv = document.createElement("div");
-            var messageType = message.user_id == userId ? "outgoing" : "incoming";
-            messageDiv.classList.add("message-container", messageType);
-            var messageContent = messageDiv.appendChild(document.createElement("div"));
-            messageContent.classList.add(messageType + "-message");
-            messageContent.textContent = message.message; // assuming message field contains the message content
+                if (message.user_id == userId) {
+                    var deleteBtn = document.createElement("button");
+                    deleteBtn.textContent = "Delete";
+                    deleteBtn.onclick = function() { deleteMessage(message.message_id); };
+                    messageDiv.appendChild(deleteBtn);
+                }
+                chatSection.appendChild(messageDiv);
+            });
 
-            if (message.user_id == userId) {
-                var deleteBtn = document.createElement("button");
-                deleteBtn.textContent = "Delete";
-                deleteBtn.onclick = function() { deleteMessage(message.message_id); };
-                messageDiv.appendChild(deleteBtn);
-            }
-            chatSection.appendChild(messageDiv);
-        });
-
-        scrollToBottom(); // Ensure the newest messages are visible
-    } else {
-        console.error('Error: Messages array is undefined or not an array in the response.');
-    }
-}
-
-
+            scrollToBottom(); // Ensure the newest messages are visible
+        }
 
 
         // Function to fetch chats from the server
@@ -289,7 +274,7 @@ $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define 
                         console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
-                            updateChatUI(response.essages, <?php echo $user_id; ?>);
+                            updateChatUI(response.messages, <?php echo $user_id; ?>);
                             document.getElementById("current-conversation-name").textContent = response.chat_name; // Update the chat name
 
                             // Remove the 'selected-chat' class from all chat previews
