@@ -1,11 +1,8 @@
 <?php
 session_start();
 
-if (isset($_GET["lf"])) {
-    $lf = $_GET["lf"];
-} else {
-    header("location: ?lf=projects");
-}
+$lf = $_GET["lf"];
+
     
 ?>
 
