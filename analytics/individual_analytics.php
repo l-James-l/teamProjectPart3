@@ -25,7 +25,7 @@ if (isset($_GET['userToGet'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics Landing Page</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="stylesheets/analytics_landing_page.css">
+    <link rel="stylesheet" href="stylesheets/individual.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/individual_handler.js"></script>
 </head>
@@ -98,8 +98,55 @@ if (isset($_GET['userToGet'])) {
                     </div>
                 </div>
             <?php } elseif ($page == "tasks") { ?>
-                <h2>Tasks</h2>
-                <!-- Content for Tasks -->
+                <header class="main-content-header">
+                    <h1>Tasks</h1>
+                </header>
+                <div class="task-container">
+                    <?php
+                    $servername = "localhost";
+                    $username = "phpUser";
+                    $password = "p455w0rD";
+                    $dbname = "make_it_all";  
+                    $conn = new mysqli($servername, $username, $password, $dbname);
+                    if ($conn->connect_error) {
+                        die("Connection failed: " . $conn->connect_error);
+                    }
+
+                    $sql = "SELECT t.task_title, p.project_title, t.due_date, t.priority, t.est_length, t.completion_percentage 
+                            FROM task t 
+                            INNER JOIN project p ON t.project_ID = p.project_ID
+                            WHERE t.user_ID = ?";
+                    $stmt = $conn->prepare($sql);
+                    if ($stmt === false) {
+                        die('MySQL prepare error: ' . $conn->error);
+                    }
+                    $stmt->bind_param('i', $userID);
+                    $stmt->execute();
+                    $stmt->bind_result($taskName, $projectName, $dueDate, $priority, $estimatedLength, $completionPercentage);
+
+                    while ($stmt->fetch()) {
+                        ?>
+                        <div class="task-box bg-light border rounded p-3 mb-2">
+                            <div class="task-info">
+                                <h5 class="task-name">Task: <?php echo htmlspecialchars($taskName); ?></h5>
+                                <h5 class="project-name">Project: <?php echo htmlspecialchars($projectName); ?></h5>
+                                <p class="task-due-date">Due Date: <?php echo htmlspecialchars($dueDate); ?></p>
+                                <p class="task-priority">Priority: <?php echo htmlspecialchars($priority); ?></p>
+                                <p class="task-length">Estimated Length: <?php echo htmlspecialchars($estimatedLength); ?> hours</p>
+                                <div class="progress" style="height: 20px;">
+                                    <div class="progress-bar" role="progressbar" style="width: <?php echo htmlspecialchars($completionPercentage); ?>%;" aria-valuenow="<?php echo htmlspecialchars($completionPercentage); ?>" aria-valuemin="0" aria-valuemax="100">
+                                        <?php echo htmlspecialchars($completionPercentage); ?>% Complete
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                    }
+
+                    $stmt->close();
+                    $conn->close();
+                    ?>
+                </div>
             <?php } ?>
         </div>
     </div>
