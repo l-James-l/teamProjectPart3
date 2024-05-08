@@ -144,29 +144,34 @@ $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define 
             xhr.send();
         }
 
-        function updateChatUI(messages, userId) {
+        function updateChatUI(response, userId) {
             var chatSection = document.getElementById("chat-section");
             chatSection.innerHTML = ''; // Clear existing messages
 
-            messages.forEach(function(message) {
-                var messageDiv = document.createElement("div");
-                var messageType = message.user_id == userId ? "outgoing" : "incoming";
-                messageDiv.classList.add("message-container", messageType);
-                var messageContent = messageDiv.appendChild(document.createElement("div"));
-                messageContent.classList.add(messageType + "-message");
-                messageContent.textContent = message.message; // assuming message field contains the message content
+            if (response && response.messages && Array.isArray(response.messages)) {
+                response.messages.forEach(function(message) {
+                    var messageDiv = document.createElement("div");
+                    var messageType = message.user_id == userId ? "outgoing" : "incoming";
+                    messageDiv.classList.add("message-container", messageType);
+                    var messageContent = messageDiv.appendChild(document.createElement("div"));
+                    messageContent.classList.add(messageType + "-message");
+                    messageContent.textContent = message.message; // assuming message field contains the message content
 
-                if (message.user_id == userId) {
-                    var deleteBtn = document.createElement("button");
-                    deleteBtn.textContent = "Delete";
-                    deleteBtn.onclick = function() { deleteMessage(message.message_id); };
-                    messageDiv.appendChild(deleteBtn);
-                }
-                chatSection.appendChild(messageDiv);
-            });
+                    if (message.user_id == userId) {
+                        var deleteBtn = document.createElement("button");
+                        deleteBtn.textContent = "Delete";
+                        deleteBtn.onclick = function() { deleteMessage(message.message_id); };
+                        messageDiv.appendChild(deleteBtn);
+                    }
+                    chatSection.appendChild(messageDiv);
+                });
 
-            scrollToBottom(); // Ensure the newest messages are visible
+                scrollToBottom(); // Ensure the newest messages are visible
+            } else {
+                console.error('Error: Messages array is undefined or not an array in the response.');
+            }
         }
+
 
 
         // Function to fetch chats from the server
