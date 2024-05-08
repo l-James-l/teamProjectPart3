@@ -16,7 +16,7 @@ session_start();
         $currentPage = "chat";
         include "../src/header.php";
     } else {
-        header("location: login.php");
+        header("location: ../login.php");
     }
     $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define $user_id
     ?>
