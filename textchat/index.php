@@ -144,33 +144,43 @@ $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define 
             xhr.send();
         }
 
-        function updateChatUI(response, userId) {
-            var chatSection = document.getElementById("chat-section");
-            chatSection.innerHTML = ''; // Clear existing messages
+        function updateChatUI(response) {
+    var chatSection = document.getElementById("chat-section");
+    chatSection.innerHTML = ''; // Clear existing messages
 
-            if (response && response.messages && Array.isArray(response.messages)) {
-                response.messages.forEach(function(message) {
-                    var messageDiv = document.createElement("div");
-                    var messageType = message.user_id == userId ? "outgoing" : "incoming";
-                    messageDiv.classList.add("message-container", messageType);
-                    var messageContent = messageDiv.appendChild(document.createElement("div"));
-                    messageContent.classList.add(messageType + "-message");
-                    messageContent.textContent = message.message; // assuming message field contains the message content
+    // Parse the response JSON
+    try {
+        var parsedResponse = JSON.parse(response);
+    } catch (error) {
+        console.error('Error parsing response JSON:', error);
+        return;
+    }
 
-                    if (message.user_id == userId) {
-                        var deleteBtn = document.createElement("button");
-                        deleteBtn.textContent = "Delete";
-                        deleteBtn.onclick = function() { deleteMessage(message.message_id); };
-                        messageDiv.appendChild(deleteBtn);
-                    }
-                    chatSection.appendChild(messageDiv);
-                });
+    // Check if the response contains a "messages" array
+    if (parsedResponse && parsedResponse.messages && Array.isArray(parsedResponse.messages)) {
+        parsedResponse.messages.forEach(function(message) {
+            var messageDiv = document.createElement("div");
+            var messageType = message.user_id == userId ? "outgoing" : "incoming";
+            messageDiv.classList.add("message-container", messageType);
+            var messageContent = messageDiv.appendChild(document.createElement("div"));
+            messageContent.classList.add(messageType + "-message");
+            messageContent.textContent = message.message; // assuming message field contains the message content
 
-                scrollToBottom(); // Ensure the newest messages are visible
-            } else {
-                console.error('Error: Messages array is undefined or not an array in the response.');
+            if (message.user_id == userId) {
+                var deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Delete";
+                deleteBtn.onclick = function() { deleteMessage(message.message_id); };
+                messageDiv.appendChild(deleteBtn);
             }
-        }
+            chatSection.appendChild(messageDiv);
+        });
+
+        scrollToBottom(); // Ensure the newest messages are visible
+    } else {
+        console.error('Error: Messages array is undefined or not an array in the response.');
+    }
+}
+
 
 
 
