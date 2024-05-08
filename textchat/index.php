@@ -12,12 +12,9 @@ session_start();
 </head>
 <body>
     <?php
-    if (isset($_SESSION["user_id"])) {
-        $currentPage = "chat";
-        include "../src/header.php";
-    } else {
-        header("location: ../login.php");
-    }
+    $currentPage = "chat";
+    include "../src/header.php";
+  
     $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define $user_id
     ?>
     <main>
