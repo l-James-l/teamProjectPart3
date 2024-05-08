@@ -65,7 +65,8 @@ $_SESSION['user_id'] = 4; // Assuming $user_id contains the user's ID
     <script>
 
         // Call fetchChats function when the page loads
-        fetchChats();
+        fetchChats(<?php echo $user_id; ?>);
+
 
         function sendMessage(event) {
             event.preventDefault(); // Prevent the default form submission
@@ -165,10 +166,10 @@ $_SESSION['user_id'] = 4; // Assuming $user_id contains the user's ID
 
 
         // Function to fetch chats from the server
-        function fetchChats() {
+        function fetchChats(userId) {
             var chatListContainer = document.querySelector('.message-list-sidebar-content'); // Adjust selector based on your HTML structure
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'fetch-chats.php?user_id=<?php echo $user_id; ?>', true);
+            xhr.open('GET', 'fetch-chats.php?user_id=' + userId, true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
@@ -186,6 +187,7 @@ $_SESSION['user_id'] = 4; // Assuming $user_id contains the user's ID
             };
             xhr.send();
         }
+
 
         // Function to update the message list UI with fetched chats
         function updateMessageListUI(chats, container) {
