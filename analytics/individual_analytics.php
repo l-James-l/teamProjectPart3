@@ -31,12 +31,10 @@ if (isset($_GET['userToGet'])) {
 </head>
 
 
+<body>
 <script>
     fetchUserData(<?php echo $userID ?>, updateUserData);
 </script>
-
-
-<body>
     <?php
     $currentPage = "analytics"; 
     include "../src/header.php"; 
@@ -65,8 +63,8 @@ if (isset($_GET['userToGet'])) {
             <?php if ($page == "overview") { ?>
                 <div class="col-md-9">
                     <header class="mb-3">
-                        <h1 class="overviewhead" id="fullnName"></h1>
-                        <h2 id="role" class="subheading">Role</h2>
+                        <h1 class="overviewhead" id="fullName"></h1>
+                        <h2 id="role" class="subheading"></h2>
                     </header>
                     <div class="container">
                         <div class="container general-overview"> 
