@@ -19,24 +19,24 @@ if ($conn === false) {
 $user_id = $_SESSION["user_id"];
 
 // Prepare the SQL statement
-$stmt = $conn->prepare("SELECT c.chat_id, 
-CASE 
-    WHEN c.is_group = 1 THEN c.chat_name 
-    ELSE (
-        SELECT GROUP_CONCAT(CONCAT(first_name, ' ', surname)) 
-        FROM users u 
-        INNER JOIN chat_relation cr2 ON u.user_id = cr2.user_id 
-        WHERE cr2.chat_id = c.chat_id AND u.user_id != ?
-    ) 
-END AS chat_name,
-MAX(cl.timestamp) AS recent_timestamp
-FROM chat c
-INNER JOIN chat_relation cr ON c.chat_id = cr.chat_id
-LEFT JOIN chat_log cl ON c.chat_id = cl.chat_id
-WHERE cr.user_id = ?
-GROUP BY c.chat_id, c.chat_name;"); 
+$sql = "SELECT c.chat_id, 
+        CASE 
+            WHEN c.is_group = 1 THEN c.chat_name 
+            ELSE (
+                SELECT GROUP_CONCAT(CONCAT(first_name, ' ', surname)) 
+                FROM users u 
+                INNER JOIN chat_relation cr2 ON u.user_id = cr2.user_id 
+                WHERE cr2.chat_id = c.chat_id AND u.user_id != ?
+            ) 
+        END AS chat_name,
+        MAX(cl.timestamp) AS recent_timestamp
+        FROM chat c
+        INNER JOIN chat_relation cr ON c.chat_id = cr.chat_id
+        LEFT JOIN chat_log cl ON c.chat_id = cl.chat_id
+        WHERE cr.user_id = ?
+        GROUP BY c.chat_id, c.chat_name"; 
 
-echo $sql;
+$stmt = $conn->prepare($sql); 
 
 if ($stmt === false) {
     // Handle prepare statement error
@@ -71,4 +71,7 @@ while ($row = $result->fetch_assoc()) {
 
 // Return the chats as JSON
 echo json_encode(array("status" => "success", "chats" => $chats));
+
+// Print the SQL statement to the PHP error log for debugging
+error_log("SQL Statement: " . $sql);
 ?>
