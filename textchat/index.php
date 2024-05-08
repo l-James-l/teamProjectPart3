@@ -1,13 +1,14 @@
-<!-- <?php
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
-// session_start()
-// if(isset($_SESSION['user_id'])) {
-//     include 'fetch-messages.php'; 
-// }
+<?php
 
-?> -->
+session_start();
+if(isset($_SESSION['user_id'])) {
+    include 'fetch-messages.php'; 
+}
+
+$user_id = 4;
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,21 +35,7 @@
             
             <div class="message-list-sidebar-content">
                 <p id="message-list-title">Messages</p>
-                
-                <!-- <div class="chat-preview selected-chat">
-                    <p class="chat-name">John Doe</p>
-                    <p class="chat-preview-text">Agreed. I'll prioritize the design revisions and coordinate with the design team to ensure we stay on track. Looking forward to a productive week!</p>
-                </div>
-        
-                <div class="chat-preview">
-                    <p class="chat-name">Alice Smith</p>
-                    <p class="chat-preview-text">Hey! How's it going with the project timeline?</p>
-                </div>
-        
-                <div class="chat-preview">
-                    <p class="chat-name">Bob Johnson</p>
-                    <p class="chat-preview-text">Sure thing! Let's catch up tomorrow at 2 PM.</p>
-                </div>         -->
+
             </div>
         </div>
         
@@ -155,7 +142,7 @@
 
             messages.forEach(function(message) {
                 var messageDiv = document.createElement("div");
-                var messageType = message.user_id == 1 ? "outgoing" : "incoming";
+                var messageType = message.user_id == userId ? "outgoing" : "incoming";
                 messageDiv.classList.add("message-container", messageType);
                 var messageContent = messageDiv.appendChild(document.createElement("div"));
                 messageContent.classList.add(messageType + "-message");
@@ -177,7 +164,7 @@
         function fetchChats() {
             var chatListContainer = document.querySelector('.message-list-sidebar-content'); // Adjust selector based on your HTML structure
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'fetch-chats.php?user_id=1', true); // Send user_id along with the request
+            xhr.open('GET', 'fetch-chats.php?user_id=<?php echo $user_id; ?>', true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
