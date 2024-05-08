@@ -63,7 +63,7 @@ if (isset($_GET['userToGet'])) {
             <?php if ($page == "overview") { ?>
                 <div class="col-md-9">
                     <header class="mb-3">
-                        <h1 class="overviewhead" id="fullName"></h1>
+                        <h1 class="sectionT" id="fullName"></h1>
                         <h2 id="role" class="subheading"></h2>
                     </header>
                     <div class="container">
