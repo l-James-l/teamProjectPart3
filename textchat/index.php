@@ -274,7 +274,7 @@ $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define 
                         console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
-                            updateChatUI(response.essages, <?php echo $user_id; ?>);
+                            updateChatUI(response.messages, <?php echo $user_id; ?>);
                             document.getElementById("current-conversation-name").textContent = response.chat_name; // Update the chat name
 
                             // Remove the 'selected-chat' class from all chat previews
