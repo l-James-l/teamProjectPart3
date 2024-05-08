@@ -21,6 +21,8 @@ if (isset($_GET["page"])) {
     <title>Analytics Landing Page</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="stylesheets/analytics_landing_page.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/individual_handler.js"></script>
 </head>
 <body>
     <?php
@@ -48,10 +50,43 @@ if (isset($_GET["page"])) {
             <hr>
         </div>
         <div class="main-content-container" style="padding: 20px; width: 100%;">
-            <!-- Content area for different pages -->
             <?php if ($page == "overview") { ?>
-                <h2>Overview</h2>
-                <!-- Content for Overview -->
+                <div class="col-md-9">
+                    <header class="mb-3">
+                        <h1 class="overviewhead">Overview</h1>
+                    </header>
+                    <div class="container">
+                        <div class="container general-overview"> 
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <div class="box bg-light-grey p-3">
+                                        <div class="hours-info" id="overviewHoursSummary">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <div class="box bg-light-grey p-3">
+                                            <span>Current task completion: </span>
+                                            <span id="overviewPercentageNumber" class="percentage-number"></span>
+                                    </div>
+                                </div>
+                            </div>
+                                
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <div class="box bg-light-grey p-3">
+                                            <div id="overviewTaskProjectInfo" class="taskProjectInfo">
+                                                <!-- Dynamic project info content -->
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <?php } elseif ($page == "tasks") { ?>
                 <h2>Tasks</h2>
                 <!-- Content for Tasks -->
@@ -61,4 +96,3 @@ if (isset($_GET["page"])) {
 </body>
 </html>
 
-</html>
