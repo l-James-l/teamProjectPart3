@@ -68,7 +68,7 @@ function updatePieChart(hoursCompleted, hoursRemaining) {
         labels: ['Hours Completed', 'Hours Remaining'],
         datasets: [{
             data: [hoursCompleted, hoursRemaining],
-            backgroundColor: ['#4CAF50', '#FFC107'],
+            backgroundColor: ['#4CAF50', '#FF0000'],
             borderColor: ['#fff'],
             borderWidth: 1
         }]
