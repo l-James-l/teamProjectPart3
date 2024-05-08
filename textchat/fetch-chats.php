@@ -25,7 +25,7 @@ $stmt = $conn->prepare("SELECT c.chat_id,
 CASE 
     WHEN c.is_group = 1 THEN c.chat_name 
     ELSE (
-        SELECT CONCAT(first_name, ' ', surname) 
+        SELECT GROUP_CONCAT(CONCAT(first_name, ' ', surname)) 
         FROM users u 
         INNER JOIN chat_relation cr2 ON u.user_id = cr2.user_id 
         WHERE cr2.chat_id = c.chat_id AND u.user_id != 1
@@ -36,7 +36,7 @@ FROM chat c
 INNER JOIN chat_relation cr ON c.chat_id = cr.chat_id
 LEFT JOIN chat_log cl ON c.chat_id = cl.chat_id
 WHERE cr.user_id = ?
-GROUP BY c.chat_id, c.chat_name"); 
+GROUP BY c.chat_id, c.chat_name;"); 
 
 if ($stmt === false) {
     // Handle prepare statement error
