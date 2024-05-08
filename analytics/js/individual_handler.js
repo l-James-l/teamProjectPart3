@@ -17,7 +17,7 @@ function fetchUserData(userID, callback) {
 
 function updateUserData(userData) {
 
-    document.getElementById('fullName').innerText = "Overview-" + userData.data.userDetails.fullName;
+    document.getElementById('fullName').innerText = "Overview - " + userData.data.userDetails.fullName;
     
     var roleText = '';
     switch (userData.data.userDetails.role) {
