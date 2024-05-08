@@ -28,6 +28,7 @@ if (isset($_GET['userToGet'])) {
     <link rel="stylesheet" href="stylesheets/user_analytics.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/individual_handler.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 
@@ -81,7 +82,7 @@ if (isset($_GET['userToGet'])) {
                 <div class="row mb-2">
                     <div class="col-md-12">
                         <div class="statBox bg-light-grey p-3">
-                            <span>Current task completion: </span>
+                            <span class = "percentage-number">Current task completion: </span>
                             <span id="overviewPercentageNumber" class="percentage-number"></span>
                         </div>
                     </div>

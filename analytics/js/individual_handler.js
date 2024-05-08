@@ -15,8 +15,8 @@ function fetchUserData(userID, callback) {
         });
 }
 
-function updateUserData(userData) {
 
+function updateUserData(userData) {
     document.getElementById('fullName').innerText = "Overview - " + userData.data.userDetails.fullName;
     
     var roleText = '';
@@ -57,6 +57,40 @@ function updateUserData(userData) {
     var projectCount = userData.data.statistics.projectCount;
     var taskProjectInfoElement = document.getElementById('overviewTaskProjectInfo');
     taskProjectInfoElement.innerText = `${taskCount} tasks assigned across ${projectCount} projects`;
+
+    updatePieChart(hoursCompleted, hoursRemaining);
+}
+
+function updatePieChart(hoursCompleted, hoursRemaining) {
+    var ctx = document.getElementById('taskCompletionPieChart').getContext('2d');
+    var totalHours = hoursCompleted + hoursRemaining;
+    var data = {
+        labels: ['Hours Completed', 'Hours Remaining'],
+        datasets: [{
+            data: [hoursCompleted, hoursRemaining],
+            backgroundColor: ['#4CAF50', '#FFC107'],
+            borderColor: ['#fff'],
+            borderWidth: 1
+        }]
+    };
+
+    if (window.pieChart) {
+        window.pieChart.data.datasets[0].data = [hoursCompleted, hoursRemaining];
+        window.pieChart.update();
+    } else {
+        window.pieChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+    }
 }
 
 
