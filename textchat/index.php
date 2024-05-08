@@ -61,7 +61,6 @@ session_start();
         fetchChats(<?php echo $user_id; ?>);
         <?php endif; ?>
 
-
         document.addEventListener("DOMContentLoaded", function () {
             var selectedChatId = localStorage.getItem('selectedChatId');
             if (selectedChatId) {
@@ -69,8 +68,11 @@ session_start();
                 highlightSelectedChat(selectedChatId);
                 fetchMessages(); // Start fetching new messages
 
+                // Auto-update messages every 5 seconds (adjust interval as needed)
+                setInterval(fetchMessages, 5000);
             }
         });
+
 
 
 
