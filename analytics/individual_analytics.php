@@ -62,39 +62,48 @@ if (isset($_GET['userToGet'])) {
         <div class="main-content-container" style="padding: 20px; width: 100%;">
             <?php if ($page == "overview") { ?>
                 <div class="col-md-9">
-                    <header class="mb-3">
-                        <h1 class="sectionT" id="fullName"></h1>
-                        <h2 id="role" class="subheadingT"></h2>
-                    </header>
-                    <div class="container">
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <div class="statBox bg-light-grey p-3">
-                                    <div class="hours-info" id="overviewHoursSummary">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <div class="statBox bg-light-grey p-3">
-                                    <span>Current task completion: </span>
-                                    <span id="overviewPercentageNumber" class="percentage-number"></span>
-                                </div>
-                            </div>
-                        </div>
-                            
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <div class="statBox bg-light-grey p-3">
-                                    <div id="overviewTaskProjectInfo" class="taskProjectInfo">
-                                    </div>
-                                </div>
+    <header class="mb-3">
+        <h1 class="sectionT" id="fullName"></h1>
+        <h2 id="role" class="subheadingT"></h2>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <div class="statBox bg-light-grey p-3">
+                            <div class="hours-info" id="overviewHoursSummary">
                             </div>
                         </div>
                     </div>
                 </div>
+                
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <div class="statBox bg-light-grey p-3">
+                            <span>Current task completion: </span>
+                            <span id="overviewPercentageNumber" class="percentage-number"></span>
+                        </div>
+                    </div>
+                </div>
+                    
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <div class="statBox bg-light-grey p-3">
+                            <div id="overviewTaskProjectInfo" class="taskProjectInfo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="pie-chart-box bg-light-grey p-3">
+                    <canvas id="taskCompletionPieChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
             <?php } elseif ($page == "tasks") { ?>
                 <header class="main-content-header">
                     <h1 class = "sectionT">Tasks</h1>
