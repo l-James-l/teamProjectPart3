@@ -19,8 +19,9 @@ if ($conn === false) {
 }
 
 // Check if a chat_id is provided
-if (isset($_GET['chat_id']) && !empty($_GET['chat_id'])) {
+if (isset($_GET['chat_id']) && !empty($_GET['user_id'])) {
     $chat_id = $_GET['chat_id'];
+    $user_id = $_GET['user_id'];
     
     // Prepare the SQL statement to prevent SQL injection
     $stmt = $conn->prepare("SELECT * FROM chat_log WHERE chat_id = ? AND user_id = ?");
