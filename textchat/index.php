@@ -65,7 +65,9 @@ $_SESSION['user_id'] = 4; // Assuming $user_id contains the user's ID
     <script>
 
         // Call fetchChats function when the page loads
+        <?php if(isset($user_id)): ?>
         fetchChats(<?php echo $user_id; ?>);
+        <?php endif; ?>
 
 
         function sendMessage(event) {
