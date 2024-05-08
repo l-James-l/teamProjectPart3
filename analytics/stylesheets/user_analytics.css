@@ -29,6 +29,8 @@
     border: 1px solid #ccc;
     margin-top: 20px;
     background-color: #f8f9fa;
+    height: 75%;
+    width: 80%;
 }
 
 .task-box {
