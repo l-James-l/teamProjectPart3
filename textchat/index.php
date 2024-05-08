@@ -6,6 +6,8 @@ if(isset($_SESSION['user_id'])) {
 }
 
 $_SESSION['user_id'] = 4; // Assuming $user_id contains the user's ID
+$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define $user_id
+
 
 
 
