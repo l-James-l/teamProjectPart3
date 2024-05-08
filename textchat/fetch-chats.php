@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
+session_start();
 $servername = "localhost";
 $username = "phpUser";
 $password = "p455w0rD";
@@ -17,7 +17,7 @@ if ($conn === false) {
 
 // Check if user_id is provided, otherwise set default to 1
 $user_id = $_SESSION["user_id"];
-$_SESSION["employee_id"] = $employee_id;
+
 // $is_group = isset($_GET['is_group']) ? $_GET['is_group'] : null;
 
 // Prepare the SQL statement
