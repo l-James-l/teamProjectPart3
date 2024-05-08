@@ -79,7 +79,7 @@ if (isset($_GET['userToGet'])) {
                         <div class="row mb-2">
                             <div class="col-md-12">
                                 <div class="statBox bg-light-grey p-3">
-                                    <span>Current task completion: </span>
+                                    <span class="percentage-number">Current task completion: </span>
                                     <span id="overviewPercentageNumber" class="percentage-number"></span>
                                 </div>
                             </div>
