@@ -5,7 +5,7 @@ if(isset($_SESSION['user_id'])) {
     include 'fetch-messages.php'; 
 }
 
-$user_id = 1;
+$user_id = 4;
 
 
 ?>
