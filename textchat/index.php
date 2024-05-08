@@ -126,7 +126,8 @@ $_SESSION['user_id'] = 4; // Assuming $user_id contains the user's ID
                         console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
-                            updateChatUI(response.messages);
+                            updateChatUI(response.essages, <?php echo $user_id; ?>);
+
                         } else {
                             console.error('Error fetching messages:', response.message);
                         }
@@ -138,7 +139,7 @@ $_SESSION['user_id'] = 4; // Assuming $user_id contains the user's ID
             xhr.send();
         }
 
-        function updateChatUI(messages) {
+        function updateChatUI(messages, userId) {
             var chatSection = document.getElementById("chat-section");
             chatSection.innerHTML = ''; // Clear existing messages
 
@@ -149,19 +150,19 @@ $_SESSION['user_id'] = 4; // Assuming $user_id contains the user's ID
                 var messageContent = messageDiv.appendChild(document.createElement("div"));
                 messageContent.classList.add(messageType + "-message");
                 messageContent.textContent = message.message; // assuming message field contains the message content
-               
-                if (message.user_id == <?php echo $user_id; ?>) {
 
-                var deleteBtn = document.createElement("button");
-                deleteBtn.textContent = "Delete";
-                deleteBtn.onclick = function() { deleteMessage(message.message_id); };
-                messageDiv.appendChild(deleteBtn);
-            }
+                if (message.user_id == userId) {
+                    var deleteBtn = document.createElement("button");
+                    deleteBtn.textContent = "Delete";
+                    deleteBtn.onclick = function() { deleteMessage(message.message_id); };
+                    messageDiv.appendChild(deleteBtn);
+                }
                 chatSection.appendChild(messageDiv);
             });
 
             scrollToBottom(); // Ensure the newest messages are visible
         }
+
 
         // Function to fetch chats from the server
         function fetchChats() {
@@ -267,7 +268,7 @@ $_SESSION['user_id'] = 4; // Assuming $user_id contains the user's ID
                         console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
-                            updateChatUI(response.messages);
+                            updateChatUI(response.essages, <?php echo $user_id; ?>);
                             document.getElementById("current-conversation-name").textContent = response.chat_name; // Update the chat name
 
                             // Remove the 'selected-chat' class from all chat previews
