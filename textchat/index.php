@@ -48,13 +48,13 @@ session_start();
   
             </div>
             
-            <div class="send-bar-section">
-                <form id="send-message-form" action="send-message.php" method="post" onsubmit="sendMessage(event)">
-                    <input type="hidden" name="chat_id" id="chat_id" value="1">
-                    <input type="text" name="message" id="message" placeholder="Type your message...">
-                    <button type="submit" id="send-message-button">Send message</button>
-                </form>  
-            </div>
+            <form id="send-message-form" action="send-message.php" method="post" onsubmit="sendMessage(event)">
+                <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_id; ?>">
+                <input type="hidden" name="chat_id" id="chat_id" value="">
+                <input type="text" name="message" id="message" placeholder="Type your message...">
+                <button type="submit" id="send-message-button">Send message</button>
+            </form>
+
         </div>
     </main>
     <script>
@@ -68,13 +68,13 @@ session_start();
         function sendMessage(event) {
             event.preventDefault(); // Prevent the default form submission
 
-            var chatId = document.getElementById("chat_id").value;
+            var chatId = document.querySelector('.chat-preview.selected-chat').dataset.chatId;
             var message = document.getElementById("message").value;
-            var userId = <?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'null'; ?>;
+            var userId = document.getElementById("user_id").value;
 
             // Basic validation
-            if (!message.trim() || !userId) {
-                console.log("Message or user ID is empty.");
+            if (!message.trim() || !userId || !chatId) {
+                console.log("Message, user ID, or chat ID is empty.");
                 return;
             }
 
@@ -106,6 +106,7 @@ session_start();
             // Clear the message input
             document.getElementById("message").value = '';
         }
+
 
 
         function addMessageToChat(message, type) {
