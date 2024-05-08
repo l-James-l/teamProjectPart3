@@ -3,16 +3,13 @@ session_start();
 
 if (!isset($_SESSION["user_id"])) {
     header("location: ../src/login.php");
-} 
+    exit(); // Ensure no further code is executed after redirect
+}
 
-if (isset($_GET['userToGet'])) {
-    $userID = $_GET['userToGet'];
-    if (!isset($_GET['page'])) {
-        $_GET['page'] = "overview";
-    }
-    
+if (isset($_GET["page"])) {
+    $page = $_GET["page"];
 } else {
-    header("location: ./analytics_landing_page.php");
+    $page = "overview";
 }
 ?>
 
@@ -21,176 +18,47 @@ if (isset($_GET['userToGet'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analytics Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="stylesheets/user_analytics.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/individual_handler.js"></script>
+    <title>Analytics Landing Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="stylesheets/analytics_landing_page.css">
 </head>
-
-<script>
-    fetchUserData(<?php echo $userID ?>, updateUserData);
-</script>
-
-
 <body>
+    <?php
+    $currentPage = "analytics"; 
+    include "../src/header.php"; 
+    ?>
 
-<header>
-    <div class="container header-container">
-        <img src="../src/imgs/logo.png" alt="Company Logo" id="page-logo">
-        
-        <div id ="fullName"  class="header-title"></div>
-        <div id = "role" class="header-subtitle"></div> 
-
-        <div class="dropdown">
-            <a href="#" class="d-block link-dark text-decoration-none user-dropdown dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="../src/imgs/icon.png" alt="mdo" width="42" height="42" class="rounded-circle">
-            </a>
-            <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                <li>
-                    <div class="dropdown-item dropdown-item-nohover">
-                        <div style="white-space: normal;">
-                            <img src="../src/imgs/icon.png" alt="mdo" width="32" height="32" class="rounded-circle">
-                            <span style="padding-left: 10px;">John Doe</span>
-                        </div>
-                        <span>johndoe@example.com</span>
-                    </div>
+    <div class="d-flex">
+        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light sidebar">
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="?projectToGet=<?php echo $_GET['projectToGet'] ?? '' ?>&page=overview" class="nav-link <?php echo $page == "overview" ? "active" : "link-dark" ?>" aria-current="page">
+                        <i class="bi bi-folder-fill"></i>
+                        Overview
+                    </a>
                 </li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="login.php">Sign out</a></li>
+                <li>
+                    <a href="?projectToGet=<?php echo $_GET['projectToGet'] ?? '' ?>&page=tasks" class="nav-link <?php echo $page == "tasks" ? "active" : "link-dark" ?>">
+                        <i class="bi bi-list-check"></i>
+                        Tasks
+                    </a>
+                </li>
             </ul>
+            <hr>
+        </div>
+        <div class="main-content-container" style="padding: 20px; width: 100%;">
+            <!-- Content area for different pages -->
+            <?php if ($page == "overview") { ?>
+                <h2>Overview</h2>
+                <!-- Content for Overview -->
+            <?php } elseif ($page == "tasks") { ?>
+                <h2>Tasks</h2>
+                <!-- Content for Tasks -->
+            <?php } ?>
         </div>
     </div>
-</header>
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3">
-            <div class="sidebar bg-light p-4">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a href="?userToGet=<?php echo $userID; ?>&page=overview" class="nav-link <?php echo isset($_GET['page']) && $_GET['page'] == 'overview' ? 'active' : ''; ?>">Overview</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="?userToGet=<?php echo $userID; ?>&page=tasks" class="nav-link <?php echo isset($_GET['page']) && $_GET['page'] == 'tasks' ? 'active' : ''; ?>">Tasks</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="col-md-9">
-            <?php
-            if (isset($_GET['page']) && $_GET['page'] == 'overview') {
-            ?>
-                <header class="mb-3">
-                    <h1 class="overviewhead">Overview</h1>
-                </header>
-                <div class="container">
-                    <div class="container general-overview"> 
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <div class="box bg-light-grey p-3">
-                                    <div class="hours-info" id="overviewHoursSummary">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <div class="box bg-light-grey p-3">
-                                        <span>Current task completion: </span>
-                                        <span id="overviewPercentageNumber" class="percentage-number"></span>
-                                </div>
-                            </div>
-                        </div>
-                            
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <div class="box bg-light-grey p-3">
-                                        <div id="overviewTaskProjectInfo" class="taskProjectInfo">
-                                        </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-            <?php
-            } elseif (isset($_GET['page']) && $_GET['page'] == 'tasks') {
-            ?>
-                <header class="main-content-header">
-                    <h1>Tasks</h1>
-                </header>
-                <div class="task-container">
-                    <?php
-                    $servername = "localhost";
-                    $username = "phpUser";
-                    $password = "p455w0rD";
-                    $dbname = "make_it_all";  
-                    $conn = new mysqli($servername, $username, $password, $dbname);
-                    if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
-
-                    $sql = "SELECT t.task_title, p.project_title, t.due_date, t.priority, t.est_length, t.completion_percentage 
-                            FROM task t 
-                            INNER JOIN project p ON t.project_ID = p.project_ID
-                            WHERE t.user_ID = ?";
-                    $stmt = $conn->prepare($sql);
-                    if ($stmt === false) {
-                        die('MySQL prepare error: ' . $conn->error);
-                    }
-                    $stmt->bind_param('i', $userID);
-                    $stmt->execute();
-                    $stmt->bind_result($taskName, $projectName, $dueDate, $priority, $estimatedLength, $completionPercentage);
-
-                    while ($stmt->fetch()) {
-                    ?>
-                        <div class="task-box bg-light border rounded p-3 mb-2">
-                            <div class="task-info">
-                                <h5 class="task-name">Task: <?php echo htmlspecialchars($taskName); ?></h5>
-                                <h5 class="project-name">Project: <?php echo htmlspecialchars($projectName); ?></h5>
-                                <p class="task-due-date">Due Date: <?php echo htmlspecialchars($dueDate); ?></p>
-                                <p class="task-priority">Priority: <?php echo htmlspecialchars($priority); ?></p>
-                                <p class="task-length">Estimated Length: <?php echo htmlspecialchars($estimatedLength); ?> hours</p>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar" role="progressbar" style="width: <?php echo htmlspecialchars($completionPercentage); ?>%;" aria-valuenow="<?php echo htmlspecialchars($completionPercentage); ?>" aria-valuemin="0" aria-valuemax="100">
-                                        <?php echo htmlspecialchars($completionPercentage); ?>% Complete
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php
-                    }
-
-                    $stmt->close();
-                    $conn->close();
-                    ?>
-                </div>
-            <?php
-            }
-            ?>
-        </div>
-    </div>
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const links = document.querySelectorAll('.nav-link');
-
-    links.forEach(link => {
-        link.addEventListener('click', function(e) {
-
-            links.forEach(lnk => lnk.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
-});
-</script>
-
 </body>
 </html>
 
+</html>
