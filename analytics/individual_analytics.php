@@ -3,13 +3,16 @@ session_start();
 
 if (!isset($_SESSION["user_id"])) {
     header("location: ../src/login.php");
-    exit(); // Ensure no further code is executed after redirect
-}
+} 
 
-if (isset($_GET["page"])) {
-    $page = $_GET["page"];
+if (isset($_GET['userToGet'])) {
+    $userID = $_GET['userToGet'];
+    if (!isset($_GET['page'])) {
+        $_GET['page'] = "overview";
+    }
+    
 } else {
-    $page = "overview";
+    header("location: ./analytics_landing_page.php");
 }
 ?>
 
@@ -24,6 +27,13 @@ if (isset($_GET["page"])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/individual_handler.js"></script>
 </head>
+
+
+<script>
+    fetchUserData(<?php echo $userID ?>, updateUserData);
+</script>
+
+
 <body>
     <?php
     $currentPage = "analytics"; 
@@ -35,13 +45,13 @@ if (isset($_GET["page"])) {
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="?projectToGet=<?php echo $_GET['projectToGet'] ?? '' ?>&page=overview" class="nav-link <?php echo $page == "overview" ? "active" : "link-dark" ?>" aria-current="page">
+                    <a href="?userToGet=<?php echo $_GET['userToGet'] ?? '' ?>&page=overview" class="nav-link <?php echo $page == "overview" ? "active" : "link-dark" ?>" aria-current="page">
                         <i class="bi bi-folder-fill"></i>
                         Overview
                     </a>
                 </li>
                 <li>
-                    <a href="?projectToGet=<?php echo $_GET['projectToGet'] ?? '' ?>&page=tasks" class="nav-link <?php echo $page == "tasks" ? "active" : "link-dark" ?>">
+                    <a href="?userToGet=<?php echo $_GET['userToGet'] ?? '' ?>&page=tasks" class="nav-link <?php echo $page == "tasks" ? "active" : "link-dark" ?>">
                         <i class="bi bi-list-check"></i>
                         Tasks
                     </a>
@@ -53,7 +63,8 @@ if (isset($_GET["page"])) {
             <?php if ($page == "overview") { ?>
                 <div class="col-md-9">
                     <header class="mb-3">
-                        <h1 class="overviewhead">Overview</h1>
+                        <h1 class="overviewhead" id="fullnName"></h1>
+                        <h2 id="role" class="subheading">Role</h2>
                     </header>
                     <div class="container">
                         <div class="container general-overview"> 
@@ -79,7 +90,6 @@ if (isset($_GET["page"])) {
                                 <div class="col-md-12">
                                     <div class="box bg-light-grey p-3">
                                             <div id="overviewTaskProjectInfo" class="taskProjectInfo">
-                                                <!-- Dynamic project info content -->
                                             </div>
                                     </div>
                                 </div>
