@@ -70,10 +70,11 @@ session_start();
 
             var chatId = document.getElementById("chat_id").value;
             var message = document.getElementById("message").value;
+            var userId = <?php echo isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'null'; ?>;
 
             // Basic validation
-            if (!message.trim()) {
-                console.log("Message is empty.");
+            if (!message.trim() || !userId) {
+                console.log("Message or user ID is empty.");
                 return;
             }
 
@@ -84,6 +85,7 @@ session_start();
             var formData = new FormData();
             formData.append('chat_id', chatId);
             formData.append('message', message);
+            formData.append('user_id', userId); // Add user ID to the form data
 
             // Create and send an AJAX request to send-message.php
             var xhr = new XMLHttpRequest();
@@ -104,6 +106,7 @@ session_start();
             // Clear the message input
             document.getElementById("message").value = '';
         }
+
 
         function addMessageToChat(message, type) {
             var chatSection = document.querySelector(".chat-section");
