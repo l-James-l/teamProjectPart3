@@ -69,6 +69,8 @@ session_start();
             var selectedChatId = localStorage.getItem('selectedChatId');
             if (selectedChatId) {
                 loadChatMessages(selectedChatId);
+                highlightSelectedChat(selectedChatId);
+
             }
         });
 
@@ -309,7 +311,20 @@ session_start();
             xhr.send();
         }
 
+        // Function to highlight the selected chat preview
+        function highlightSelectedChat(chatId) {
+            var selectedChatPreview = document.querySelector('.chat-preview[data-chat-id="' + chatId + '"]');
+            if (selectedChatPreview) {
+                // Remove highlighting from all chat previews
+                var chatPreviews = document.querySelectorAll('.chat-preview');
+                chatPreviews.forEach(function (chatPreview) {
+                    chatPreview.classList.remove('selected-chat');
+                });
 
+                // Add highlighting to the selected chat preview
+                selectedChatPreview.classList.add('selected-chat');
+            }
+        }
 
 
         // function sendMessage(event) {
