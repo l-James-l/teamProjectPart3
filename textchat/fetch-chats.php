@@ -36,7 +36,7 @@ LEFT JOIN chat_log cl ON c.chat_id = cl.chat_id
 WHERE cr.user_id = ?
 GROUP BY c.chat_id, c.chat_name;"); 
 
-echo "SQL Statement: " . $sql . "<br>";
+echo $sql;
 
 if ($stmt === false) {
     // Handle prepare statement error
