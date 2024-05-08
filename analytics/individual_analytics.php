@@ -7,8 +7,10 @@ if (!isset($_SESSION["user_id"])) {
 
 if (isset($_GET['userToGet'])) {
     $userID = $_GET['userToGet'];
-    if (!isset($_GET['page'])) {
-        $_GET['page'] = "overview";
+    if (isset($_GET['page'])) {
+        $page = $_GET['page'];
+    } else {
+        $page = 'overview';  
     }
     
 } else {
