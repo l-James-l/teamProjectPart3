@@ -1,16 +1,5 @@
 <?php
-
 session_start();
-if(isset($_SESSION['user_id'])) {
-    include 'fetch-messages.php'; 
-}
-
-$_SESSION['user_id'] = 4; // Assuming $user_id contains the user's ID
-$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define $user_id
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,11 +11,15 @@ $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define 
     <link rel="stylesheet" href="stylesheets/messaging-styles.css">
 </head>
 <body>
-    <header class="navbar">
-        <div class="nav-item">ANALYTICS</div>
-        <div class="nav-item">CHAT</div>
-        <div class="nav-circle"></div>
-    </header>
+    <?php
+    if (isset($_SESSION["user_id"])) {
+        $currentPage = "chat";
+        include "../src/header.php";
+    } else {
+        header("location: login.php");
+    }
+    $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define $user_id
+    ?>
     <main>
         <div class="groups-sidebar">
             <div class="groups-sidebar-item" >1-1</div>
