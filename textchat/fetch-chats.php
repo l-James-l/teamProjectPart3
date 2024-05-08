@@ -18,8 +18,6 @@ if ($conn === false) {
 // Check if user_id is provided, otherwise set default to 1
 $user_id = $_SESSION["user_id"];
 
-// $is_group = isset($_GET['is_group']) ? $_GET['is_group'] : null;
-
 // Prepare the SQL statement
 $stmt = $conn->prepare("SELECT c.chat_id, 
 CASE 
@@ -28,7 +26,7 @@ CASE
         SELECT GROUP_CONCAT(CONCAT(first_name, ' ', surname)) 
         FROM users u 
         INNER JOIN chat_relation cr2 ON u.user_id = cr2.user_id 
-        WHERE cr2.chat_id = c.chat_id AND u.user_id != 1
+        WHERE cr2.chat_id = c.chat_id AND u.user_id != ?
     ) 
 END AS chat_name,
 MAX(cl.timestamp) AS recent_timestamp
@@ -44,7 +42,7 @@ if ($stmt === false) {
     exit;
 }
 
-$stmt->bind_param("i", $user_id); // 'i' indicates integer type
+$stmt->bind_param("ii", $user_id, $user_id); // 'i' indicates integer type
 $stmt->execute();    
 
 $result = $stmt->get_result();
