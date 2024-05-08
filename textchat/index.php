@@ -220,6 +220,8 @@ session_start();
         }
 
 
+
+
         function deleteMessage(messageId) {
             var formData = new FormData();
             formData.append('message_id', messageId);
