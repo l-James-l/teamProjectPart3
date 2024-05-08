@@ -65,6 +65,14 @@ session_start();
         <?php endif; ?>
 
 
+        document.addEventListener("DOMContentLoaded", function () {
+            var selectedChatId = localStorage.getItem('selectedChatId');
+            if (selectedChatId) {
+                loadChatMessages(selectedChatId);
+            }
+        });
+
+
         function sendMessage(event) {
             event.preventDefault(); // Prevent the default form submission
 
@@ -267,7 +275,7 @@ session_start();
 
             var xhr = new XMLHttpRequest();
             xhr.open('GET', 'fetch-messages.php?chat_id=' + chatId, true);
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         console.log('Response:', xhr.responseText); // Log the response
@@ -278,7 +286,7 @@ session_start();
 
                             // Remove the 'selected-chat' class from all chat previews
                             var chatPreviews = document.querySelectorAll('.chat-preview');
-                            chatPreviews.forEach(function(chatPreview) {
+                            chatPreviews.forEach(function (chatPreview) {
                                 chatPreview.classList.remove('selected-chat');
                             });
 
@@ -287,6 +295,9 @@ session_start();
                             if (selectedChatPreview) {
                                 selectedChatPreview.classList.add('selected-chat');
                             }
+
+                            // Store the selected chat ID in local storage
+                            localStorage.setItem('selectedChatId', chatId);
                         } else {
                             console.error('Error fetching messages:', response.message);
                         }
