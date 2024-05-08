@@ -117,7 +117,8 @@ $user_id = 1;
         function fetchMessages() {
             var chatContainer = document.getElementById('chat-section');
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'fetch-messages.php?chat_id=1', true);
+            xhr.open('GET', 'fetch-chats.php?user_id=<?php echo $user_id; ?>', true);
+
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
@@ -148,7 +149,8 @@ $user_id = 1;
                 messageContent.classList.add(messageType + "-message");
                 messageContent.textContent = message.message; // assuming message field contains the message content
                
-                if (message.user_id == 1) {
+                if (message.user_id == <?php echo $user_id; ?>) {
+
                 var deleteBtn = document.createElement("button");
                 deleteBtn.textContent = "Delete";
                 deleteBtn.onclick = function() { deleteMessage(message.message_id); };
