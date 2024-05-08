@@ -21,10 +21,10 @@ function updateUserData(userData) {
     
     var roleText = '';
     switch (userData.data.userDetails.role) {
-        case 'mgr':
+        case 'Mgr':
             roleText = 'Manager';
             break;
-        case 'emp':
+        case 'Emp':
             roleText = 'Employee';
             break;
         case 'TL':
