@@ -48,7 +48,7 @@ function updateUserData(userData) {
     if (completionPercentage < 40) {
         percentageElement.style.color = 'red';
     } else if (completionPercentage >= 40 && completionPercentage <= 70) {
-        percentageElement.style.color = 'yellow';
+        percentageElement.style.color = 'orange';
     } else {
         percentageElement.style.color = 'green';
     }
