@@ -196,7 +196,7 @@ session_start();
                             
                             // Fetch new messages for the first chat
                             if (response.chats.length > 0) {
-                                fetchNewMessages(response.chats[0].chat_id); // Fetch messages for the first chat
+                                fetchMessages(response.chats[0].chat_id); // Fetch messages for the first chat
                             }
                         } else {
                             console.error('Error fetching chats:', response.message);
