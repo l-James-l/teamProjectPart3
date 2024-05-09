@@ -321,7 +321,6 @@ session_start();
             xhr.send();
         }
 
-
         function getLastMessageId() {
             // Assuming your messages have a unique ID assigned to them, you can retrieve the ID of the last displayed message
             var lastMessageElement = document.querySelector(".chat-section .message-container:last-child");
