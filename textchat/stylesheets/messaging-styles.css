@@ -291,3 +291,7 @@ main {
     text-align: center; /* Center the text */
     font-size: smaller; /* Smaller font size */
 }
+
+.sender-name {
+    font-size: 0.8rem;
+}
