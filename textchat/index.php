@@ -353,6 +353,14 @@ session_start();
                     // Message deleted successfully
                     console.log("Message deleted");
                     fetchMessages(); // Refresh messages to reflect deletion
+                    
+                    // Get the selected chat ID from local storage
+                    var selectedChatId = localStorage.getItem('selectedChatId');
+                    
+                    // If a chat is selected, reload its messages to ensure it's up to date
+                    if (selectedChatId) {
+                        loadChatMessages(selectedChatId);
+                    }
                 } else {
                     // Handle errors, such as message not found or server error
                     console.error('Failed to delete message:', this.status);
@@ -363,6 +371,7 @@ session_start();
             };
             xhr.send(formData);
         }
+
 
         function editMessage(messageId, messageDiv) {
             var messageText = messageDiv.textContent; 
