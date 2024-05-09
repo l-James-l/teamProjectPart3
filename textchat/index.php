@@ -260,15 +260,12 @@ session_start();
 
                 var messageTimestamp = document.createElement("div");
                 messageTimestamp.classList.add("message-timestamp");
-                messageTimestamp.textContent = formatTimestamp(message.timestamp); // Assuming 'timestamp' is the field name in the message object
+                messageTimestamp.textContent = formatTimestamp(message.timestamp);
 
-                
-                
-                var messageContent = messageDiv.appendChild(document.createElement("div"));
+                var messageContent = document.createElement("div");
                 messageContent.classList.add(messageType + "-message");
-                messageContent.textContent = message.message; // assuming message field contains the message content
+                messageContent.textContent = message.message;
 
-                
                 messageDiv.appendChild(messageContent);
 
 
@@ -299,15 +296,16 @@ session_start();
                 }
                 chatSection.appendChild(messageTimestamp);
                 chatSection.appendChild(messageDiv);
-                
+
                 // Display sender's name for incoming messages in group chats
                 if (messageType === 'incoming' && message.is_group) {
                     var senderName = document.createElement("div");
                     senderName.classList.add("sender-name");
-                    senderName.textContent = message.first_name + " " + message.surname; // Display the sender's first and last name
+                    senderName.textContent = message.first_name + " " + message.surname;
+                    messageDiv.appendChild(senderName); // Append senderName to messageDiv
                 }
-                chatSection.appendChild(senderName);
-
+                chatSection.appendChild(messageTimestamp);
+                chatSection.appendChild(messageDiv);
             });
 
             scrollToBottom(); // Ensure the newest messages are visible
