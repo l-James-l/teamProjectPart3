@@ -1,7 +1,21 @@
 <?php
 include_once(__DIR__ . '/../src/db_connection.php');
-$connection=mysqli_connect($servername,$username,$password,$dbname);
-$statement=mysqli_stmt_init($connection);
+// $connection=mysqli_connect($servername,$username,$password,$dbname);
+// $statement=mysqli_stmt_init($connection);
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+$servername = "localhost";
+$username = "phpUser";
+$password = "p455w0rD";
+$dbname = "make_it_all"; 
+$conn = mysqli_connect($servername, $username, $password, $dbname);
+
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(isset($_POST['message_id'])&& !empty($_POST['message_id'])) {
