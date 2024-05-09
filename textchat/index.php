@@ -171,8 +171,8 @@ session_start();
 
             // Clear the message input
             document.getElementById("message").value = '';
-            fetchMessages();
-            
+            updateChatUI();
+
         }
 
         function addMessageToChat(message, type) {
