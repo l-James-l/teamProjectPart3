@@ -413,7 +413,7 @@ session_start();
         // when the page is loaded, making the latest messages visible.
         document.addEventListener("DOMContentLoaded", function () {
             var oneToOneButton = document.getElementById('1-1');
-    v       ar messageListSidebar = document.querySelector('.message-list-sidebar');
+            var messageListSidebar = document.querySelector('.message-list-sidebar');
 
             // Attach event listener to the one-to-one button
             oneToOneButton.addEventListener('click', function() {
