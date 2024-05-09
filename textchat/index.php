@@ -396,7 +396,7 @@ session_start();
             }
         }
      
-            document.getElementById('editMessageForm').onsubmit = function(event) {
+        document.getElementById('editMessageForm').onsubmit = function(event) {
             event.preventDefault(); // Prevent the default form submission
 
             var messageId = document.getElementById('editMessageId').value;
@@ -426,7 +426,15 @@ session_start();
 
                     // Close the modal
                     document.getElementById('editMessageModal').style.display = "none";
-                    fetchMessages();
+                    fetchMessages(); // Refresh messages to reflect deletion
+                    
+                    // Get the selected chat ID from local storage
+                    var selectedChatId = localStorage.getItem('selectedChatId');
+                    
+                    // If a chat is selected, reload its messages to ensure it's up to date
+                    if (selectedChatId) {
+                        loadChatMessages(selectedChatId);
+                    }
                 } else {
                     console.error('Failed to edit message:', this.status, this.responseText);
                 }
