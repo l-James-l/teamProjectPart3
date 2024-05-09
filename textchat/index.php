@@ -302,12 +302,13 @@ session_start();
                 chatSection.appendChild(messageTimestamp);
                 chatSection.appendChild(messageDiv);
 
-                                // Display sender's name for incoming messages in group chats
-                                if (messageType === 'incoming' && message.is_group) {
+                // Display sender's name for incoming messages in group chats
+                if (messageType === 'incoming' && message.is_group) {
                     var senderName = document.createElement("div");
                     senderName.classList.add("sender-name");
                     senderName.textContent = message.first_name + " " + message.surname;
                     chatSection.appendChild(senderName);
+                    console.log(senderName);
 
 
                 }
