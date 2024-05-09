@@ -36,7 +36,7 @@ if ($conn) {
     $stmt = $stmt."group by users.user_id";
 
     if (!isset($_GET["sortValue"])) {
-        // do noting
+        $stmt = $stmt." order by users.surname";
     } else if ($_GET["sortValue"] == "first_name") {
         $stmt = $stmt." order by users.first_name";
     } else if ($_GET["sortValue"] == "surnmae") {
