@@ -26,14 +26,14 @@ session_start();
 
         <div class="message-list-sidebar">
             
-            <div id="oneToOneChats" class="message-list-sidebar-content">
-                    <p id="message-list-title">1-1 Chats</p>
+            <div class="message-list-sidebar-content">
+                    <p id="message-list-title">Messages</p>
 
                 </div>
             </div>
-            <div id="groupChats" class="message-list-sidebar-content">
+            <!-- <div class="message-list-sidebar-content">
                     <p id="message-list-title">Group Chats</p>
-            </div>
+            </div> -->
 
 
 
