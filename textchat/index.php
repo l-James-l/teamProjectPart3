@@ -252,11 +252,6 @@ session_start();
              // Debugging: Log the messages to the console
             console.log("Messages received:", messages);
 
-            if (!Array.isArray(messages)) {
-                console.error("Expected 'messages' to be an array, but received:", messages);
-                return; 
-            }
-
             messages.forEach(function(message) {
                 var messageDiv = document.createElement("div");
                 var messageType = message.user_id == userId ? "outgoing" : "incoming";
