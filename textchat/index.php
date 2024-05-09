@@ -23,15 +23,18 @@ session_start();
 
         </div>
 
-        <div class="message-list-sidebar">
+        <div>
             <div>
                 <p id="message-list-title">Messages</p>
                 <!-- add message button here -->
             </div>
-            
-            <div class="message-list-sidebar-content">
+            <div class="message-list-sidebar">
+               
                 
+                <div class="message-list-sidebar-content">
+                    
 
+                </div>
             </div>
         </div>
         
