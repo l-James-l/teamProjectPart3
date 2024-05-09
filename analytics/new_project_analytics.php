@@ -32,12 +32,9 @@ if (isset($_GET["page"]) && isset($_GET["projectToGet"])) {
 
 <body>
     <?php
-    if (isset($_SESSION["user_id"])) {
-        $currentPage = "analytics";
-        include "../src/header.php";
-    } else {
-        header("location: ../src/login.php");
-    }
+    // header handels the checking for login
+    $currentPage = "analytics";
+    include "../src/header.php";
     ?>
     
 
