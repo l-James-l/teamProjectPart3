@@ -171,6 +171,8 @@ session_start();
 
             // Clear the message input
             document.getElementById("message").value = '';
+            fetchMessages();
+            
         }
 
         function addMessageToChat(message, type) {
@@ -291,7 +293,6 @@ session_start();
             });
 
             scrollToBottom(); // Ensure the newest messages are visible
-            fetchMessages();
         }
 
         // Function to format timestamp for display
