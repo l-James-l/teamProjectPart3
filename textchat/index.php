@@ -291,6 +291,7 @@ session_start();
             });
 
             scrollToBottom(); // Ensure the newest messages are visible
+            fetchMessages();
         }
 
         // Function to format timestamp for display
