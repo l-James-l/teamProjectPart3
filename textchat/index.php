@@ -271,13 +271,14 @@ session_start();
                 
                 messageDiv.appendChild(messageContent);
 
-                // Display sender's name for outgoing messages
-                if (messageType === 'outgoing') {
+                // Display sender's name for incoming messages
+                if (messageType === 'incoming') {
                     var senderName = document.createElement("div");
                     senderName.classList.add("sender-name");
-                    senderName.textContent = "You"; // Assuming it's the current user sending the message
+                    senderName.textContent = message.first_name + " " + message.surname; // Display the sender's first and last name
                     messageDiv.appendChild(senderName);
                 }
+
 
                 if (message.user_id == userId) {
                     var deleteBtnSVG = `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256">
