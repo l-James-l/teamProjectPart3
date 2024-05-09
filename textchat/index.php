@@ -52,6 +52,18 @@ session_start();
                 <button type="submit" id="send-message-button">Send message</button>
             </form>
 
+            <div id="editMessageModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <form id="editMessageForm">
+                        <input type="hidden" id="editMessageId">
+                        <label for="editMessageText">Edit Message:</label>
+                        <input type="text" id="editMessageText" name="editMessageText">
+                        <button type="submit">Save</button>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </main>
     <script>
@@ -284,6 +296,24 @@ session_start();
             xhr.send(formData);
         }
 
+        function editMessage(messageId, messageDiv) {
+            var messageText = messageDiv.textContent; 
+
+            document.getElementById('editMessageText').value = messageText;
+            document.getElementById('editMessageId').value = messageId;
+            var modal = document.getElementById('editMessageModal');
+            modal.style.display = "block";
+            var span = document.getElementsByClassName("close")[0];
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
         // function editMessage(messageId) {
         //     var currentText = messageDiv.textContent;
         //     messageDiv.innerHTML = '';
