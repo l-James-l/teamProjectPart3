@@ -24,7 +24,11 @@ session_start();
             <!-- <a href="settings.html" class="groups-sidebar-item">Settings</a> -->
         </div>
         <div class="message-list-sidebar-container">
+            <div class="message-list-topbar">
+
+            </div>
             <p id="message-list-title">Messages</p>
+            <p>+</p>
             <div class="message-list-sidebar">
                     
                     <div class="message-list-sidebar-content">

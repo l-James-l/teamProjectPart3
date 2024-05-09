@@ -78,6 +78,11 @@ main {
     flex-direction: column;
 }
 
+.message-list-topbar {
+    display: flex;
+    justify-content: space-between;
+}
+
 .message-list-sidebar {
     height: 100%;
     width: 100%;
