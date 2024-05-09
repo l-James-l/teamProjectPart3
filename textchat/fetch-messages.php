@@ -21,7 +21,9 @@ if (isset($_GET['chat_id']) && !empty($_GET['chat_id'])) {
     $stmt = $conn->prepare("SELECT cl.message_id, cl.chat_id, cl.user_id, cl.message, cl.timestamp, u.first_name, u.surname 
     FROM chat_log cl
     JOIN users u ON cl.user_id = u.user_id
-    WHERE cl.chat_id = ?");
+    WHERE cl.chat_id = ?
+    ORDER BY cl.timestamp ASC"); // Change ASC to DESC if you want the newest messages first
+
 
     if ($stmt === false) {
         // Handle prepare statement error
