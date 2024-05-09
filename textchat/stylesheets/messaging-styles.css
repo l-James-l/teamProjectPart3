@@ -190,8 +190,8 @@ main {
 }
 
 #send-message-button svg {
-    width: 40px; /* Adjust the width as needed */
-    height: 40px; /* Adjust the height as needed */
+    width: 24px; /* Adjust the width as needed */
+    height: 24px; /* Adjust the height as needed */
 }
 
 .chat-section {
