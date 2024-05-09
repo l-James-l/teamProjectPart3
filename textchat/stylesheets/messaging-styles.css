@@ -76,6 +76,7 @@ main {
     max-height: 100%;
     max-width: 100%;
     flex-direction: column;
+    background-color: #f8f9fa;
 }
 
 .message-list-topbar {
