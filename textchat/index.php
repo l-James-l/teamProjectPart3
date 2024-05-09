@@ -207,6 +207,7 @@ session_start();
                 var messageTimestamp = document.createElement("div");
                 messageTimestamp.classList.add("message-timestamp");
                 messageTimestamp.textContent = formatTimestamp(message.timestamp); // Assuming 'timestamp' is the field name in the message object
+
                 
                 
                 var messageContent = messageDiv.appendChild(document.createElement("div"));

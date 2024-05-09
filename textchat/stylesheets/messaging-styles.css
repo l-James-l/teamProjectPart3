@@ -266,3 +266,8 @@ main {
     text-decoration: none;
     cursor: pointer;
 }
+
+.message-timestamp {
+    text-align: center; /* Center the text */
+    font-size: smaller; /* Smaller font size */
+}
