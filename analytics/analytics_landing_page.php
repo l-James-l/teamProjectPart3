@@ -1,7 +1,11 @@
 <?php
 session_start();
 
-$lf = $_GET["lf"];
+if (!isset($_GET["lf"])) {
+    $lf = $_GET["lf"];
+} else {
+    header("location: #?lf=projects");
+}
 
     
 ?>
@@ -24,12 +28,9 @@ $lf = $_GET["lf"];
 
 <body>
     <?php
-    if (isset($_SESSION["user_id"])) {
-        $currentPage = "analytics";
-        include "../src/header.php";
-    } else {
-        header("location: login.php");
-    }
+    // header handels the checking for login
+    $currentPage = "analytics";
+    include "../src/header.php";
     ?>
 
     <div>

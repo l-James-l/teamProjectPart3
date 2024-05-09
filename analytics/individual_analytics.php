@@ -1,9 +1,5 @@
 <?php
-session_start();
-
-if (!isset($_SESSION["user_id"])) {
-    header("location: ../src/login.php");
-} 
+session_start(); 
 
 if (isset($_GET['userToGet'])) {
     $userID = $_GET['userToGet'];
@@ -37,8 +33,9 @@ if (isset($_GET['userToGet'])) {
     fetchUserData(<?php echo $userID ?>, updateUserData);
 </script>
     <?php
-    $currentPage = "analytics"; 
-    include "../src/header.php"; 
+    // header handels the checking for login
+    $currentPage = "analytics";
+    include "../src/header.php";
     ?>
 
     <div class="d-flex">
