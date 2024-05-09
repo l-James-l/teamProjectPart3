@@ -188,6 +188,14 @@ session_start();
             var chatSection = document.getElementById("chat-section");
             chatSection.innerHTML = ''; // Clear existing messages
 
+             // Debugging: Log the messages to the console
+            console.log("Messages received:", messages);
+
+            if (!Array.isArray(messages)) {
+                console.error("Expected 'messages' to be an array, but received:", messages);
+                return; 
+            }
+
             messages.forEach(function(message) {
                 var messageDiv = document.createElement("div");
                 var messageType = message.user_id == userId ? "outgoing" : "incoming";
