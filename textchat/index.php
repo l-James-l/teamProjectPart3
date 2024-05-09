@@ -276,7 +276,6 @@ session_start();
                     var senderName = document.createElement("div");
                     senderName.classList.add("sender-name");
                     senderName.textContent = message.first_name + " " + message.surname; // Display the sender's first and last name
-                    messageDiv.appendChild(senderName);
                 }
 
 
@@ -306,6 +305,7 @@ session_start();
                 }
                 chatSection.appendChild(messageTimestamp);
                 chatSection.appendChild(messageDiv);
+                chatSection.appendChild(senderName);
 
             });
 
