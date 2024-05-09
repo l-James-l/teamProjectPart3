@@ -172,6 +172,7 @@ session_start();
             // Clear the message input
             document.getElementById("message").value = '';
 
+            fetchMessages();
             // Get the selected chat ID from local storage
             var selectedChatId = localStorage.getItem('selectedChatId');
         
