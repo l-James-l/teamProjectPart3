@@ -1,4 +1,5 @@
 <?php
+session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -15,35 +16,46 @@ if (!$conn) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if(isset($_POST['message_id'])&& !empty($_POST['message_id'])) {
-        if(isset($_POST['edited_message'])&&!empty($_POST['edited_message'])) {
-            //Update encrypted message variable once encryption is decided
+    if(isset($_POST['message_id'])&& !empty($_POST['message_id'])&& isset($_POST['edited_message']) && !empty($_POST['edited_message'])) {
             $messageId = $_POST['message_id'];
             $editedMessage = $_POST['edited_message'];
-            $userId = 1;
+            $userId = $_SESSION['user_id'] ?? 1;
 
-            
-            mysqli_stmt_prepare($statement,"UPDATE chat_log
-            SET encrypted_message=?
-            WHERE message_id=?
-            AND user_id=?");
-            mysqli_stmt_bind_param($statement,"sii",$_POST['edited_message'],$_POST['message_id'],$_SESSION['user_id']);
-            mysqli_stmt_execute($statement);
-            $affectedRows=mysqli_stmt_affected_rows($statement);
-            if($affectedRows==1) {
-                //Success
-            }
-            else if($affectedRows==0) {
-                //No message edited - no matching message
-                http_response_code(404);
-            }
-            else if($affectedRows==-1) {
-                //Query error
+            $stmt = mysqli_prepare($conn, "UPDATE chat_log SET message = ? WHERE message_id = ? AND user_id = ?");
+
+            if ($stmt === false) {
                 http_response_code(500);
+                echo json_encode(['error' => 'Failed to prepare the statement: ' . mysqli_error($conn)]);
+                exit;
             }
+    
+            mysqli_stmt_bind_param($stmt, "sii", $editedMessage, $messageId, $userId);
+            
+            if (mysqli_stmt_execute($stmt) === false) {
+                // Error executing the statement
+                http_response_code(500);
+                echo json_encode(['error' => 'Failed to execute the statement: ' . mysqli_stmt_error($stmt)]);
+                exit;
+            }
+    
+            $affectedRows = mysqli_stmt_affected_rows($stmt);
+    
+            if ($affectedRows > 0) {
+                echo json_encode(['success' => true, 'message' => 'Message updated successfully.']);
+            } else {
+                // No message found to update
+                http_response_code(404);
+                echo json_encode(['error' => 'No message edited - no matching message found or lack of permission.']);
+            }
+    
+            mysqli_stmt_close($stmt);
+        } else {
+            http_response_code(400);
+            echo json_encode(['error' => 'Message ID and Edited Message are required']);
         }
-        
+    } else {
+        http_response_code(400);
+        echo json_encode(['error' => 'Invalid request method']);
         
     }
-}
 ?>
