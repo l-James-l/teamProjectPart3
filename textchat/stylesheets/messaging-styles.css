@@ -60,12 +60,13 @@ main {
 .groups-sidebar-item {
     height: 60px;
     width: 60px;
-    border-radius: 100px;
+    border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 30px;
     padding: 1px solid #9A8399;
+    border: 1px solid black;
  
 }
 
