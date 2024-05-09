@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-if (!isset($_GET["lf"])) {
+if (isset($_GET["lf"])) {
     $lf = $_GET["lf"];
 } else {
-    header("location: #?lf=projects");
+    header("location: ?lf=projects");
 }
 
     
