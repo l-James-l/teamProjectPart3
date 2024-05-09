@@ -48,7 +48,7 @@ session_start();
             <form id="send-message-form" action="send-message.php" method="post" onsubmit="sendMessage(event)">
                 <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_id; ?>">
                 <input type="hidden" name="chat_id" id="chat_id" value="">
-                <input type="text" name="message" id="message" placeholder="Type your message...">
+                <input type="text" name="message" id="message" placeholder="Type your message..." class="send-message-field">
                 <button type="submit" id="send-message-button">Send message</button>
             </form>
 
