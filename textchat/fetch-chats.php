@@ -33,7 +33,7 @@ $sql = "SELECT c.chat_id,
         FROM chat c
         INNER JOIN chat_relation cr ON c.chat_id = cr.chat_id
         LEFT JOIN chat_log cl ON c.chat_id = cl.chat_id
-        WHERE cr.user_id = ?
+        WHERE cr.user_id = ? AND c.is_group = 0
         GROUP BY c.chat_id, c.is_group
         ORDER BY recent_timestamp DESC";
 
