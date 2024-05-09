@@ -69,26 +69,6 @@ session_start();
     </main>
     <script>
 
-        // var messageListSidebar = document.querySelector('.message-list-sidebar');
-
-        //         document.addEventListener("DOMContentLoaded", function () {
-        //             var oneToOneButton = document.getElementById('oneToOne');
-        //             var user_id = <?php echo json_encode($user_id); ?>;
-
-        //             // Ensure the "1-1" button can be pressed
-        //             oneToOneButton.addEventListener('click', function() {
-        //                 if (user_id) {
-        //                     fetchChats(user_id, false); // false for 1-1 chats
-        //                 }
-        //             });
-
-        //             var selectedChatId = localStorage.getItem('selectedChatId');
-        //             if (selectedChatId) {
-        //                 loadChatMessages(selectedChatId);
-        //                 highlightSelectedChat(selectedChatId);
-        //             }
-        //         });
-
         // Call fetchChats function when the page loads
         <?php if(isset($user_id)): ?>
         fetchChats(<?php echo $user_id; ?>);
@@ -103,9 +83,6 @@ session_start();
                 fetchMessages();
             }
         });
-
-
-
 
         function sendMessage(event) {
             event.preventDefault(); // Prevent the default form submission
@@ -149,8 +126,6 @@ session_start();
             document.getElementById("message").value = '';
         }
 
-
-
         function addMessageToChat(message, type) {
             var chatSection = document.querySelector(".chat-section");
             var messageDiv = document.createElement("div");
@@ -181,8 +156,6 @@ session_start();
             }
         }
 
-
-
         function fetchMessages() {
             var chatContainer = document.getElementById('chat-section');
             var xhr = new XMLHttpRequest();
@@ -207,8 +180,6 @@ session_start();
             };
             xhr.send();
         }
-
-
 
         function updateChatUI(messages, userId) {
             var chatSection = document.getElementById("chat-section");
@@ -236,11 +207,6 @@ session_start();
                 messageDiv.appendChild(messageContent);
 
                 if (message.user_id == userId) {
-                    // var deleteBtn = document.createElement("button");
-                    // deleteBtn.textContent = "Delete";
-                    // deleteBtn.onclick = function() { deleteMessage(message.message_id); };
-                    // messageDiv.appendChild(deleteBtn);
-
                     var deleteBtnSVG = `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256">
                     <g fill="#ff0000" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
                     <g transform="scale(8.53333,8.53333)">
@@ -270,7 +236,6 @@ session_start();
 
             scrollToBottom(); // Ensure the newest messages are visible
         }
-
 
         // Function to fetch chats from the server
         function fetchChats(userId,isGroup) {
@@ -311,9 +276,6 @@ session_start();
             }
         }
 
-
-
-
         // Function to update the message list UI with fetched chats
         function updateMessageListUI(chats, container) {
             container.innerHTML = ''; // Clear existing chat list
@@ -342,9 +304,6 @@ session_start();
                 container.appendChild(chatPreview);
             });
         }
-
-
-
 
         function deleteMessage(messageId) {
             var formData = new FormData();
