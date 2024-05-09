@@ -85,7 +85,7 @@ main {
     border-radius: 24px;
     border: 1px solid #9A8399;
     overflow-y: auto;
-    margin-bottom: 25px;
+    margin-bottom: 50px;
 }
 
 #message-list-title {
