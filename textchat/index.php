@@ -171,9 +171,6 @@ session_start();
 
             // Clear the message input
             document.getElementById("message").value = '';
-
-            fetchMessages();
-            updateChatUI();
             // Get the selected chat ID from local storage
             var selectedChatId = localStorage.getItem('selectedChatId');
         
@@ -181,6 +178,7 @@ session_start();
             if (selectedChatId) {
                 loadChatMessages(selectedChatId);
             }
+            updateChatUI();
 
         }
 
