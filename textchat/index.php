@@ -272,7 +272,7 @@ session_start();
                     
                     var deleteBtn = document.createElement("button");
                     deleteBtn.innerHTML = deleteBtnSVG;
-                    deleteBtn.classList.add("delete-button");
+                    // deleteBtn.classList.add("delete-button");
                     deleteBtn.onclick = function() { deleteMessage(message.message_id); };
                     messageDiv.appendChild(deleteBtn);
 
@@ -280,7 +280,7 @@ session_start();
 
                     var editBtn = document.createElement("button");
                     editBtn.innerHTML = editBtnSVG;
-                    editBtn.classList.add("delete-button");
+                    // editBtn.classList.add("delete-button");
                     editBtn.onclick = function() { editMessage(message.message_id, messageContent); };
                     messageDiv.appendChild(editBtn);
 
