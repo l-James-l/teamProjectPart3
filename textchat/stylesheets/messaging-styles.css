@@ -17,6 +17,8 @@ main {
     height: 100%;
     display: flex;
     flex-direction: row;
+    padding-top: 20px;
+
 
 }
 .navbar {
