@@ -159,7 +159,14 @@ session_start();
             xhr.onload = function () {
                 if (this.status === 200) {
                     console.log("Message sent successfully: ", this.responseText);
-                    // You may want to call scrollToBottom() to scroll the chat into view.
+                    // Get the selected chat ID from local storage
+                    var selectedChatId = localStorage.getItem('selectedChatId');
+                
+                    // If a chat is selected, reload its messages to ensure it's up to date
+                    if (selectedChatId) {
+                        loadChatMessages(selectedChatId);
+                    }
+                    scrollToBottom();
                 } else {
                     console.error('An error occurred during the AJAX request to send-message.php');
                 }
@@ -178,7 +185,6 @@ session_start();
             if (selectedChatId) {
                 loadChatMessages(selectedChatId);
             }
-            updateChatUI();
 
         }
 
