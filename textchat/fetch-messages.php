@@ -18,10 +18,11 @@ if ($conn === false) {
 if (isset($_GET['chat_id']) && !empty($_GET['chat_id'])) {
     $chat_id = $_GET['chat_id'];
     // Prepare the SQL statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT cl.message_id, cl.chat_id, cl.user_id, cl.message, cl.timestamp, cl.message_iv, u.first_name, u.last_name 
-                            FROM chat_log cl
-                            JOIN users u ON cl.user_id = u.user_id
-                            WHERE cl.chat_id = ?");
+    $stmt = $conn->prepare("SELECT cl.message_id, cl.chat_id, cl.user_id, cl.message, cl.timestamp, u.first_name, u.surname 
+    FROM chat_log cl
+    JOIN users u ON cl.user_id = u.user_id
+    WHERE cl.chat_id = ?");
+
     if ($stmt === false) {
         // Handle prepare statement error
         echo json_encode(array("status" => "error", "message" => "Prepare statement failed"));
