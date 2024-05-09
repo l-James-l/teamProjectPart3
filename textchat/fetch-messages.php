@@ -2,13 +2,13 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
+session_start();
 $servername = "localhost";
 $username = "phpUser";
 $password = "p455w0rD";
 $dbname = "make_it_all"; 
 $conn = mysqli_connect($servername, $username, $password, $dbname);
-
+$user_id = $_SESSION["user_id"];
 if ($conn === false) {
     // Handle database connection error
     echo json_encode(array("status" => "error", "message" => "Database connection failed"));
@@ -22,6 +22,7 @@ if (isset($_GET['chat_id']) && !empty($_GET['chat_id'])) {
     if ($stmt === false) {
         // Handle prepare statement error
         echo json_encode(array("status" => "error", "message" => "Prepare statement failed"));
+        echo $chat_id;
         exit;
     }
     

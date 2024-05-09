@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
+session_start();
 $servername = "localhost";
 $username = "phpUser";
 $password = "p455w0rD";
@@ -16,26 +16,27 @@ if ($conn === false) {
 }
 
 // Check if user_id is provided, otherwise set default to 1
-$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : 1;
-$is_group = isset($_GET['is_group']) ? $_GET['is_group'] : null;
+$user_id = $_SESSION["user_id"];
 
 // Prepare the SQL statement
-$stmt = $conn->prepare("SELECT c.chat_id, 
-CASE 
-    WHEN c.is_group = 1 THEN c.chat_name 
-    ELSE (
-        SELECT CONCAT(first_name, ' ', surname) 
-        FROM users u 
-        INNER JOIN chat_relation cr2 ON u.user_id = cr2.user_id 
-        WHERE cr2.chat_id = c.chat_id AND u.user_id != 1
-    ) 
-END AS chat_name,
-MAX(cl.timestamp) AS recent_timestamp
-FROM chat c
-INNER JOIN chat_relation cr ON c.chat_id = cr.chat_id
-LEFT JOIN chat_log cl ON c.chat_id = cl.chat_id
-WHERE cr.user_id = ?
-GROUP BY c.chat_id, c.chat_name"); 
+$sql = "SELECT c.chat_id, 
+        CASE 
+            WHEN c.is_group = 1 THEN c.chat_name 
+            ELSE (
+                SELECT GROUP_CONCAT(CONCAT(first_name, ' ', surname)) 
+                FROM users u 
+                INNER JOIN chat_relation cr2 ON u.user_id = cr2.user_id 
+                WHERE cr2.chat_id = c.chat_id AND u.user_id != ?
+            ) 
+        END AS chat_name,
+        MAX(cl.timestamp) AS recent_timestamp
+        FROM chat c
+        INNER JOIN chat_relation cr ON c.chat_id = cr.chat_id
+        LEFT JOIN chat_log cl ON c.chat_id = cl.chat_id
+        WHERE cr.user_id = ?
+        GROUP BY c.chat_id, c.chat_name"; 
+
+$stmt = $conn->prepare($sql); 
 
 if ($stmt === false) {
     // Handle prepare statement error
@@ -43,7 +44,7 @@ if ($stmt === false) {
     exit;
 }
 
-$stmt->bind_param("i", $user_id); // 'i' indicates integer type
+$stmt->bind_param("ii", $user_id, $user_id); // 'i' indicates integer type
 $stmt->execute();    
 
 $result = $stmt->get_result();
@@ -70,4 +71,7 @@ while ($row = $result->fetch_assoc()) {
 
 // Return the chats as JSON
 echo json_encode(array("status" => "success", "chats" => $chats));
+
+// Print the SQL statement to the PHP error log for debugging
+error_log("SQL Statement: " . $sql);
 ?>

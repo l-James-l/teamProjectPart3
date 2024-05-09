@@ -1,13 +1,6 @@
-<!-- <?php
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
-// session_start()
-// if(isset($_SESSION['user_id'])) {
-//     include 'fetch-messages.php'; 
-// }
-
-?> -->
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,11 +11,12 @@
     <link rel="stylesheet" href="stylesheets/messaging-styles.css">
 </head>
 <body>
-    <header class="navbar">
-        <div class="nav-item">ANALYTICS</div>
-        <div class="nav-item">CHAT</div>
-        <div class="nav-circle"></div>
-    </header>
+    <?php
+    $currentPage = "chat";
+    include "../src/header.php";
+  
+    $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define $user_id
+    ?>
     <main>
         <div class="groups-sidebar">
             <div class="groups-sidebar-item" >1-1</div>
@@ -34,21 +28,7 @@
             
             <div class="message-list-sidebar-content">
                 <p id="message-list-title">Messages</p>
-                
-                <!-- <div class="chat-preview selected-chat">
-                    <p class="chat-name">John Doe</p>
-                    <p class="chat-preview-text">Agreed. I'll prioritize the design revisions and coordinate with the design team to ensure we stay on track. Looking forward to a productive week!</p>
-                </div>
-        
-                <div class="chat-preview">
-                    <p class="chat-name">Alice Smith</p>
-                    <p class="chat-preview-text">Hey! How's it going with the project timeline?</p>
-                </div>
-        
-                <div class="chat-preview">
-                    <p class="chat-name">Bob Johnson</p>
-                    <p class="chat-preview-text">Sure thing! Let's catch up tomorrow at 2 PM.</p>
-                </div>         -->
+
             </div>
         </div>
         
@@ -65,29 +45,44 @@
   
             </div>
             
-            <div class="send-bar-section">
-                <form id="send-message-form" action="send-message.php" method="post" onsubmit="sendMessage(event)">
-                    <input type="hidden" name="chat_id" id="chat_id" value="1">
-                    <input type="text" name="message" id="message" placeholder="Type your message...">
-                    <button type="submit" id="send-message-button">Send message</button>
-                </form>  
-            </div>
+            <form id="send-message-form" action="send-message.php" method="post" onsubmit="sendMessage(event)">
+                <input type="hidden" name="user_id" id="user_id" value="<?php echo $user_id; ?>">
+                <input type="hidden" name="chat_id" id="chat_id" value="">
+                <input type="text" name="message" id="message" placeholder="Type your message...">
+                <button type="submit" id="send-message-button">Send message</button>
+            </form>
+
         </div>
     </main>
     <script>
 
         // Call fetchChats function when the page loads
-        fetchChats();
+        <?php if(isset($user_id)): ?>
+        fetchChats(<?php echo $user_id; ?>);
+        <?php endif; ?>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var selectedChatId = localStorage.getItem('selectedChatId');
+            if (selectedChatId) {
+                loadChatMessages(selectedChatId);
+                highlightSelectedChat(selectedChatId);
+                fetchMessages(); // Start fetching new messages
+            }
+        });
+
+
+
 
         function sendMessage(event) {
             event.preventDefault(); // Prevent the default form submission
 
-            var chatId = document.getElementById("chat_id").value;
+            var chatId = document.querySelector('.chat-preview.selected-chat').dataset.chatId;
             var message = document.getElementById("message").value;
+            var userId = document.getElementById("user_id").value;
 
             // Basic validation
-            if (!message.trim()) {
-                console.log("Message is empty.");
+            if (!message.trim() || !userId || !chatId) {
+                console.log("Message, user ID, or chat ID is empty.");
                 return;
             }
 
@@ -98,6 +93,7 @@
             var formData = new FormData();
             formData.append('chat_id', chatId);
             formData.append('message', message);
+            formData.append('user_id', userId); // Add user ID to the form data
 
             // Create and send an AJAX request to send-message.php
             var xhr = new XMLHttpRequest();
@@ -119,6 +115,8 @@
             document.getElementById("message").value = '';
         }
 
+
+
         function addMessageToChat(message, type) {
             var chatSection = document.querySelector(".chat-section");
             var messageDiv = document.createElement("div");
@@ -130,14 +128,17 @@
         function fetchMessages() {
             var chatContainer = document.getElementById('chat-section');
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'fetch-messages.php?chat_id=1', true);
+            var lastMessageId = getLastMessageId(); // Implement a function to get the ID of the last displayed message
+            xhr.open('GET', 'fetch-chats.php?user_id=<?php echo $user_id; ?>', true);
+
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
-                            updateChatUI(response.messages);
+                            updateChatUI(response.messages, <?php echo $user_id; ?>);
+
                         } else {
                             console.error('Error fetching messages:', response.message);
                         }
@@ -149,24 +150,26 @@
             xhr.send();
         }
 
-        function updateChatUI(messages) {
+
+
+        function updateChatUI(messages, userId) {
             var chatSection = document.getElementById("chat-section");
             chatSection.innerHTML = ''; // Clear existing messages
 
             messages.forEach(function(message) {
                 var messageDiv = document.createElement("div");
-                var messageType = message.user_id == 1 ? "outgoing" : "incoming";
+                var messageType = message.user_id == userId ? "outgoing" : "incoming";
                 messageDiv.classList.add("message-container", messageType);
                 var messageContent = messageDiv.appendChild(document.createElement("div"));
                 messageContent.classList.add(messageType + "-message");
                 messageContent.textContent = message.message; // assuming message field contains the message content
-               
-                if (message.user_id == 1) {
-                var deleteBtn = document.createElement("button");
-                deleteBtn.textContent = "Delete";
-                deleteBtn.onclick = function() { deleteMessage(message.message_id); };
-                messageDiv.appendChild(deleteBtn);
-            }
+
+                if (message.user_id == userId) {
+                    var deleteBtn = document.createElement("button");
+                    deleteBtn.textContent = "Delete";
+                    deleteBtn.onclick = function() { deleteMessage(message.message_id); };
+                    messageDiv.appendChild(deleteBtn);
+                }
                 chatSection.appendChild(messageDiv);
 
                 var editBtn = document.createElement("button");
@@ -181,11 +184,12 @@
             scrollToBottom(); // Ensure the newest messages are visible
         }
 
+
         // Function to fetch chats from the server
-        function fetchChats() {
+        function fetchChats(userId) {
             var chatListContainer = document.querySelector('.message-list-sidebar-content'); // Adjust selector based on your HTML structure
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'fetch-chats.php?user_id=1', true); // Send user_id along with the request
+            xhr.open('GET', 'fetch-chats.php?user_id=' + userId, true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
@@ -193,6 +197,11 @@
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
                             updateMessageListUI(response.chats, chatListContainer); // Update UI with fetched chats
+                            
+                            // Fetch new messages for the first chat
+                            if (response.chats.length > 0) {
+                                fetchMessages(response.chats[0].chat_id); // Fetch messages for the first chat
+                            }
                         } else {
                             console.error('Error fetching chats:', response.message);
                         }
@@ -203,6 +212,19 @@
             };
             xhr.send();
         }
+
+        function getLastMessageId() {
+            // Assuming your messages have a unique ID assigned to them, you can retrieve the ID of the last displayed message
+            var lastMessageElement = document.querySelector(".chat-section .message-container:last-child");
+            if (lastMessageElement) {
+                return lastMessageElement.dataset.messageId; // Assuming the message ID is stored in a 'data-message-id' attribute
+            } else {
+                return null; // If no messages are displayed, return null
+            }
+        }
+
+
+
 
         // Function to update the message list UI with fetched chats
         function updateMessageListUI(chats, container) {
@@ -232,6 +254,8 @@
                 container.appendChild(chatPreview);
             });
         }
+
+
 
 
         function deleteMessage(messageId) {
@@ -330,18 +354,18 @@
 
             var xhr = new XMLHttpRequest();
             xhr.open('GET', 'fetch-messages.php?chat_id=' + chatId, true);
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
-                            updateChatUI(response.messages);
+                            updateChatUI(response.messages, <?php echo $user_id; ?>);
                             document.getElementById("current-conversation-name").textContent = response.chat_name; // Update the chat name
 
                             // Remove the 'selected-chat' class from all chat previews
                             var chatPreviews = document.querySelectorAll('.chat-preview');
-                            chatPreviews.forEach(function(chatPreview) {
+                            chatPreviews.forEach(function (chatPreview) {
                                 chatPreview.classList.remove('selected-chat');
                             });
 
@@ -350,6 +374,9 @@
                             if (selectedChatPreview) {
                                 selectedChatPreview.classList.add('selected-chat');
                             }
+
+                            // Store the selected chat ID in local storage
+                            localStorage.setItem('selectedChatId', chatId);
                         } else {
                             console.error('Error fetching messages:', response.message);
                         }
@@ -361,7 +388,20 @@
             xhr.send();
         }
 
+        // Function to highlight the selected chat preview
+        function highlightSelectedChat(chatId) {
+            var selectedChatPreview = document.querySelector('.chat-preview[data-chat-id="' + chatId + '"]');
+            if (selectedChatPreview) {
+                // Remove highlighting from all chat previews
+                var chatPreviews = document.querySelectorAll('.chat-preview');
+                chatPreviews.forEach(function (chatPreview) {
+                    chatPreview.classList.remove('selected-chat');
+                });
 
+                // Add highlighting to the selected chat preview
+                selectedChatPreview.classList.add('selected-chat');
+            }
+        }
 
 
         // function sendMessage(event) {

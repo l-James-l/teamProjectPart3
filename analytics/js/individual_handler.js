@@ -15,23 +15,83 @@ function fetchUserData(userID, callback) {
         });
 }
 
-function updateUserData(userData){
-    document.getElementById('fullName').innerText = userData.data.userDetails.fullName;
-    document.getElementById('role').innerText = userData.data.userDetails.role;
 
-    document.getElementById('percentageNumber').innerText = userData.data.statistics.overallCompletion;
-    document.getElementById('percentageNumber').setAttribute('title', `Hours Done: ${userData.data.statistics.hoursDone}, Hours Left: ${userData.data.statistics.hoursLeft}`);
-    document.getElementById('hoursNumber').innerText = userData.data.statistics.hoursLeft;
-    document.getElementById('taskProjectInfo').innerText = `Current Tasks - ${userData.data.statistics.taskCount} across ${userData.data.statistics.projectCount} projects`;
+function updateUserData(userData) {
+    document.getElementById('fullName').innerText = "Overview - " + userData.data.userDetails.fullName;
+    
+    var roleText = '';
+    switch (userData.data.userDetails.role) {
+        case 'Mgr':
+            roleText = 'Manager';
+            break;
+        case 'Emp':
+            roleText = 'Employee';
+            break;
+        case 'TL':
+            roleText = 'Team Leader';
+            break;
+        default:
+            roleText = 'Role Undefined'; 
+    }
+    document.getElementById('role').innerText = roleText;
 
-    var circlePercentageElement = document.getElementById('circlePercentage');
-    if (userData.data.statistics.overallCompletion < 40) {
-        circlePercentageElement.style.backgroundColor = 'red';
-    } else if (userData.data.statistics.overallCompletion >= 40 && userData.data.statistics.overallCompletion <= 70) {
-        circlePercentageElement.style.backgroundColor = 'yellow';
+    var hoursCompleted = userData.data.statistics.hoursDone;
+    var hoursRemaining = userData.data.statistics.hoursLeft;
+    var hoursSummaryElement = document.getElementById('overviewHoursSummary');
+    hoursSummaryElement.innerText = `${hoursCompleted} hours completed, ${hoursRemaining} hours remaining`;
+
+    var completionPercentage = userData.data.statistics.overallCompletion;
+    var percentageElement = document.getElementById('overviewPercentageNumber');
+    percentageElement.innerText = completionPercentage + '%';
+    percentageElement.style.fontWeight = 'bold';
+
+    if (completionPercentage < 40) {
+        percentageElement.style.color = 'red';
+    } else if (completionPercentage >= 40 && completionPercentage <= 70) {
+        percentageElement.style.color = 'orange';
     } else {
-        circlePercentageElement.style.backgroundColor = 'green';
+        percentageElement.style.color = 'green';
+    }
+
+    var taskCount = userData.data.statistics.taskCount;
+    var projectCount = userData.data.statistics.projectCount;
+    var taskProjectInfoElement = document.getElementById('overviewTaskProjectInfo');
+    taskProjectInfoElement.innerText = `${taskCount} tasks assigned across ${projectCount} projects`;
+
+    updatePieChart(hoursCompleted, hoursRemaining);
+}
+
+function updatePieChart(hoursCompleted, hoursRemaining) {
+    var ctx = document.getElementById('taskCompletionPieChart').getContext('2d');
+    var totalHours = hoursCompleted + hoursRemaining;
+    var data = {
+        labels: ['Hours Completed', 'Hours Remaining'],
+        datasets: [{
+            data: [hoursCompleted, hoursRemaining],
+            backgroundColor: ['#4CAF50', '#FF0000'],
+            borderColor: ['#fff'],
+            borderWidth: 1
+        }]
+    };
+
+    if (window.pieChart) {
+        window.pieChart.data.datasets[0].data = [hoursCompleted, hoursRemaining];
+        window.pieChart.update();
+    } else {
+        window.pieChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
     }
 }
+
 
 
