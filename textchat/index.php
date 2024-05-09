@@ -81,18 +81,18 @@ session_start();
         <?php endif; ?>
 
         document.addEventListener("DOMContentLoaded", function () {
-            var oneToOneButton = document.getElementById('1-1');
-            var groupButton = document.querySelector('.groups-sidebar-item');
+            var oneToOneButton = document.querySelector('.groups-sidebar-item:nth-child(1)');
+            var groupButton = document.querySelector('.groups-sidebar-item:nth-child(2)');
 
-            oneToOneButton.addEventListener('click', function() {
+            // Attach event listener to the one-to-one button
+            oneToOneButton.addEventListener('click', function () {
                 if (<?php echo isset($user_id) ? 'true' : 'false'; ?>) {
                     fetchChats(<?php echo $user_id; ?>, false);  // Pass false to indicate 1-1 chats
                 }
             });
 
-
             // Attach event listener to the group button
-            groupButton.addEventListener('click', function() {
+            groupButton.addEventListener('click', function () {
                 if (<?php echo isset($user_id) ? 'true' : 'false'; ?>) {
                     fetchChats(<?php echo $user_id; ?>, true);  // Pass true to indicate group chats
                 }
@@ -113,6 +113,7 @@ session_start();
                 fetchMessages();
             }
         });
+
 
 
         function sendMessage(event) {
