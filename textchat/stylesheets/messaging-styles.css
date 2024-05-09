@@ -60,14 +60,12 @@ main {
 .groups-sidebar-item {
     height: 60px;
     width: 60px;
-    border-radius: 20px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 30px;
-    padding: 1px solid #9A8399;
-    border: 1px solid black;
- 
+    border: 1px solid #979797;
 }
 
 .message-list-sidebar-container {
