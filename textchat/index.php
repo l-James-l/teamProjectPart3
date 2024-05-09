@@ -19,19 +19,24 @@ session_start();
     ?>
     <main>
         <div class="groups-sidebar">
-            <div class="groups-sidebar-item" >1-1</div>
-            <div class="groups-sidebar-item" >Group</div>
+            <div class="groups-sidebar-item" id="oneToOneChatsButton">1-1</div>
+            <div class="groups-sidebar-item" id="groupChatsButton">Group</div>
             <a href="settings.html" class="groups-sidebar-item">Settings</a>
         </div>
 
         <div class="message-list-sidebar">
             
-            <div class="message-list-sidebar-content">
-                <p id="message-list-title">Messages</p>
+            <div id="oneToOneChats" class="message-list-sidebar-content">
+                    <p id="message-list-title">1-1 Chats</p>
 
+                </div>
             </div>
-        </div>
-        
+            <div id="groupChats" class="message-list-sidebar-content">
+                    <p id="message-list-title">Group Chats</p>
+            </div>
+
+
+
         <div class="main-section">
             <div>
                 <div class="topbar-section">
@@ -149,7 +154,9 @@ session_start();
                         console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
-                            updateChatUI(response.messages, <?php echo $user_id; ?>);
+                            // updateChatUI(response.messages, <?php echo $user_id; ?>);
+                            updateMessageListUI(response.oneToOneChats, document.getElementById('oneToOneChats'));
+                            updateMessageListUI(response.groupChats, document.getElementById('groupChats'));
 
                         } else {
                             console.error('Error fetching messages:', response.message);
@@ -249,8 +256,7 @@ session_start();
             chats.forEach(function(chat) {
                 var chatPreview = document.createElement('div');
                 chatPreview.classList.add('chat-preview');
-                
-                // Set the data attribute to store the chat id
+
                 chatPreview.dataset.chatId = chat.chat_id;
 
                 var chatName = document.createElement('p');
@@ -259,12 +265,10 @@ session_start();
 
                 // Append chat name to the chat preview
                 chatPreview.appendChild(chatName);
-                
-                // Add an event listener to load the chat messages when clicked
+
                 chatPreview.addEventListener('click', function() {
                     loadChatMessages(chat.chat_id); // Call loadChatMessages function with chat id
                 });
-
                 // Append the chat preview to the container
                 container.appendChild(chatPreview);
             });
