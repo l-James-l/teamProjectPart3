@@ -21,27 +21,21 @@ $user_id = $_SESSION["user_id"];
 $is_group = isset($_GET['is_group']) ? intval($_GET['is_group']) : null;
 
 // Prepare the SQL statement
-$sql = "SELECT 
-cl.message_id, 
-cl.chat_id, 
-cl.user_id, 
-cl.message, 
-cl.timestamp, 
-u.first_name, 
-u.surname,
-CASE 
-    WHEN (SELECT COUNT(DISTINCT user_id) FROM chat_relation WHERE chat_id = cl.chat_id) > 1 THEN 1 
-    ELSE 0 
-END AS is_group
-FROM 
-chat_log cl
-JOIN 
-users u ON cl.user_id = u.user_id
-WHERE 
-cl.chat_id = ?
-ORDER BY 
-cl.timestamp ASC;
-";
+$sql = "SELECT c.chat_id, 
+        CASE 
+            WHEN c.is_group = 1 THEN c.chat_name 
+            ELSE (
+                SELECT GROUP_CONCAT(CONCAT(first_name, ' ', surname)) 
+                FROM users u 
+                INNER JOIN chat_relation cr2 ON u.user_id = cr2.user_id 
+                WHERE cr2.chat_id = c.chat_id AND u.user_id != ?
+            ) 
+        END AS chat_name,
+        MAX(cl.timestamp) AS recent_timestamp
+        FROM chat c
+        INNER JOIN chat_relation cr ON c.chat_id = cr.chat_id
+        LEFT JOIN chat_log cl ON c.chat_id = cl.chat_id
+        WHERE cr.user_id = ?";
 
 
 // Conditionally add filter for groups or non-groups
