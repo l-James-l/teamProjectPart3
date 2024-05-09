@@ -119,6 +119,14 @@ session_start();
                 highlightSelectedChat(selectedChatId);
                 fetchMessages();
             }
+            
+            var messageTextarea = document.getElementById("message");
+            messageTextarea.addEventListener("keydown", function(event) {
+                if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault(); // Prevent default action (typically a new line)
+                    sendMessage(event); // Call your sendMessage function
+                }
+            });
         });
 
 
