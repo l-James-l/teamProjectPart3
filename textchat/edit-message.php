@@ -18,6 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(isset($_POST['message_id'])&& !empty($_POST['message_id'])) {
         if(isset($_POST['edited_message'])&&!empty($_POST['edited_message'])) {
             //Update encrypted message variable once encryption is decided
+            $messageId = $_POST['message_id'];
+            $editedMessage = $_POST['edited_message'];
+            $userId = 1;
+
+            
             mysqli_stmt_prepare($statement,"UPDATE chat_log
             SET encrypted_message=?
             WHERE message_id=?
