@@ -189,6 +189,11 @@ main {
     font-size: 1rem;
 }
 
+#send-message-button svg {
+    width: 40px; /* Adjust the width as needed */
+    height: 40px; /* Adjust the height as needed */
+}
+
 .chat-section {
     height: 100%;
     display: flex;
