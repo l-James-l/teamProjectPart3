@@ -13,7 +13,7 @@ session_start();
 <body>
     <?php
     $currentPage = "chat";
-    include "../src/header.php";
+    include "../src/header.php"; 
   
     $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define $user_id
     ?>
