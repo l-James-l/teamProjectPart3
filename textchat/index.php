@@ -68,25 +68,25 @@ session_start();
     </main>
     <script>
 
-        var messageListSidebar = document.querySelector('.message-list-sidebar');
+        // var messageListSidebar = document.querySelector('.message-list-sidebar');
 
-                document.addEventListener("DOMContentLoaded", function () {
-                    var oneToOneButton = document.getElementById('oneToOne');
-                    var user_id = <?php echo json_encode($user_id); ?>;
+        //         document.addEventListener("DOMContentLoaded", function () {
+        //             var oneToOneButton = document.getElementById('oneToOne');
+        //             var user_id = <?php echo json_encode($user_id); ?>;
 
-                    // Ensure the "1-1" button can be pressed
-                    oneToOneButton.addEventListener('click', function() {
-                        if (user_id) {
-                            fetchChats(user_id, false); // false for 1-1 chats
-                        }
-                    });
+        //             // Ensure the "1-1" button can be pressed
+        //             oneToOneButton.addEventListener('click', function() {
+        //                 if (user_id) {
+        //                     fetchChats(user_id, false); // false for 1-1 chats
+        //                 }
+        //             });
 
-                    var selectedChatId = localStorage.getItem('selectedChatId');
-                    if (selectedChatId) {
-                        loadChatMessages(selectedChatId);
-                        highlightSelectedChat(selectedChatId);
-                    }
-                });
+        //             var selectedChatId = localStorage.getItem('selectedChatId');
+        //             if (selectedChatId) {
+        //                 loadChatMessages(selectedChatId);
+        //                 highlightSelectedChat(selectedChatId);
+        //             }
+        //         });
 
         // Call fetchChats function when the page loads
         <?php if(isset($user_id)): ?>
@@ -241,7 +241,7 @@ session_start();
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
                             updateMessageListUI(response.chats, chatListContainer); // Update UI with fetched chats
-                            messageListSidebar.style.display = 'block';
+                            // messageListSidebar.style.display = 'block';
                             
                             // Fetch new messages for the first chat
                             if (response.chats.length > 0) {
