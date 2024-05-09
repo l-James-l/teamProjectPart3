@@ -78,14 +78,9 @@ main {
 }
 
 .message-list-sidebar-content {
-    height: 90%;
-    width: 100%;
     max-height: 100%;
     max-width: 100%;
-    border-radius: 24px;
-    border: 1px solid #9A8399;
     overflow-y: auto;
-    margin-bottom: 50px;
 }
 
 #message-list-title {

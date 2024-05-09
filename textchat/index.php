@@ -7,7 +7,6 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messaging Service</title>
-    <!-- <link rel="stylesheet" href="stylesheets/messaging-styles-colour.css"> -->
     <link rel="stylesheet" href="stylesheets/messaging-styles.css">
 </head>
 <body>
@@ -15,19 +14,23 @@ session_start();
     $currentPage = "chat";
     include "../src/header.php"; 
   
-    $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Define $user_id
+    $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
     ?>
     <main>
         <div class="groups-sidebar">
             <div class="groups-sidebar-item" >1-1</div>
             <div class="groups-sidebar-item" >Group</div>
-            <!-- <a href="settings.html" class="groups-sidebar-item">Settings</a> -->
+
         </div>
 
         <div class="message-list-sidebar">
+            <div>
+                <p id="message-list-title">Messages</p>
+                <!-- add message button here -->
+            </div>
             
             <div class="message-list-sidebar-content">
-                <p id="message-list-title">Messages</p>
+                
 
             </div>
         </div>
