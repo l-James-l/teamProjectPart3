@@ -221,29 +221,30 @@ session_start();
         }
 
         function fetchMessages() {
-            var chatContainer = document.getElementById('chat-section');
-            var xhr = new XMLHttpRequest();
-            var lastMessageId = getLastMessageId(); // Implement a function to get the ID of the last displayed message
-            xhr.open('GET', 'fetch-chats.php?user_id=<?php echo $user_id; ?>', true);
+    var chatContainer = document.getElementById('chat-section');
+    var xhr = new XMLHttpRequest();
+    var lastMessageId = getLastMessageId(); // Implement a function to get the ID of the last displayed message
+    xhr.open('GET', 'fetch-chats.php?user_id=<?php echo $user_id; ?>&chat_id=<?php echo $chat_id; ?>', true);
 
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        console.log('Response:', xhr.responseText); // Log the response
-                        var response = JSON.parse(xhr.responseText);
-                        if (response.status === 'success') {
-                            updateChatUI(response.messages, <?php echo $user_id; ?>);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                console.log('Response:', xhr.responseText); // Log the response
+                var response = JSON.parse(xhr.responseText);
+                if (response.status === 'success') {
+                    updateChatUI(response.messages, <?php echo $user_id; ?>);
 
-                        } else {
-                            console.error('Error fetching messages:', response.message);
-                        }
-                    } else {
-                        console.error('Error fetching messages:', xhr.statusText);
-                    }
+                } else {
+                    console.error('Error fetching messages:', response.message);
                 }
-            };
-            xhr.send();
+            } else {
+                console.error('Error fetching messages:', xhr.statusText);
+            }
         }
+    };
+    xhr.send();
+}
+
 
         function updateChatUI(messages, userId) {
             var chatSection = document.getElementById("chat-section");
