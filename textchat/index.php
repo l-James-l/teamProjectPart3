@@ -169,6 +169,12 @@ session_start();
                     deleteBtn.textContent = "Delete";
                     deleteBtn.onclick = function() { deleteMessage(message.message_id); };
                     messageDiv.appendChild(deleteBtn);
+
+                    var editBtn = document.createElement("button");
+                    editBtn.textContent = "Edit";
+                    editBtn.onclick = function() { editMessage(message.message_id); };
+                    messageDiv.appendChild(editBtn);
+
                 }
                 chatSection.appendChild(messageDiv);
 
@@ -176,8 +182,6 @@ session_start();
                 // editBtn.textContent = "Edit";
                 // editBtn.onclick = function() { editMessage(message.message_id); };
                 // messageDiv.appendChild(editBtn);
-
-                chatSection.appendChild(messageDiv);
 
             });
 
