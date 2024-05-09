@@ -172,10 +172,10 @@ session_start();
                 }
                 chatSection.appendChild(messageDiv);
 
-                var editBtn = document.createElement("button");
-                editBtn.textContent = "Edit";
-                editBtn.onclick = function() { editMessage(message.message_id); };
-                messageDiv.appendChild(editBtn);
+                // var editBtn = document.createElement("button");
+                // editBtn.textContent = "Edit";
+                // editBtn.onclick = function() { editMessage(message.message_id); };
+                // messageDiv.appendChild(editBtn);
 
                 chatSection.appendChild(messageDiv);
 
@@ -280,57 +280,57 @@ session_start();
             xhr.send(formData);
         }
 
-        function editMessage(messageId) {
-            var currentText = messageDiv.textContent;
-            messageDiv.innerHTML = '';
+        // function editMessage(messageId) {
+        //     var currentText = messageDiv.textContent;
+        //     messageDiv.innerHTML = '';
 
-            var inputField = document.createElement("input");
-            inputField.type = "text";
-            inputField.value = currentText;
-            inputField.classList.add("edit-message-input");
+        //     var inputField = document.createElement("input");
+        //     inputField.type = "text";
+        //     inputField.value = currentText;
+        //     inputField.classList.add("edit-message-input");
 
-            var saveBtn = document.createElement("button");
-            saveBtn.textContent = "Save";
-            saveBtn.onclick = function() {
-                submitEditedMessage(messageId, inputField.value, messageDiv);
-            };
+        //     var saveBtn = document.createElement("button");
+        //     saveBtn.textContent = "Save";
+        //     saveBtn.onclick = function() {
+        //         submitEditedMessage(messageId, inputField.value, messageDiv);
+        //     };
 
-            // Append the input field and save button to the message div
-            messageDiv.appendChild(inputField);
-            messageDiv.appendChild(saveBtn);
-        }
+        //     // Append the input field and save button to the message div
+        //     messageDiv.appendChild(inputField);
+        //     messageDiv.appendChild(saveBtn);
+        // }
 
-        function submitEditedMessage(messageId, editedText, originalMessageDiv) {
-            if (!editedText.trim()) {
-                console.log("Edited message is empty.");
-                return;
-            }
+        // function submitEditedMessage(messageId, editedText, originalMessageDiv) {
+        //     if (!editedText.trim()) {
+        //         console.log("Edited message is empty.");
+        //         return;
+        //     }
 
-            var formData = new FormData();
-            formData.append('message_id', messageId);
-            formData.append('edited_message', editedText);
+        //     var formData = new FormData();
+        //     formData.append('message_id', messageId);
+        //     formData.append('edited_message', editedText);
 
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "edit-message.php", true);
-            xhr.onload = function () {
-                if (this.status === 200) {
-                    console.log("Message edited successfully", this.responseText);
-                    // Update the original message text and GUI
-                    originalMessageDiv.innerHTML = ''; 
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.open("POST", "edit-message.php", true);
+        //     xhr.onload = function () {
+        //         if (this.status === 200) {
+        //             console.log("Message edited successfully", this.responseText);
+        //             // Update the original message text and GUI
+        //             originalMessageDiv.innerHTML = ''; 
 
-                    var messageText = document.createElement("div");
-                    messageText.classList.add("message-text"); /
-                    messageText.textContent = editedText;
-                    originalMessageDiv.appendChild(messageText);
-                } else {
-                    console.error('Failed to edit message:', this.status, this.responseText);
-                }
-            };
-            xhr.onerror = function () {
-                console.error('Error during the AJAX request to edit the message.');
-            };
-            xhr.send(formData);
-        }
+        //             var messageText = document.createElement("div");
+        //             messageText.classList.add("message-text"); /
+        //             messageText.textContent = editedText;
+        //             originalMessageDiv.appendChild(messageText);
+        //         } else {
+        //             console.error('Failed to edit message:', this.status, this.responseText);
+        //         }
+        //     };
+        //     xhr.onerror = function () {
+        //         console.error('Error during the AJAX request to edit the message.');
+        //     };
+        //     xhr.send(formData);
+        // }
 
         // Ensures that the chat section is scrolled to the bottom
         // when the page is loaded, making the latest messages visible.
