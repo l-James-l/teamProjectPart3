@@ -167,14 +167,8 @@ main {
 
 #send-message-button {
     height: 44px;
-    width: 80px;
-    border-radius: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #979797;
     margin-left: 20px;
-    width: 50px;
+    width: 100%;
     padding: 15px 20px;
     background: none;
     border-radius: 100px;
