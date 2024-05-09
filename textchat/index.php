@@ -203,12 +203,17 @@ session_start();
                 var messageType = message.user_id == userId ? "outgoing" : "incoming";
                 messageDiv.classList.add("message-container", messageType);
                 messageDiv.dataset.messageId = message.message_id;
+
+                var messageTimestamp = document.createElement("div");
+                messageTimestamp.classList.add("message-timestamp");
+                messageTimestamp.textContent = formatTimestamp(message.timestamp); // Assuming 'timestamp' is the field name in the message object
                 
                 
                 var messageContent = messageDiv.appendChild(document.createElement("div"));
                 messageContent.classList.add(messageType + "-message");
                 messageContent.textContent = message.message; // assuming message field contains the message content
 
+                messageDiv.appendChild(messageTimestamp);
                 messageDiv.appendChild(messageContent);
 
                 if (message.user_id == userId) {
@@ -240,6 +245,19 @@ session_start();
             });
 
             scrollToBottom(); // Ensure the newest messages are visible
+        }
+
+        // Function to format timestamp for display
+        function formatTimestamp(timestamp) {
+            var date = new Date(timestamp);
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Handle midnight
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            var formattedTimestamp = hours + ':' + minutes + ' ' + ampm;
+            return formattedTimestamp;
         }
 
         // Function to fetch chats from the server
