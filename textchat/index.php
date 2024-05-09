@@ -177,8 +177,11 @@ session_start();
 
                 var messageContent = messageDiv.appendChild(document.createElement("div"));
                 messageContent.classList.add(messageType + "-message");
+                messageContent.textContent = message.message; // assuming message field contains the message content
+
                 messageContent.textContent = message.message; 
                 messageDiv.appendChild(messageContent);
+                
 
                 if (message.user_id == userId) {
                     var deleteBtn = document.createElement("button");
@@ -249,7 +252,8 @@ session_start();
             chats.forEach(function(chat) {
                 var chatPreview = document.createElement('div');
                 chatPreview.classList.add('chat-preview');
-
+                
+                // Set the data attribute to store the chat id
                 chatPreview.dataset.chatId = chat.chat_id;
 
                 var chatName = document.createElement('p');
@@ -258,7 +262,8 @@ session_start();
 
                 // Append chat name to the chat preview
                 chatPreview.appendChild(chatName);
-
+                
+                // Add an event listener to load the chat messages when clicked
                 chatPreview.addEventListener('click', function() {
                     loadChatMessages(chat.chat_id); // Call loadChatMessages function with chat id
                 });
