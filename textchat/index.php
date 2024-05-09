@@ -40,13 +40,6 @@ session_start();
       
         
         <div class="main-section">
-            <div>
-                <div class="topbar-section">
-                    <p id="current-conversation-name"></p>
-                    <div id="close-chat-button">X</div>
-                </div>
-                <hr class="divider">
-            </div>
             
             <div id="chat-section" class="chat-section">
   
@@ -301,15 +294,14 @@ session_start();
                 
                 chatSection.appendChild(messageTimestamp);
                 chatSection.appendChild(messageDiv);
-
-                // Display sender's name for incoming messages in group chats
-                if (messageType === 'incoming') {
-                    var senderName = document.createElement("div");
-                    senderName.classList.add("sender-name");
-                    senderName.textContent = message.first_name + " " + message.surname;
-                    chatSection.appendChild(senderName);
-                }
             });
+
+            // Select the element with the id "current-conversation-name"
+            var conversationName = document.getElementById("current-conversation-name");
+
+            // Change its text content to "kinase"
+            conversationName.textContent = "kinase";
+
 
             scrollToBottom(); // Ensure the newest messages are visible
         }
