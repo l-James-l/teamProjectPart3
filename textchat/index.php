@@ -172,12 +172,14 @@ session_start();
                 var messageDiv = document.createElement("div");
                 var messageType = message.user_id == userId ? "outgoing" : "incoming";
                 messageDiv.classList.add("message-container", messageType);
+                messageDiv.dataset.messageId = message.message_id;
+                
+
                 var messageContent = messageDiv.appendChild(document.createElement("div"));
                 messageContent.classList.add(messageType + "-message");
-                messageContent.textContent = message.message; // assuming message field contains the message content
-
+                messageContent.textContent = message.message; 
                 messageDiv.appendChild(messageContent);
-                
+
                 if (message.user_id == userId) {
                     var deleteBtn = document.createElement("button");
                     deleteBtn.textContent = "Delete";
@@ -311,6 +313,48 @@ session_start();
                 }
             }
         }
+     
+            document.getElementById('editMessageForm').onsubmit = function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var messageId = document.getElementById('editMessageId').value;
+            var editedText = document.getElementById('editMessageText').value;
+
+            if (!editedText.trim()) {
+                console.log("Edited message is empty.");
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('message_id', messageId);
+            formData.append('edited_message', editedText);
+
+            // AJAX request to the server to update the message
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "edit-message.php", true);
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    console.log("Message edited successfully", this.responseText);
+                    
+                    // Update the UI with the new message text
+                    var originalMessageDiv = document.querySelector(`[data-message-id="${messageId}"] .message-text`);
+                    if (originalMessageDiv) {
+                        originalMessageDiv.textContent = editedText; // Update text directly
+                    }
+
+                    // Close the modal
+                    document.getElementById('editMessageModal').style.display = "none";
+                    fetchMessages();
+                } else {
+                    console.error('Failed to edit message:', this.status, this.responseText);
+                }
+            };
+            xhr.onerror = function () {
+                console.error('Error during the AJAX request to edit the message.');
+            };
+            xhr.send(formData);
+        };
+
         // function editMessage(messageId) {
         //     var currentText = messageDiv.textContent;
         //     messageDiv.innerHTML = '';
