@@ -25,10 +25,10 @@ session_start();
         </div>
         <div class="message-list-sidebar-container">
             <div class="message-list-topbar">
-
+                <p id="message-list-title">Messages</p>
+                <p>+</p>
             </div>
-            <p id="message-list-title">Messages</p>
-            <p>+</p>
+            
             <div class="message-list-sidebar">
                     
                     <div class="message-list-sidebar-content">

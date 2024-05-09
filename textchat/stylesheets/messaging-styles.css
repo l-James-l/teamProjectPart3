@@ -81,7 +81,7 @@ main {
 .message-list-topbar {
     display: flex;
     justify-content: space-between;
-    flex-direction: row;
+
 }
 
 .message-list-sidebar {
