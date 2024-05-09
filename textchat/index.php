@@ -523,7 +523,6 @@ session_start();
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
                             updateChatUI(response.messages, <?php echo $user_id; ?>);
-                            document.getElementById("current-conversation-name").textContent = response.chat_name; // Update the chat name
 
                             // Remove the 'selected-chat' class from all chat previews
                             var chatPreviews = document.querySelectorAll('.chat-preview');
