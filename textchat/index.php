@@ -213,7 +213,7 @@ session_start();
                 messageContent.classList.add(messageType + "-message");
                 messageContent.textContent = message.message; // assuming message field contains the message content
 
-                messageDiv.appendChild(messageTimestamp);
+                
                 messageDiv.appendChild(messageContent);
 
                 if (message.user_id == userId) {
@@ -240,6 +240,7 @@ session_start();
                     messageDiv.appendChild(editBtn);
 
                 }
+                chatSection.appendChild(messageTimestamp);
                 chatSection.appendChild(messageDiv);
 
             });
