@@ -271,8 +271,8 @@ session_start();
                 
                 messageDiv.appendChild(messageContent);
 
-                // Display sender's name for incoming messages
-                if (messageType === 'incoming') {
+                // Display sender's name for incoming messages in group chats
+                if (messageType === 'incoming' && message.is_group) {
                     var senderName = document.createElement("div");
                     senderName.classList.add("sender-name");
                     senderName.textContent = message.first_name + " " + message.surname; // Display the sender's first and last name
