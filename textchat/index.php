@@ -92,6 +92,7 @@ session_start();
         // Call fetchChats function when the page loads
         <?php if(isset($user_id)): ?>
         fetchChats(<?php echo $user_id; ?>);
+        fetchMessages();
         <?php endif; ?>
 
         document.addEventListener("DOMContentLoaded", function () {
@@ -99,7 +100,7 @@ session_start();
             if (selectedChatId) {
                 loadChatMessages(selectedChatId);
                 highlightSelectedChat(selectedChatId);
-                fetchMessages(); // Start fetching new messages
+                fetchMessages();
             }
         });
 
