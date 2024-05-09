@@ -296,13 +296,6 @@ session_start();
                 chatSection.appendChild(messageDiv);
             });
 
-            // Select the element with the id "current-conversation-name"
-            var conversationName = document.getElementById("current-conversation-name");
-
-            // Change its text content to "kinase"
-            conversationName.textContent = "kinase";
-
-
             scrollToBottom(); // Ensure the newest messages are visible
         }
 
