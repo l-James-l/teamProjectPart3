@@ -65,7 +65,7 @@ main {
     align-items: center;
     justify-content: center;
     margin-bottom: 30px;
-    border: 1px solid #9A8399;
+    padding: 1px solid #9A8399;
  
 }
 
@@ -79,7 +79,7 @@ main {
     max-width: 100%;
     flex-direction: column;
     background-color: #f8f9fa;
-    margin: 20px 0;
+    padding: 20px 0;
 }
 
 .message-list-topbar {
@@ -147,7 +147,7 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin: 20px 0
+    margin: 20px 0 50px;
 }
 
 .topbar-section {
