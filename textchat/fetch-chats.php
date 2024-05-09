@@ -16,7 +16,7 @@ if ($conn === false) {
 }
 
 // Check if user_id is provided, otherwise set default to 1
-$user_id = $_SESSION["user_id"];
+$user_id = $_SESSION["user_id"] ?? 1;
 
 // Prepare the SQL statement
 $sql = "SELECT c.chat_id, 
@@ -34,7 +34,8 @@ $sql = "SELECT c.chat_id,
         INNER JOIN chat_relation cr ON c.chat_id = cr.chat_id
         LEFT JOIN chat_log cl ON c.chat_id = cl.chat_id
         WHERE cr.user_id = ?
-        GROUP BY c.chat_id, c.chat_name"; 
+        GROUP BY c.chat_id, c.is_group
+        ORDER BY recent_timestamp DESC";
 
 $stmt = $conn->prepare($sql); 
 

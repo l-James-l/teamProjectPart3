@@ -52,9 +52,41 @@ session_start();
                 <button type="submit" id="send-message-button">Send message</button>
             </form>
 
+            <div id="editMessageModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <form id="editMessageForm">
+                        <input type="hidden" id="editMessageId">
+                        <label for="editMessageText">Edit Message:</label>
+                        <input type="text" id="editMessageText" name="editMessageText">
+                        <button type="submit">Save</button>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </main>
     <script>
+
+        // var messageListSidebar = document.querySelector('.message-list-sidebar');
+
+        //         document.addEventListener("DOMContentLoaded", function () {
+        //             var oneToOneButton = document.getElementById('oneToOne');
+        //             var user_id = <?php echo json_encode($user_id); ?>;
+
+        //             // Ensure the "1-1" button can be pressed
+        //             oneToOneButton.addEventListener('click', function() {
+        //                 if (user_id) {
+        //                     fetchChats(user_id, false); // false for 1-1 chats
+        //                 }
+        //             });
+
+        //             var selectedChatId = localStorage.getItem('selectedChatId');
+        //             if (selectedChatId) {
+        //                 loadChatMessages(selectedChatId);
+        //                 highlightSelectedChat(selectedChatId);
+        //             }
+        //         });
 
         // Call fetchChats function when the page loads
         <?php if(isset($user_id)): ?>
@@ -156,21 +188,41 @@ session_start();
             var chatSection = document.getElementById("chat-section");
             chatSection.innerHTML = ''; // Clear existing messages
 
+             // Debugging: Log the messages to the console
+            console.log("Messages received:", messages);
+
+            if (!Array.isArray(messages)) {
+                console.error("Expected 'messages' to be an array, but received:", messages);
+                return; 
+            }
+
             messages.forEach(function(message) {
                 var messageDiv = document.createElement("div");
                 var messageType = message.user_id == userId ? "outgoing" : "incoming";
                 messageDiv.classList.add("message-container", messageType);
+                messageDiv.dataset.messageId = message.message_id;
+                
+                
                 var messageContent = messageDiv.appendChild(document.createElement("div"));
                 messageContent.classList.add(messageType + "-message");
                 messageContent.textContent = message.message; // assuming message field contains the message content
+
+                messageDiv.appendChild(messageContent);
 
                 if (message.user_id == userId) {
                     var deleteBtn = document.createElement("button");
                     deleteBtn.textContent = "Delete";
                     deleteBtn.onclick = function() { deleteMessage(message.message_id); };
                     messageDiv.appendChild(deleteBtn);
+
+                    var editBtn = document.createElement("button");
+                    editBtn.textContent = "Edit";
+                    editBtn.onclick = function() { editMessage(message.message_id, messageContent); };
+                    messageDiv.appendChild(editBtn);
+
                 }
                 chatSection.appendChild(messageDiv);
+
             });
 
             scrollToBottom(); // Ensure the newest messages are visible
@@ -178,10 +230,10 @@ session_start();
 
 
         // Function to fetch chats from the server
-        function fetchChats(userId) {
+        function fetchChats(userId,isGroup) {
             var chatListContainer = document.querySelector('.message-list-sidebar-content'); // Adjust selector based on your HTML structure
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'fetch-chats.php?user_id=' + userId, true);
+            xhr.open('GET', 'fetch-chats.php?user_id=' + userId + '&is_group=' + (isGroup ? '1' : '0'), true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
@@ -189,6 +241,7 @@ session_start();
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
                             updateMessageListUI(response.chats, chatListContainer); // Update UI with fetched chats
+                            // messageListSidebar.style.display = 'block';
                             
                             // Fetch new messages for the first chat
                             if (response.chats.length > 0) {
@@ -272,10 +325,131 @@ session_start();
             xhr.send(formData);
         }
 
+        function editMessage(messageId, messageDiv) {
+            var messageText = messageDiv.textContent; 
+
+            document.getElementById('editMessageText').value = messageText;
+            document.getElementById('editMessageId').value = messageId;
+            var modal = document.getElementById('editMessageModal');
+            modal.style.display = "block";
+            var span = document.getElementsByClassName("close")[0];
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+     
+            document.getElementById('editMessageForm').onsubmit = function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            var messageId = document.getElementById('editMessageId').value;
+            var editedText = document.getElementById('editMessageText').value;
+
+            if (!editedText.trim()) {
+                console.log("Edited message is empty.");
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('message_id', messageId);
+            formData.append('edited_message', editedText);
+
+            // AJAX request to the server to update the message
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "edit-message.php", true);
+            xhr.onload = function () {
+                if (this.status === 200) {
+                    console.log("Message edited successfully", this.responseText);
+                    
+                    // Update the UI with the new message text
+                    var originalMessageDiv = document.querySelector(`[data-message-id="${messageId}"] .message-text`);
+                    if (originalMessageDiv) {
+                        originalMessageDiv.textContent = editedText; // Update text directly
+                    }
+
+                    // Close the modal
+                    document.getElementById('editMessageModal').style.display = "none";
+                    fetchMessages();
+                } else {
+                    console.error('Failed to edit message:', this.status, this.responseText);
+                }
+            };
+            xhr.onerror = function () {
+                console.error('Error during the AJAX request to edit the message.');
+            };
+            xhr.send(formData);
+        };
+
+        // function editMessage(messageId) {
+        //     var currentText = messageDiv.textContent;
+        //     messageDiv.innerHTML = '';
+
+        //     var inputField = document.createElement("input");
+        //     inputField.type = "text";
+        //     inputField.value = currentText;
+        //     inputField.classList.add("edit-message-input");
+
+        //     var saveBtn = document.createElement("button");
+        //     saveBtn.textContent = "Save";
+        //     saveBtn.onclick = function() {
+        //         submitEditedMessage(messageId, inputField.value, messageDiv);
+        //     };
+
+        //     // Append the input field and save button to the message div
+        //     messageDiv.appendChild(inputField);
+        //     messageDiv.appendChild(saveBtn);
+        // }
+
+        // function submitEditedMessage(messageId, editedText, originalMessageDiv) {
+        //     if (!editedText.trim()) {
+        //         console.log("Edited message is empty.");
+        //         return;
+        //     }
+
+        //     var formData = new FormData();
+        //     formData.append('message_id', messageId);
+        //     formData.append('edited_message', editedText);
+
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.open("POST", "edit-message.php", true);
+        //     xhr.onload = function () {
+        //         if (this.status === 200) {
+        //             console.log("Message edited successfully", this.responseText);
+        //             // Update the original message text and GUI
+        //             originalMessageDiv.innerHTML = ''; 
+
+        //             var messageText = document.createElement("div");
+        //             messageText.classList.add("message-text"); /
+        //             messageText.textContent = editedText;
+        //             originalMessageDiv.appendChild(messageText);
+        //         } else {
+        //             console.error('Failed to edit message:', this.status, this.responseText);
+        //         }
+        //     };
+        //     xhr.onerror = function () {
+        //         console.error('Error during the AJAX request to edit the message.');
+        //     };
+        //     xhr.send(formData);
+        // }
 
         // Ensures that the chat section is scrolled to the bottom
         // when the page is loaded, making the latest messages visible.
         document.addEventListener("DOMContentLoaded", function () {
+            var oneToOneButton = document.getElementById('1-1');
+            var messageListSidebar = document.querySelector('.message-list-sidebar');
+
+            // Attach event listener to the one-to-one button
+            oneToOneButton.addEventListener('click', function() {
+                if (<?php echo isset($user_id) ? 'true' : 'false'; ?>) {
+                    fetchChats(<?php echo $user_id; ?>, false);  // Pass false to indicate 1-1 chats
+                }
+            });
+
             var chatSection = document.getElementById("chat-section");
             chatSection.scrollTop = chatSection.scrollHeight;
         });
