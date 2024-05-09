@@ -19,24 +19,19 @@ session_start();
     ?>
     <main>
         <div class="groups-sidebar">
-            <div class="groups-sidebar-item" id="oneToOneChatsButton">1-1</div>
-            <div class="groups-sidebar-item" id="groupChatsButton">Group</div>
+            <div class="groups-sidebar-item" >1-1</div>
+            <div class="groups-sidebar-item" >Group</div>
             <a href="settings.html" class="groups-sidebar-item">Settings</a>
         </div>
 
         <div class="message-list-sidebar">
             
             <div class="message-list-sidebar-content">
-                    <p id="message-list-title">Messages</p>
+                <p id="message-list-title">Messages</p>
 
-                </div>
             </div>
-            <!-- <div class="message-list-sidebar-content">
-                    <p id="message-list-title">Group Chats</p>
-            </div> -->
-
-
-
+        </div>
+        
         <div class="main-section">
             <div>
                 <div class="topbar-section">
@@ -154,9 +149,7 @@ session_start();
                         console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
-                            // updateChatUI(response.messages, <?php echo $user_id; ?>);
-                            updateMessageListUI(response.oneToOneChats, document.getElementById('oneToOneChats'));
-                            updateMessageListUI(response.groupChats, document.getElementById('groupChats'));
+                            updateChatUI(response.messages, <?php echo $user_id; ?>);
 
                         } else {
                             console.error('Error fetching messages:', response.message);
@@ -269,6 +262,7 @@ session_start();
                 chatPreview.addEventListener('click', function() {
                     loadChatMessages(chat.chat_id); // Call loadChatMessages function with chat id
                 });
+
                 // Append the chat preview to the container
                 container.appendChild(chatPreview);
             });
