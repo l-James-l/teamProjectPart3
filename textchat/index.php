@@ -250,15 +250,19 @@ session_start();
         // Function to format timestamp for display
         function formatTimestamp(timestamp) {
             var date = new Date(timestamp);
+            var day = date.getDate();
+            var month = date.getMonth() + 1; // Months are zero indexed
+            var year = date.getFullYear();
             var hours = date.getHours();
             var minutes = date.getMinutes();
             var ampm = hours >= 12 ? 'PM' : 'AM';
             hours = hours % 12;
             hours = hours ? hours : 12; // Handle midnight
             minutes = minutes < 10 ? '0' + minutes : minutes;
-            var formattedTimestamp = hours + ':' + minutes + ' ' + ampm;
+            var formattedTimestamp = month + '/' + day + '/' + year + ' ' + hours + ':' + minutes + ' ' + ampm;
             return formattedTimestamp;
         }
+
 
         // Function to fetch chats from the server
         function fetchChats(userId,isGroup) {
