@@ -19,8 +19,8 @@ session_start();
     ?>
     <main>
         <div class="groups-sidebar">
-            <div class="groups-sidebar-item" id = "1-1">1-1</div>
-            <div class="groups-sidebar-item" id = "group">Group</div>
+            <div class="groups-sidebar-item" >1-1</div>
+            <div class="groups-sidebar-item" >Group</div>
             <a href="settings.html" class="groups-sidebar-item">Settings</a>
         </div>
 
