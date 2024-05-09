@@ -75,7 +75,6 @@ main {
     display: flex;
     max-height: 100%;
     max-width: 100%;
-    border: 1px solid black;
     flex-direction: column;
 }
 
@@ -87,7 +86,6 @@ main {
     display: flex;
     max-height: 100%;
     max-width: 100%;
-    border: 1px solid black;
 }
 
 .message-list-sidebar-content {
@@ -95,7 +93,6 @@ main {
     max-width: 100%;
     width: 100%;
     overflow-y: auto;
-    border: 1px solid black;
 }
 
 #message-list-title {
