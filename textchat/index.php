@@ -68,6 +68,26 @@ session_start();
     </main>
     <script>
 
+        var messageListSidebar = document.querySelector('.message-list-sidebar');
+
+                document.addEventListener("DOMContentLoaded", function () {
+                    var oneToOneButton = document.getElementById('oneToOne');
+                    var user_id = <?php echo json_encode($user_id); ?>;
+
+                    // Ensure the "1-1" button can be pressed
+                    oneToOneButton.addEventListener('click', function() {
+                        if (user_id) {
+                            fetchChats(user_id, false); // false for 1-1 chats
+                        }
+                    });
+
+                    var selectedChatId = localStorage.getItem('selectedChatId');
+                    if (selectedChatId) {
+                        loadChatMessages(selectedChatId);
+                        highlightSelectedChat(selectedChatId);
+                    }
+                });
+
         // Call fetchChats function when the page loads
         <?php if(isset($user_id)): ?>
         fetchChats(<?php echo $user_id; ?>);
