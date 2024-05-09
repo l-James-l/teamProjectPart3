@@ -445,58 +445,6 @@ session_start();
             xhr.send(formData);
         };
 
-        // function editMessage(messageId) {
-        //     var currentText = messageDiv.textContent;
-        //     messageDiv.innerHTML = '';
-
-        //     var inputField = document.createElement("input");
-        //     inputField.type = "text";
-        //     inputField.value = currentText;
-        //     inputField.classList.add("edit-message-input");
-
-        //     var saveBtn = document.createElement("button");
-        //     saveBtn.textContent = "Save";
-        //     saveBtn.onclick = function() {
-        //         submitEditedMessage(messageId, inputField.value, messageDiv);
-        //     };
-
-        //     // Append the input field and save button to the message div
-        //     messageDiv.appendChild(inputField);
-        //     messageDiv.appendChild(saveBtn);
-        // }
-
-        // function submitEditedMessage(messageId, editedText, originalMessageDiv) {
-        //     if (!editedText.trim()) {
-        //         console.log("Edited message is empty.");
-        //         return;
-        //     }
-
-        //     var formData = new FormData();
-        //     formData.append('message_id', messageId);
-        //     formData.append('edited_message', editedText);
-
-        //     var xhr = new XMLHttpRequest();
-        //     xhr.open("POST", "edit-message.php", true);
-        //     xhr.onload = function () {
-        //         if (this.status === 200) {
-        //             console.log("Message edited successfully", this.responseText);
-        //             // Update the original message text and GUI
-        //             originalMessageDiv.innerHTML = ''; 
-
-        //             var messageText = document.createElement("div");
-        //             messageText.classList.add("message-text"); /
-        //             messageText.textContent = editedText;
-        //             originalMessageDiv.appendChild(messageText);
-        //         } else {
-        //             console.error('Failed to edit message:', this.status, this.responseText);
-        //         }
-        //     };
-        //     xhr.onerror = function () {
-        //         console.error('Error during the AJAX request to edit the message.');
-        //     };
-        //     xhr.send(formData);
-        // }
-
         // Ensures that the chat section is scrolled to the bottom
         // when the page is loaded, making the latest messages visible.
         document.addEventListener("DOMContentLoaded", function () {
@@ -577,74 +525,6 @@ session_start();
                 selectedChatPreview.classList.add('selected-chat');
             }
         }
-
-
-        // function sendMessage(event) {
-        //     event.preventDefault(); // Prevent the default form submission
-
-        //     var chatId = document.getElementById("chat_id").value;
-        //     var message = document.getElementById("message").value;
-
-        //     // Basic validation
-        //     if (!message.trim()) {
-        //         console.log("Message is empty.");
-        //         return;
-        //     }
-
-        //     addMessageToChat(message, 'outgoing');
-        //     scrollToBottom();
-    
-        //     // Construct the POST data
-        //     var formData = new FormData();
-        //     formData.append('chat_id', chatId);
-        //     formData.append('message', message);
-
-        //     // Create and send an AJAX request to encrypt-message.php
-        //     var xhr = new XMLHttpRequest();
-        //     xhr.open("POST", "encrypt-message.php", true); // Change URL to encrypt-message.php
-        //     xhr.onload = function () {
-        //         if (this.status === 200) {
-        //             console.log("Encryption successful.");
-        //             // Once encryption is done, send the encrypted message to send-message.php
-        //             var encryptedMessage = this.responseText;
-        //             console.log("Encrypted message: ", encryptedMessage);
-        //             sendEncryptedMessage(chatId, encryptedMessage);
-        //         } else {
-        //             console.error('An error occurred during the AJAX request to encrypt-message.php');
-        //         }
-        //     };
-        //     xhr.onerror = function () {
-        //         console.error('An error occurred during the AJAX request to encrypt-message.php');
-        //     };
-        //     xhr.send(formData);
-
-        //     // Clear the message input
-        //     document.getElementById("message").value = '';
-        // }
-
-        // // Function to send the encrypted message to send-message.php
-        // function sendEncryptedMessage(chatId, encryptedMessage) {
-        //     // Construct the POST data
-        //     var formData = new FormData();
-        //     formData.append('chat_id', chatId);
-        //     formData.append('message', encryptedMessage);
-
-        //     // Create and send an AJAX request to send-message.php
-        //     var xhr = new XMLHttpRequest();
-        //     xhr.open("POST", "send-message.php", true); // URL remains send-message.php
-        //     xhr.onload = function () {
-        //         if (this.status === 200) {
-        //             console.log("Message sent successfully: ", this.responseText);
-        //             // You may want to call scrollToBottom() to scroll the chat into view.
-        //         } else {
-        //             console.error('An error occurred during the AJAX request to send-message.php');
-        //         }
-        //     };
-        //     xhr.onerror = function () {
-        //         console.error('An error occurred during the AJAX request to send-message.php');
-        //     };
-        //     xhr.send(formData);
-        // }
     </script>
 </body>
 </html>
