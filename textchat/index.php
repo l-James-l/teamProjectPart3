@@ -21,7 +21,7 @@ session_start();
         <div class="groups-sidebar">
             <div class="groups-sidebar-item" >1-1</div>
             <div class="groups-sidebar-item" >Group</div>
-            <a href="settings.html" class="groups-sidebar-item">Settings</a>
+            <!-- <a href="settings.html" class="groups-sidebar-item">Settings</a> -->
         </div>
 
         <div class="message-list-sidebar">
@@ -76,11 +76,36 @@ session_start();
 
         // Call fetchChats function when the page loads
         <?php if(isset($user_id)): ?>
-        fetchChats(<?php echo $user_id; ?>);
+        fetchChats(<?php echo $user_id; ?>, false); // Fetch one-to-one chats by default
         fetchMessages();
         <?php endif; ?>
 
         document.addEventListener("DOMContentLoaded", function () {
+            var oneToOneButton = document.getElementById('1-1');
+            var groupButton = document.querySelector('.groups-sidebar-item');
+
+            oneToOneButton.addEventListener('click', function() {
+                if (<?php echo isset($user_id) ? 'true' : 'false'; ?>) {
+                    fetchChats(<?php echo $user_id; ?>, false);  // Pass false to indicate 1-1 chats
+                }
+            });
+
+
+            // Attach event listener to the group button
+            groupButton.addEventListener('click', function() {
+                if (<?php echo isset($user_id) ? 'true' : 'false'; ?>) {
+                    fetchChats(<?php echo $user_id; ?>, true);  // Pass true to indicate group chats
+                }
+            });
+
+            // Call fetchChats function with 1-1 chats as default
+            if (<?php echo isset($user_id) ? 'true' : 'false'; ?>) {
+                fetchChats(<?php echo $user_id; ?>, false);  // Fetch 1-1 chats by default
+            }
+
+            var chatSection = document.getElementById("chat-section");
+            chatSection.scrollTop = chatSection.scrollHeight;
+
             var selectedChatId = localStorage.getItem('selectedChatId');
             if (selectedChatId) {
                 loadChatMessages(selectedChatId);
@@ -88,6 +113,7 @@ session_start();
                 fetchMessages();
             }
         });
+
 
         function sendMessage(event) {
             event.preventDefault(); // Prevent the default form submission
@@ -266,12 +292,11 @@ session_start();
         }
 
 
-        // Function to fetch chats from the server
-        function fetchChats(userId,isGroup) {
+        function fetchChats(userId, isGroup) {
             var chatListContainer = document.querySelector('.message-list-sidebar-content'); // Adjust selector based on your HTML structure
             var xhr = new XMLHttpRequest();
             xhr.open('GET', 'fetch-chats.php?user_id=' + userId + '&is_group=' + (isGroup ? '1' : '0'), true);
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         console.log('Response:', xhr.responseText); // Log the response
@@ -279,7 +304,7 @@ session_start();
                         if (response.status === 'success') {
                             updateMessageListUI(response.chats, chatListContainer); // Update UI with fetched chats
                             // messageListSidebar.style.display = 'block';
-                            
+
                             // Fetch new messages for the first chat
                             if (response.chats.length > 0) {
                                 fetchMessages(response.chats[0].chat_id); // Fetch messages for the first chat
@@ -294,6 +319,7 @@ session_start();
             };
             xhr.send();
         }
+
 
         function getLastMessageId() {
             // Assuming your messages have a unique ID assigned to them, you can retrieve the ID of the last displayed message
