@@ -415,14 +415,7 @@ session_start();
             };
             xhr.send(formData);
 
-            // Get the selected chat ID from local storage
-            var selectedChatId = localStorage.getItem('selectedChatId');
-
-            // If a chat is selected, reload its messages to ensure it's up to date
-            if (selectedChatId) {
-                loadChatMessages(selectedChatId);
-            }
-            updateChatUI();
+ 
         }
 
 
