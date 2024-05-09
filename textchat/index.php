@@ -156,7 +156,21 @@ session_start();
             messageDiv.classList.add("message-container", type);
             messageDiv.innerHTML = `<div class="${type}-message">${message}</div>`;
             chatSection.appendChild(messageDiv);
+
+            // Add edit and delete buttons for outgoing messages
+            if (type === 'outgoing') {
+                var deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Delete";
+                deleteBtn.onclick = function() { deleteMessage(messageDiv); };
+                messageDiv.appendChild(deleteBtn);
+
+                var editBtn = document.createElement("button");
+                editBtn.textContent = "Edit";
+                editBtn.onclick = function() { editMessage(messageDiv); };
+                messageDiv.appendChild(editBtn);
+            }
         }
+
 
         function fetchMessages() {
             var chatContainer = document.getElementById('chat-section');
