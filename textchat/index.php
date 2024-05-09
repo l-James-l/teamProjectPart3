@@ -174,14 +174,12 @@ session_start();
                 messageDiv.classList.add("message-container", messageType);
                 messageDiv.dataset.messageId = message.message_id;
                 
-
+                
                 var messageContent = messageDiv.appendChild(document.createElement("div"));
                 messageContent.classList.add(messageType + "-message");
                 messageContent.textContent = message.message; // assuming message field contains the message content
 
-                messageContent.textContent = message.message; 
                 messageDiv.appendChild(messageContent);
-                
 
                 if (message.user_id == userId) {
                     var deleteBtn = document.createElement("button");
