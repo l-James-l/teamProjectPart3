@@ -19,8 +19,8 @@ session_start();
     ?>
     <main>
         <div class="groups-sidebar">
-            <div class="groups-sidebar-item" >1-1</div>
-            <div class="groups-sidebar-item" >Group</div>
+            <div class="groups-sidebar-item" id = "1-1">1-1</div>
+            <div class="groups-sidebar-item" id = "group">Group</div>
             <a href="settings.html" class="groups-sidebar-item">Settings</a>
         </div>
 
@@ -202,10 +202,10 @@ session_start();
 
 
         // Function to fetch chats from the server
-        function fetchChats(userId) {
+        function fetchChats(userId,isGroup) {
             var chatListContainer = document.querySelector('.message-list-sidebar-content'); // Adjust selector based on your HTML structure
             var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'fetch-chats.php?user_id=' + userId, true);
+            xhr.open('GET', 'fetch-chats.php?user_id=' + userId + '&is_group=' + (isGroup ? '1' : '0'), true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
@@ -213,6 +213,7 @@ session_start();
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
                             updateMessageListUI(response.chats, chatListContainer); // Update UI with fetched chats
+                            messageListSidebar.style.display = 'block';
                             
                             // Fetch new messages for the first chat
                             if (response.chats.length > 0) {
@@ -411,6 +412,16 @@ session_start();
         // Ensures that the chat section is scrolled to the bottom
         // when the page is loaded, making the latest messages visible.
         document.addEventListener("DOMContentLoaded", function () {
+            var oneToOneButton = document.getElementById('1-1');
+    v       ar messageListSidebar = document.querySelector('.message-list-sidebar');
+
+            // Attach event listener to the one-to-one button
+            oneToOneButton.addEventListener('click', function() {
+                if (<?php echo isset($user_id) ? 'true' : 'false'; ?>) {
+                    fetchChats(<?php echo $user_id; ?>, false);  // Pass false to indicate 1-1 chats
+                }
+            });
+
             var chatSection = document.getElementById("chat-section");
             chatSection.scrollTop = chatSection.scrollHeight;
         });
