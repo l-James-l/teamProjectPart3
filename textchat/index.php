@@ -176,6 +176,8 @@ session_start();
                 messageContent.classList.add(messageType + "-message");
                 messageContent.textContent = message.message; // assuming message field contains the message content
 
+                messageDiv.appendChild(messageContent);
+                
                 if (message.user_id == userId) {
                     var deleteBtn = document.createElement("button");
                     deleteBtn.textContent = "Delete";
@@ -184,16 +186,11 @@ session_start();
 
                     var editBtn = document.createElement("button");
                     editBtn.textContent = "Edit";
-                    editBtn.onclick = function() { editMessage(message.message_id); };
+                    editBtn.onclick = function() { editMessage(message.message_id, messageContent); };
                     messageDiv.appendChild(editBtn);
 
                 }
                 chatSection.appendChild(messageDiv);
-
-                // var editBtn = document.createElement("button");
-                // editBtn.textContent = "Edit";
-                // editBtn.onclick = function() { editMessage(message.message_id); };
-                // messageDiv.appendChild(editBtn);
 
             });
 
