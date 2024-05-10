@@ -213,6 +213,7 @@ session_start();
             }
         }
 
+
         function fetchMessages() {
             var chatContainer = document.getElementById('chat-section');
             var xhr = new XMLHttpRequest();
