@@ -387,34 +387,39 @@ session_start();
         }
 
         function deleteMessage(messageId) {
-            var formData = new FormData();
-            formData.append('message_id', messageId);
 
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "delete-message.php", true);
-            xhr.onload = function () {
-                if (this.status === 200) {
-                    // Message deleted successfully
-                    console.log("Message deleted");
-                    fetchMessages(); // Refresh messages to reflect deletion
-                    
-                    // Get the selected chat ID from local storage
-                    var selectedChatId = localStorage.getItem('selectedChatId');
-                    
-                    // If a chat is selected, reload its messages to ensure it's up to date
-                    if (selectedChatId) {
-                        loadChatMessages(selectedChatId);
+            var userConfirmed = confirm("Are you sure you want to delete this message?");
+
+            // Check if the user confirmed the deletion
+            if (userConfirmed) {
+                var formData = new FormData();
+                formData.append('message_id', messageId);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "delete-message.php", true);
+                xhr.onload = function () {
+                    if (this.status === 200) {
+                        // Message deleted successfully
+                        console.log("Message deleted");
+                        fetchMessages(); // Refresh messages to reflect deletion
+                        
+                        // Get the selected chat ID from local storage
+                        var selectedChatId = localStorage.getItem('selectedChatId');
+                        
+                        // If a chat is selected, reload its messages to ensure it's up to date
+                        if (selectedChatId) {
+                            loadChatMessages(selectedChatId);
+                        }
+                    } else {
+                        // Handle errors, such as message not found or server error
+                        console.error('Failed to delete message:', this.status);
                     }
-                } else {
-                    // Handle errors, such as message not found or server error
-                    console.error('Failed to delete message:', this.status);
-                }
-            };
-            xhr.onerror = function () {
-                console.error('Error during the AJAX request to delete the message.');
-            };
-            xhr.send(formData);
-
+                };
+                xhr.onerror = function () {
+                    console.error('Error during the AJAX request to delete the message.');
+                };
+                xhr.send(formData);
+            }
  
         }
 
