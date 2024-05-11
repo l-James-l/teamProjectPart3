@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         mysqli_stmt_execute($stmt);
         $affectedRows = mysqli_stmt_affected_rows($stmt);
 
-        if ($affectedRows == 1) {
+        if ($affectedRows >0) {
             echo json_encode(['success' => true, 'message' => 'Message deleted successfully.']);
         } else if ($affectedRows == 0) {
             http_response_code(404);
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['error' => 'Message ID is required']);
     }
 }
-
+mysqli_close($conn);
 
 ?>
 
