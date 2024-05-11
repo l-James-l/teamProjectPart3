@@ -5,6 +5,7 @@ $chatCreateStatement=mysqli_stmt_init($connection);
 $chatIDRetrievalStatement=mysqli_stmt_init($connection);
 $chatRelationCreateStatement=mysqli_stmt_init($connection);
 $chatRelationRecipientAddStatement=mysqli_stmt_init($connection);
+session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(isset($_SESSION["user_id"])) {
         if(isset($_POST["is_group"])) {
