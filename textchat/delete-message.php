@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if message_id is set and not empty
     if (isset($_POST['message_id']) && !empty($_POST['message_id']) && isset($_SESSION['user_id'])) {
         $messageId = $_POST['message_id'];
-        $userId = $_SESSION['user_id'];
+        $userId = $_POST['user_id'];
 
         // Prepare the DELETE statement
         $stmt = mysqli_prepare($conn, "DELETE FROM chat_log WHERE message_id = ? AND user_id = ?");
