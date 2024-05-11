@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $isAdmin=false;
                 }
                 if($chatNameGiven) {
+                    echo "running - name given";
                     mysqli_stmt_prepare($chatCreateStatement,"INSERT INTO chat(chat_name,is_group)
                     VALUES (?,?)");
                     mysqli_stmt_bind_param($chatCreateStatement,"si",$chatName,$isGroup);
