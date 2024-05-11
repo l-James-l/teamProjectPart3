@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $result=mysqli_stmt_get_result($statement);
         $resultingUsers=[];
         if(mysqli_num_rows($result)>0) {
-            while($row=mysqli_fetch_array($result)) {
+            while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
                 $resultingUsers[]=$row;
             }
             echo "running";
