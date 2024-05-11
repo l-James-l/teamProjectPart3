@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(isset($_SESSION["user_id"])) {
         if(isset($_POST["is_group"])) {
             if(isset($_POST["recipient_user_ID"])) {
+                $recipientUserID=$_POST["recipient_user_id"];
                 if($_POST["is_group"]=="true") {
                     $isGroup=true;
                     $isAdmin=true;
