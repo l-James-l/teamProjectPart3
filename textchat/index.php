@@ -400,9 +400,11 @@ session_start();
                 xhr.open("POST", "delete-message.php", true);
                 xhr.onload = function () {
                     if (this.status === 200) {
+                        var response = JSON.parse(this.responseText);
                         // Message deleted successfully
-                        console.log("Message deleted");
-                        fetchMessages(); // Refresh messages to reflect deletion
+                        if (response.status === "success") {
+                            console.log("Message deleted");
+                            fetchMessages(); // Refresh messages to reflect deletion
                         
                         // Get the selected chat ID from local storage
                         var selectedChatId = localStorage.getItem('selectedChatId');
