@@ -572,6 +572,23 @@ session_start();
                 selectedChatPreview.classList.add('selected-chat');
             }
         }
+        async function createChat() {
+            const fetchParams = {
+                method:"POST",
+                headers: {'Content-Type': 
+                'application/x-www-form-urlencoded'},
+                body : 'is_group=true&recipient_user_ID=4&chat_name=test2'
+            }
+            try {
+                const response = await fetch("create-chat.php",fetchParams);
+                const responseObjects = await response.text();
+                await console.log(responseObjects);
+            }
+            catch(error) {
+                //handle error
+            }
+        }
+        createChat();
     </script>
 </body>
 </html>
