@@ -16,15 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $statement=mysqli_stmt_init($connection);
         $success=mysqli_stmt_prepare($statement,"SELECT user_id, first_name, surname 
         FROM users;");
-        if(!$statement) {
-            echo "error2";
-        }
-        if(!$success) {
-            echo "error";
-        }
+
         mysqli_stmt_execute($statement);
         $result=mysqli_stmt_get_result($statement);
-        echo($result);
         $resultingUsers=[];
         if(mysqli_num_rows($result)>0) {
             while($row=mysqli_fetch_array($result)) {
