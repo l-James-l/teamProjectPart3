@@ -1,6 +1,6 @@
 <?php
 include_once(__DIR__ . '/../src/db_connection.php');
-$connection=mysqli_connect($servername,$username,$password,$dbname);
+$connection=mysqli_connect($servername,$username,$password,$db_name);
 $chatCreateStatement=mysqli_stmt_init($connection);
 $chatIDRetrievalStatement=mysqli_stmt_init($connection);
 $chatRelationCreateStatement=mysqli_stmt_init($connection);

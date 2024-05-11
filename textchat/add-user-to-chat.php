@@ -1,6 +1,6 @@
 <?php
 include_once(__DIR__ . '/../src/db_connection.php');
-$connection=mysqli_connect($servername,$username,$password,$dbname);
+$connection=mysqli_connect($servername,$username,$password,$db_name);
 $groupCheckStatement=mysqli_stmt_init($connection);
 $addUserToGroupStatement=mysqli_stmt_init($connection);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
