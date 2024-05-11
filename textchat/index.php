@@ -425,6 +425,7 @@ session_start();
             }
  
         }
+    }
 
 
         function editMessage(messageId, messageDiv) {
