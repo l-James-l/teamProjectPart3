@@ -14,7 +14,7 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if(isset($_SESSION["user_id"])) {
         $statement=mysqli_stmt_init($connection);
-        $success=mysqli_stmt_prepare($statement,"SELECT user_id, first_name, surname 
+        mysqli_stmt_prepare($statement,"SELECT user_id, first_name, surname 
         FROM users;");
 
         mysqli_stmt_execute($statement);
@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
                 $resultingUsers[]=$row;
             }
-            echo "running";
             echo json_encode($resultingUsers);
         }
         else {
