@@ -18,50 +18,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if($_POST["is_group"]=="true") {
                     $isGroup=true;
                     $isAdmin=true;
-                    $chatName="test";//hardcoded for now
+                    if(isset($_POST["chat_name"])) {
+                        $chatName=$_POST["chat_name"];
+                        $chatNameGiven=true;
+                    }
+                    else {
+                        $chatNameGiven=false;
+                    }
                 }
                 else if($_POST["is_group"]=="false") {
                     $isGroup=false;
-                    $chatName="test";//set to name of recipient
+                    $chatName="private-message";
                     $isAdmin=false;
                 }
-                mysqli_stmt_prepare($chatCreateStatement,"INSERT INTO chat(chat_name,is_group)
-                VALUES (?,?)");
-                mysqli_stmt_bind_param($chatCreateStatement,"si",$chatName,$isGroup);
-                mysqli_stmt_execute($chatCreateStatement);
-                $affectedRows=mysqli_stmt_affected_rows($chatCreateStatement);
-                if($affectedRows==1) {
-                    //Success
+                if($chatNameGiven) {
+                    mysqli_stmt_prepare($chatCreateStatement,"INSERT INTO chat(chat_name,is_group)
+                    VALUES (?,?)");
+                    mysqli_stmt_bind_param($chatCreateStatement,"si",$chatName,$isGroup);
+                    mysqli_stmt_execute($chatCreateStatement);
+                    $affectedRows=mysqli_stmt_affected_rows($chatCreateStatement);
+                    if($affectedRows==1) {
+                        //Success
+                    }
+                    else if($affectedRows==-1) {
+                        //Query error
+                        http_response_code(500);
+                    }
+                    $newChatID=mysqli_insert_id($connection);
+                    mysqli_stmt_prepare($chatRelationCreateStatement,"INSERT INTO chat_relation(chat_id,user_id,is_admin)
+                    VALUES(?,?,?)");
+                    mysqli_stmt_bind_param($chatRelationCreateStatement,"iii",$newChatID,$_SESSION["user_id"],$isAdmin);
+                    mysqli_stmt_execute($chatRelationCreateStatement);
+                    $affectedRows=mysqli_stmt_affected_rows($chatRelationCreateStatement);
+                    if($affectedRows==1) {
+                        //Success
+                    }
+                    else if($affectedRows==-1) {
+                        //Query error
+                        http_response_code(500);
+                    }
+                    mysqli_stmt_prepare($chatRelationRecipientAddStatement,"INSERT INTO chat_relation(chat_id,user_id,is_admin)
+                    VALUES(?,?,?)");
+                    mysqli_stmt_bind_param($chatRelationRecipientAddStatement,"iii",$newChatID,$recipientUserID,$isAdmin);
+                    mysqli_stmt_execute($chatRelationRecipientAddStatement);
+                    $affectedRows=mysqli_stmt_affected_rows($chatRelationRecipientAddStatement);
+                    if($affectedRows==1) {
+                        //Success
+                    }
+                    else if($affectedRows==-1) {
+                        //Query error
+                        http_response_code(500);
+                    }
                 }
-                else if($affectedRows==-1) {
-                    //Query error
+                else {
                     http_response_code(500);
+                    //chat name not given
                 }
-                $newChatID=mysqli_insert_id($connection);
-                mysqli_stmt_prepare($chatRelationCreateStatement,"INSERT INTO chat_relation(chat_id,user_id,is_admin)
-                VALUES(?,?,?)");
-                mysqli_stmt_bind_param($chatRelationCreateStatement,"iii",$newChatID,$_SESSION["user_id"],$isAdmin);
-                mysqli_stmt_execute($chatRelationCreateStatement);
-                $affectedRows=mysqli_stmt_affected_rows($chatRelationCreateStatement);
-                if($affectedRows==1) {
-                    //Success
-                }
-                else if($affectedRows==-1) {
-                    //Query error
-                    http_response_code(500);
-                }
-                mysqli_stmt_prepare($chatRelationRecipientAddStatement,"INSERT INTO chat_relation(chat_id,user_id,is_admin)
-                VALUES(?,?,?)");
-                mysqli_stmt_bind_param($chatRelationRecipientAddStatement,"iii",$newChatID,$recipientUserID,$isAdmin);
-                mysqli_stmt_execute($chatRelationRecipientAddStatement);
-                $affectedRows=mysqli_stmt_affected_rows($chatRelationRecipientAddStatement);
-                if($affectedRows==1) {
-                    //Success
-                }
-                else if($affectedRows==-1) {
-                    //Query error
-                    http_response_code(500);
-                }
+                
                 
 
 
