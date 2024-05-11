@@ -18,11 +18,16 @@ if ($conn === false) {
 if (isset($_GET['chat_id']) && !empty($_GET['chat_id'])) {
     $chat_id = $_GET['chat_id'];
     // Prepare the SQL statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM chat_log WHERE chat_id = ?");
+    $stmt = $conn->prepare("SELECT cl.message_id, cl.chat_id, cl.user_id, cl.message, cl.timestamp, u.first_name, u.surname 
+    FROM chat_log cl
+    JOIN users u ON cl.user_id = u.user_id
+    WHERE cl.chat_id = ?
+    ORDER BY cl.timestamp ASC"); // Change ASC to DESC if you want the newest messages first
+
+
     if ($stmt === false) {
         // Handle prepare statement error
         echo json_encode(array("status" => "error", "message" => "Prepare statement failed"));
-        echo $chat_id;
         exit;
     }
     

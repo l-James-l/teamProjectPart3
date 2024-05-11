@@ -20,26 +20,26 @@ session_start();
     <main>
         <div class="groups-sidebar">
             <div class="groups-sidebar-item" >1-1</div>
-            <div class="groups-sidebar-item" >Group</div>
+            <div class="groups-sidebar-item" >Groups</div>
             <!-- <a href="settings.html" class="groups-sidebar-item">Settings</a> -->
         </div>
-
-        <div class="message-list-sidebar">
-            
-            <div class="message-list-sidebar-content">
+        <div class="message-list-sidebar-container">
+            <div class="message-list-topbar">
                 <p id="message-list-title">Messages</p>
-
+                <p>+</p>
             </div>
+            
+            <div class="message-list-sidebar">
+                    
+                    <div class="message-list-sidebar-content">
+                        
+
+                    </div>
+                </div>
         </div>
+      
         
         <div class="main-section">
-            <div>
-                <div class="topbar-section">
-                    <p id="current-conversation-name"></p>
-                    <div id="close-chat-button">X</div>
-                </div>
-                <hr class="divider">
-            </div>
             
             <div id="chat-section" class="chat-section">
   
@@ -112,6 +112,14 @@ session_start();
                 highlightSelectedChat(selectedChatId);
                 fetchMessages();
             }
+
+            var messageTextarea = document.getElementById("message");
+            messageTextarea.addEventListener("keydown", function(event) {
+                if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault(); // Prevent default action (typically a new line)
+                    sendMessage(event); // Call your sendMessage function
+                }
+            });
         });
 
 
@@ -144,7 +152,14 @@ session_start();
             xhr.onload = function () {
                 if (this.status === 200) {
                     console.log("Message sent successfully: ", this.responseText);
-                    // You may want to call scrollToBottom() to scroll the chat into view.
+                    // Get the selected chat ID from local storage
+                    var selectedChatId = localStorage.getItem('selectedChatId');
+                
+                    // If a chat is selected, reload its messages to ensure it's up to date
+                    if (selectedChatId) {
+                        loadChatMessages(selectedChatId);
+                    }
+                    scrollToBottom();
                 } else {
                     console.error('An error occurred during the AJAX request to send-message.php');
                 }
@@ -156,6 +171,14 @@ session_start();
 
             // Clear the message input
             document.getElementById("message").value = '';
+            // Get the selected chat ID from local storage
+            var selectedChatId = localStorage.getItem('selectedChatId');
+        
+            // If a chat is selected, reload its messages to ensure it's up to date
+            if (selectedChatId) {
+                loadChatMessages(selectedChatId);
+            }
+
         }
 
         function addMessageToChat(message, type) {
@@ -181,12 +204,15 @@ session_start();
                 deleteBtn.onclick = function() { deleteMessage(messageDiv); };
                 messageDiv.appendChild(deleteBtn);
                 
-                var editBtn = document.createElement("button");
-                editBtn.textContent = "Edit";
-                editBtn.onclick = function() { editMessage(messageDiv); };
+                var editBtnSVG = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 50 50"><path d="M 43.125 2 C 41.878906 2 40.636719 2.488281 39.6875 3.4375 L 38.875 4.25 L 45.75 11.125 C 45.746094 11.128906 46.5625 10.3125 46.5625 10.3125 C 48.464844 8.410156 48.460938 5.335938 46.5625 3.4375 C 45.609375 2.488281 44.371094 2 43.125 2 Z M 37.34375 6.03125 C 37.117188 6.0625 36.90625 6.175781 36.75 6.34375 L 4.3125 38.8125 C 4.183594 38.929688 4.085938 39.082031 4.03125 39.25 L 2.03125 46.75 C 1.941406 47.09375 2.042969 47.457031 2.292969 47.707031 C 2.542969 47.957031 2.90625 48.058594 3.25 47.96875 L 10.75 45.96875 C 10.917969 45.914063 11.070313 45.816406 11.1875 45.6875 L 43.65625 13.25 C 44.054688 12.863281 44.058594 12.226563 43.671875 11.828125 C 43.285156 11.429688 42.648438 11.425781 42.25 11.8125 L 9.96875 44.09375 L 5.90625 40.03125 L 38.1875 7.75 C 38.488281 7.460938 38.578125 7.011719 38.410156 6.628906 C 38.242188 6.246094 37.855469 6.007813 37.4375 6.03125 C 37.40625 6.03125 37.375 6.03125 37.34375 6.03125 Z"></path></svg>'
+                var editBtn = document.createElement("div");
+                editBtn.innerHTML = editBtnSVG;
+                editBtn.classList.add("edit-button");
+                editBtn.onclick = function() { editMessage(message.message_id, messageContent); };
                 messageDiv.appendChild(editBtn);
             }
         }
+
 
         function fetchMessages() {
             var chatContainer = document.getElementById('chat-section');
@@ -220,11 +246,6 @@ session_start();
              // Debugging: Log the messages to the console
             console.log("Messages received:", messages);
 
-            if (!Array.isArray(messages)) {
-                console.error("Expected 'messages' to be an array, but received:", messages);
-                return; 
-            }
-
             messages.forEach(function(message) {
                 var messageDiv = document.createElement("div");
                 var messageType = message.user_id == userId ? "outgoing" : "incoming";
@@ -233,16 +254,15 @@ session_start();
 
                 var messageTimestamp = document.createElement("div");
                 messageTimestamp.classList.add("message-timestamp");
-                messageTimestamp.textContent = formatTimestamp(message.timestamp); // Assuming 'timestamp' is the field name in the message object
+                messageTimestamp.textContent = formatTimestamp(message.timestamp);
 
-                
-                
-                var messageContent = messageDiv.appendChild(document.createElement("div"));
+                var messageContent = document.createElement("div");
                 messageContent.classList.add(messageType + "-message");
-                messageContent.textContent = message.message; // assuming message field contains the message content
+                messageContent.textContent = message.message;
 
-                
                 messageDiv.appendChild(messageContent);
+
+
 
                 if (message.user_id == userId) {
                     var deleteBtnSVG = `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0,0,256,256">
@@ -253,7 +273,7 @@ session_start();
                     </g>
                     </svg>`;
                     
-                    var deleteBtn = document.createElement("button");
+                    var deleteBtn = document.createElement("div");
                     deleteBtn.innerHTML = deleteBtnSVG;
                     deleteBtn.classList.add("delete-button");
                     deleteBtn.onclick = function() { deleteMessage(message.message_id); };
@@ -261,9 +281,9 @@ session_start();
 
                     var editBtnSVG = '<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 50 50"><path d="M 43.125 2 C 41.878906 2 40.636719 2.488281 39.6875 3.4375 L 38.875 4.25 L 45.75 11.125 C 45.746094 11.128906 46.5625 10.3125 46.5625 10.3125 C 48.464844 8.410156 48.460938 5.335938 46.5625 3.4375 C 45.609375 2.488281 44.371094 2 43.125 2 Z M 37.34375 6.03125 C 37.117188 6.0625 36.90625 6.175781 36.75 6.34375 L 4.3125 38.8125 C 4.183594 38.929688 4.085938 39.082031 4.03125 39.25 L 2.03125 46.75 C 1.941406 47.09375 2.042969 47.457031 2.292969 47.707031 C 2.542969 47.957031 2.90625 48.058594 3.25 47.96875 L 10.75 45.96875 C 10.917969 45.914063 11.070313 45.816406 11.1875 45.6875 L 43.65625 13.25 C 44.054688 12.863281 44.058594 12.226563 43.671875 11.828125 C 43.285156 11.429688 42.648438 11.425781 42.25 11.8125 L 9.96875 44.09375 L 5.90625 40.03125 L 38.1875 7.75 C 38.488281 7.460938 38.578125 7.011719 38.410156 6.628906 C 38.242188 6.246094 37.855469 6.007813 37.4375 6.03125 C 37.40625 6.03125 37.375 6.03125 37.34375 6.03125 Z"></path></svg>'
 
-                    var editBtn = document.createElement("button");
+                    var editBtn = document.createElement("div");
                     editBtn.innerHTML = editBtnSVG;
-                    editBtn.classList.add("delete-button");
+                    editBtn.classList.add("edit-button");
                     editBtn.onclick = function() { editMessage(message.message_id, messageContent); };
                     messageDiv.appendChild(editBtn);
 
@@ -271,6 +291,13 @@ session_start();
                 chatSection.appendChild(messageTimestamp);
                 chatSection.appendChild(messageDiv);
 
+                // Display sender's name for incoming messages in group chats
+                if (messageType === 'incoming') {
+                    var senderName = document.createElement("div");
+                    senderName.classList.add("sender-name");
+                    senderName.textContent = message.first_name + " " + message.surname;
+                    chatSection.appendChild(senderName);
+                }
             });
 
             scrollToBottom(); // Ensure the newest messages are visible
@@ -321,7 +348,6 @@ session_start();
             xhr.send();
         }
 
-
         function getLastMessageId() {
             // Assuming your messages have a unique ID assigned to them, you can retrieve the ID of the last displayed message
             var lastMessageElement = document.querySelector(".chat-section .message-container:last-child");
@@ -362,33 +388,40 @@ session_start();
         }
 
         function deleteMessage(messageId) {
-            var formData = new FormData();
-            formData.append('message_id', messageId);
 
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "delete-message.php", true);
-            xhr.onload = function () {
-                if (this.status === 200) {
-                    // Message deleted successfully
-                    console.log("Message deleted");
-                    fetchMessages(); // Refresh messages to reflect deletion
-                    
-                    // Get the selected chat ID from local storage
-                    var selectedChatId = localStorage.getItem('selectedChatId');
-                    
-                    // If a chat is selected, reload its messages to ensure it's up to date
-                    if (selectedChatId) {
-                        loadChatMessages(selectedChatId);
+            var userConfirmed = confirm("Are you sure you want to delete this message?");
+
+            // Check if the user confirmed the deletion
+            if (userConfirmed) {
+                var formData = new FormData();
+                formData.append('message_id', messageId);
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "delete-message.php", true);
+                xhr.onload = function () {
+                    if (this.status === 200) {
+                        // Message deleted successfully
+                        console.log("Message deleted");
+                        fetchMessages(); // Refresh messages to reflect deletion
+                        
+                        // Get the selected chat ID from local storage
+                        var selectedChatId = localStorage.getItem('selectedChatId');
+                        
+                        // If a chat is selected, reload its messages to ensure it's up to date
+                        if (selectedChatId) {
+                            loadChatMessages(selectedChatId);
+                        }
+                    } else {
+                        // Handle errors, such as message not found or server error
+                        console.error('Failed to delete message:', this.status);
                     }
-                } else {
-                    // Handle errors, such as message not found or server error
-                    console.error('Failed to delete message:', this.status);
-                }
-            };
-            xhr.onerror = function () {
-                console.error('Error during the AJAX request to delete the message.');
-            };
-            xhr.send(formData);
+                };
+                xhr.onerror = function () {
+                    console.error('Error during the AJAX request to delete the message.');
+                };
+                xhr.send(formData);
+            }
+ 
         }
 
 
@@ -499,7 +532,6 @@ session_start();
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
                             updateChatUI(response.messages, <?php echo $user_id; ?>);
-                            document.getElementById("current-conversation-name").textContent = response.chat_name; // Update the chat name
 
                             // Remove the 'selected-chat' class from all chat previews
                             var chatPreviews = document.querySelectorAll('.chat-preview');
