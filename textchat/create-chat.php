@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     http_response_code(500);
                 }
                 mysqli_stmt_prepare($chatRelationRecipientAddStatement,"INSERT INTO chat_relation(chat_id,user_id,is_admin)
-                VALUES(?,?)");
+                VALUES(?,?,?)");
                 mysqli_stmt_bind_param($chatRelationRecipientAddStatement,"iii",$newChatID,$recipientUserID,$isAdmin);
                 mysqli_stmt_execute($chatRelationRecipientAddStatement);
                 $affectedRows=mysqli_stmt_affected_rows($chatRelationRecipientAddStatement);
