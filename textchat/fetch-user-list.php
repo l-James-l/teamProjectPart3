@@ -3,8 +3,12 @@ include_once(__DIR__ . '/../src/db_connection.php');
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-$connection=mysqli_connect($servername,$username,$password,$db_name);
 
+$servername = "localhost";
+$username = "phpUser";
+$password = "p455w0rD";
+$dbname = "make_it_all"; 
+$connection=mysqli_connect($servername,$username,$password,$dbname);
 session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if(isset($_SESSION["user_id"])) {
