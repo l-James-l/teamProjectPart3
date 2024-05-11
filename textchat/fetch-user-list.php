@@ -13,8 +13,8 @@ session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if(isset($_SESSION["user_id"])) {
         $statement=mysqli_stmt_init($connection);
-        mysqli_stmt_prepare($statement,"SELECT user_id, first_name, surname 
-        FROM user;");
+        echo(mysqli_stmt_prepare($statement,"SELECT user_id, first_name, surname 
+        FROM user;"));
         mysqli_stmt_execute($statement);
         $result=mysqli_stmt_get_result($statement);
         echo($result);
