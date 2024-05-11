@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 else if($_POST["is_group"]=="false") {
                     $isGroup=false;
                     $chatName="test";//set to name of recipient
+                    $isAdmin=false;
                 }
                 mysqli_stmt_prepare($chatCreateStatement,"INSERT INTO chat(chat_name,is_group)
                 VALUES (?,?)");

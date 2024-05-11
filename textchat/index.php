@@ -577,7 +577,7 @@ session_start();
                 method:"POST",
                 headers: {'Content-Type': 
                 'application/x-www-form-urlencoded'},
-                body : 'is_group=1&recipient_user_ID=2'
+                body : 'is_group=true&recipient_user_ID=2'
             }
             try {
                 const response = await fetch("create-chat.php",fetchParams);
