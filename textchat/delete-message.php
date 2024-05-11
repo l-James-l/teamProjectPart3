@@ -1,4 +1,5 @@
 <?php
+session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -21,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $userId = $_SESSION['user_id'];
 
         // Prepare the DELETE statement
-        $stmt = mysqli_prepare($conn, "DELETE FROM chat_log WHERE message_id = ? AND user_id = ?");
+        $stmt = mysqli_prepare($conn, "DELETE FROM chat_log WHERE message_id = ?");
         if ($stmt === false) {
             http_response_code(500);
             echo json_encode(['error' => 'Failed to prepare the statement']);
