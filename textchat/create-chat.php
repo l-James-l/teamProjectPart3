@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $isAdmin=true;
                     $chatName="test";//hardcoded for now
                 }
-                else if($_POST["is_group"=="false"]) {
+                else if($_POST["is_group"]=="false") {
                     $isGroup=false;
                     $chatName="test";//set to name of recipient
                 }
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 $newChatID=mysqli_insert_id($connection);
                 mysqli_stmt_prepare($chatRelationCreateStatement,"INSERT INTO chat_relation(chat_id,user_id,is_admin)
-                VALUES(?,?,?");
+                VALUES(?,?,?)");
                 mysqli_stmt_bind_param($chatRelationCreateStatement,"iii",$newChatID,$_SESSION["user_id"],$isAdmin);
                 mysqli_stmt_execute($chatRelationCreateStatement);
                 $affectedRows=mysqli_stmt_affected_rows($chatRelationCreateStatement);
