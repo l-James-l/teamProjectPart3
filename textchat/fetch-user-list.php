@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $success=mysqli_stmt_prepare($statement,"SELECT user_id, first_name, surname 
         FROM user;");
         if(!$statement) {
-            echo "error";
+            echo "error2";
         }
         if(!$success) {
             echo "error";
