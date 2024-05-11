@@ -5,6 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 $connection=mysqli_connect($servername,$username,$password,$db_name);
 $statement=mysqli_stmt_init($connection);
+session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if(isset($_SESSION["user_id"])) {
         mysqli_stmt_prepare($statement,"SELECT user_id, first_name, surname 
