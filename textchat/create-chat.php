@@ -1,5 +1,9 @@
 <?php
 include_once(__DIR__ . '/../src/db_connection.php');
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+mysqli_report(MYSQLI_REPORT_ERROR);
 $connection=mysqli_connect($servername,$username,$password,$db_name);
 $chatCreateStatement=mysqli_stmt_init($connection);
 $chatIDRetrievalStatement=mysqli_stmt_init($connection);
