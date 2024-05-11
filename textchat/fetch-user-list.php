@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
     else {
         //user not logged in
+        echo "no session";
     }
 }
 else {
