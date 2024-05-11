@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             while($row=mysqli_fetch_array($result)) {
                 $resultingUsers[]=$row;
             }
+            echo "running";
             echo json_encode($resultingUsers);
         }
         else {
