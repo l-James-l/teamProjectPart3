@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(isset($_SESSION["user_id"])) {
         if(isset($_POST["chat_id"])) {
             if(isset($_POST["user_id_to_add"])) {
+                echo "Line 16";
                 mysqli_stmt_prepare($groupCheckStatement,"SELECT is_group 
                 FROM chat
                 WHERE chat_id=?");
