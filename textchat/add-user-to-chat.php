@@ -64,11 +64,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $affectedRows=mysqli_stmt_affected_rows($addUserToGroupStatement);
                             //change the below messages:
                             if ($affectedRows == 1) {
-                                echo json_encode(['success' => true, 'message' => 'Message deleted successfully.']);
+                                echo json_encode(['success' => true, 'message' => 'User added successfully.']);
                             } 
                             else if ($affectedRows == 0) {
                                 http_response_code(404);
-                                echo json_encode(['error' => 'No message deleted - no matching message found or lack of permission.']);
+                                echo json_encode(['error' => 'Error']);
                             } else {
                                 http_response_code(500);
                                 echo json_encode(['error' => 'Query error']);
