@@ -90,7 +90,7 @@ try {
     </style>
 </head>
 <body>
-    <form action="post">
+    <form action="post" autocomplete="off" style="display: ruby-text;margin-top: 100px;">
         <?php
         echo "<label class='mr-sm-2' for='projectsearch'>Select Project</label>
         <br>
@@ -121,7 +121,7 @@ try {
         echo "</div></div><br>";
         ?>
 
-        <label for="empsearch">Assign to Staff Member</label>
+        <label for="empsearch">Staff Member</label>
         <br>
         <div class="dropdown">
             <input type="text" placeholder="Search.." id="empsearch" class="searchbox form-control" style="width: 250px" onkeyup="filterFunction('emp')" required>
@@ -149,6 +149,20 @@ try {
                 ?>
             </div>
         </div>
+
+        <div style="flex-direction: row;">
+            <label for="manhours">Hours To Log</label>
+            <input type="number" id="manhours" name="manhours" class="form-control" placeholder="Hours" style="width: 250px;" min="1" required value=1>
+        </div>
+        <div style="flex-direction: row; margin-left: 50px;">
+            <label for="date">Select Date</label>
+            <input class="form-control" id="date" name="date" type="date" style="width: 250px;" required value="">
+            <script>    
+                let date = new Date(); 
+                document.getElementById("date")setAttribute("value", date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate());
+            </script>
+        </div>
+
     </form>
 </body>
 </html>
