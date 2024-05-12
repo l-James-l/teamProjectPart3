@@ -88,9 +88,11 @@ if ($stmt === false) {
     echo json_encode(array("status" => "error", "message" => "progress log query failed"));
     exit;
 }
-$stmt->bind_param("i", $userID);
+$stmt->bind_param('i', $userID);
 $stmt->execute();
 $progress_log = $stmt->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
 
 $conn->close();
 
