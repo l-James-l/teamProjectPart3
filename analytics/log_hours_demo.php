@@ -12,9 +12,12 @@ if (isset($_POST["task"]) && isset($_POST["employee"]) && isset($_POST["hours"])
     $hours = $_POST['hours'];
     $date = $_POST['date'];
 
-    $sql = "insert into task_progress_log values (null, $task_id, $emp_id, $hours, Date $date)";
-    $conn->query($sql);
-    // header("location: ./analytics_landing_page.php?lf=projects");
+    $sql = "insert into task_progress_log values (0, $task_id, $emp_id, $hours, Date $date)";
+    if (!$conn->query($sql)) {
+        echo "failed";
+    } else {
+        header("location: ./analytics_landing_page.php?lf=projects");
+    }
 }
 ?>
 
