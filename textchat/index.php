@@ -663,10 +663,10 @@ session_start();
         }
         function displayCreateGroupChatModal() {
             let groupChatCreationModal=document.querySelector("#createGroupChatModal");
-            groupChatCreationModal.style.display = block;
+            groupChatCreationModal.style.display = "block";
             let closeButton=document.querySelector("#groupChatModalCloseButton");
             closeButton.addEventListener("click",() => {
-                groupChatCreationModal.style.display=none;
+                groupChatCreationModal.style.display="none";
             })
             document.querySelector("#createGroupChatUserSearchButton").addEventListener("click",(event)=> {
                 event.preventDefault();
