@@ -18,9 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if message_id is set and not empty
     if (isset($_POST['message_id']) && !empty($_POST['message_id'])) {
         $messageId = $_POST['message_id'];
+        $userId = 1;
 
         // Prepare the DELETE statement
-        $stmt = mysqli_prepare($conn, "DELETE FROM chat_log WHERE message_id = ?");
+        $stmt = mysqli_prepare($conn, "DELETE FROM chat_log WHERE message_id = ? AND user_id = ?");
         if ($stmt === false) {
             http_response_code(500);
             echo json_encode(['error' => 'Failed to prepare the statement']);
