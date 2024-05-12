@@ -100,7 +100,7 @@ if (isset($_POST["task"]) && isset($_POST["employee"]) && isset($_POST["hours"])
     </style>
 </head>
 <body>
-    <form action="post" autocomplete="off" style="width:100%; margin-top:15%" class="text-center">
+    <form action="#" method="post" autocomplete="off" style="width:100%; margin-top:15%" class="text-center">
         <h1>Log Hours</h1>
         <?php
         echo "<label class='mr-sm-2' for='projectsearch'>Select Task</label>
