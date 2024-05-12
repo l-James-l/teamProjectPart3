@@ -6,6 +6,16 @@ try {
     echo "<script type='text/javascript'>alert('Failed to connect to database');</script>";
 }
 
+if (isset($_POST["task"]) && isset($_POST["employee"]) && isset($_POST["hours"]) && isset($_POST["date"])) {
+    $emp_id = $_POST['employee'];
+    $task_id = $_POST['task'];
+    $hours = $_POST['hours'];
+    $date = $_POST['date'];
+
+    $sql = "insert into task_progress_log values (null, $task_id, $emp_id, $hours, Date $date)";
+    $conn->query($sql);
+    header("location: ./analytics_landing_page.php?lf=projects");
+}
 ?>
 
 <!DOCTYPE html>
@@ -91,14 +101,15 @@ try {
 </head>
 <body>
     <form action="post" autocomplete="off" style="width:100%; margin-top:15%" class="text-center">
+        <h1>Log Hours</h1>
         <?php
         echo "<label class='mr-sm-2' for='projectsearch'>Select Project</label>
         <br>
         <div class='dropdown'>
         <input type='text' placeholder='Search..' id='projectsearch' class='searchbox form-control' style='width: 250px' onkeyup='filterFunction(\"project\")' required>
-        <input type='hidden' id='hiddenprojectsearch' name='project' required>";   
+        <input type='hidden' id='hiddenprojectsearch' name='task' required>";   
         
-        $sql = "SELECT project_title, project_id FROM project";
+        $sql = "SELECT task_title, task_id FROM task";
         
         $result = $conn->query($sql);
 
@@ -153,8 +164,8 @@ try {
         <br>
 
         <div style="disply: inline-block">
-            <label for="manhours">Hours To Log</label>
-            <input type="number" id="manhours" name="manhours" class="form-control" placeholder="Hours" style="width: 250px;" min="1" required value=1>
+            <label for="hours">Hours To Log</label>
+            <input type="number" id="hours" name="hours" class="form-control" placeholder="Hours" style="width: 250px;" min="1" required value=1>
         </div>
 
         <br>
@@ -164,11 +175,13 @@ try {
             <input class="form-control" id="date" name="date" type="date" style="width: 250px;" required value="">
             <script>    
                 let date = new Date(); 
-                let text = d.toISOString();
+                let text = date.toISOString();
                 text = text.substring(0, text.length - 14)
                 document.getElementById("date").setAttribute("value", text);
             </script>
         </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
 
     </form>
 </body>
