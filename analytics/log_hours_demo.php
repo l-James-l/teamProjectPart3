@@ -159,7 +159,7 @@ try {
             <input class="form-control" id="date" name="date" type="date" style="width: 250px;" required value="">
             <script>    
                 let date = new Date(); 
-                document.getElementById("date")setAttribute("value", date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate());
+                document.getElementById("date").setAttribute("value", date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate());
             </script>
         </div>
 
