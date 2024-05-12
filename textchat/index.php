@@ -591,6 +591,7 @@ session_start();
             }
             
             try {
+                console.log("try block running")
                 const response = await fetch("create-chat.php",fetchParams);
                 const responseObjects = await response.text();
                 await console.log(responseObjects);
