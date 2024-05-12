@@ -164,7 +164,7 @@ if (isset($_GET['userToGet'])) {
             <?php } else if ($page == "progress") {?>
                 <div id="progress_line_chart" style="width: -webkit-fill-available; height:400px"></div>
                 <script>
-                    fetchUserData(<?php echo $userID ?>, drawProgressGraph);
+                    fetchUserData(<?php echo $userID ?>, initProgressGraph);
                 </script>
             <?php }?>
         </div>
