@@ -618,7 +618,8 @@ session_start();
                 console.log(error);
             }
         }
-        addUserToChat(5,4)
+        createChat(true,1,"test_group")
+        //addUserToChat(4,)
         .then(console.log("running"))
         
     </script>
