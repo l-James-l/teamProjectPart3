@@ -163,7 +163,7 @@ if (isset($_POST["task"]) && isset($_POST["employee"]) && isset($_POST["hours"])
 
         <br>
 
-        <div style="disply: inline-block">
+        <div style="display: inline-block">
             <label for="hours">Hours To Log</label>
             <input type="number" id="hours" name="hours" class="form-control" placeholder="Hours" style="width: 250px;" min="1" required value=1>
         </div>
