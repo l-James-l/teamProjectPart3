@@ -14,7 +14,7 @@ if (isset($_POST["task"]) && isset($_POST["employee"]) && isset($_POST["hours"])
 
     $sql = "insert into task_progress_log values (null, $task_id, $emp_id, $hours, Date $date)";
     $conn->query($sql);
-    header("location: ./analytics_landing_page.php?lf=projects");
+    // header("location: ./analytics_landing_page.php?lf=projects");
 }
 ?>
 
