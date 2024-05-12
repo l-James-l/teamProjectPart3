@@ -596,12 +596,11 @@ session_start();
                 await console.log(responseObjects);
             }
             catch(error) {
-                //handle error
+                console.log(error);
             }
         }
         createChat(true,4,"testing2")
         .then(console.log("running"))
-        .catch(error=> console.log(error))
     </script>
 </body>
 </html>
