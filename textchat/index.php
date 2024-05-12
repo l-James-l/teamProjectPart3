@@ -639,7 +639,7 @@ session_start();
                     method:"POST",
                 headers: {'Content-Type': 
                 'application/x-www-form-urlencoded'},
-                body : 'user_id_to_add='+encodeURIComponent(userID)+'chat_id='+encodeURIComponent(chatID)
+                body : 'user_id_to_add='+encodeURIComponent(userID)+'&chat_id='+encodeURIComponent(chatID)
                 }
                 const response = await fetch("add-user-to-chat.php",fetchParams);
                 const responseObjects = await response.text();
