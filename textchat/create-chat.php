@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $isGroup=false;
                     $chatName="private-message";
                     $isAdmin=false;
+                    $chatNameGiven=true;//no chat name needed as the chat is a private message
                 }
                 if($chatNameGiven) {
                     echo "running - name given";
