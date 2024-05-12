@@ -650,10 +650,10 @@ session_start();
         }
         function displayCreatePrivateChatModal() {
             let privateChatCreationModal=document.querySelector("#createPrivateChatModal");
-            privateChatCreationModal.style.display = block;
+            privateChatCreationModal.style.display = "block";
             let closeButton=document.querySelector("#privateChatModalCloseButton");
             closeButton.addEventListener("click",() => {
-                privateChatCreationModal.style.display=none;
+                privateChatCreationModal.style.display="none";
             })
             document.querySelector("#createPrivateChatUserSearchButton").addEventListener("click",()=> {
                 searchUsersCreatePrivateChat(document.querySelector("#createPrivateChatUserSearchField").value)
