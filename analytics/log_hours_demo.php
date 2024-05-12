@@ -181,7 +181,9 @@ if (isset($_POST["task"]) && isset($_POST["employee"]) && isset($_POST["hours"])
             </script>
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <br>
+
+        <button type="submit" class="btn btn-primary" style="margin:10px; width:250px">Submit</button>
 
     </form>
 </body>
