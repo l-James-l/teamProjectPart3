@@ -90,7 +90,7 @@ try {
     </style>
 </head>
 <body>
-    <form action="post" autocomplete="off" style="display: ruby-text;margin-top: 100px;">
+    <form action="post" autocomplete="off" style="width:100% margin-top:15%" class="text-center">
         <?php
         echo "<label class='mr-sm-2' for='projectsearch'>Select Project</label>
         <br>
@@ -150,18 +150,17 @@ try {
             </div>
         </div>
 
-        <div style="flex-direction: row;">
-            <label for="manhours">Hours To Log</label>
-            <input type="number" id="manhours" name="manhours" class="form-control" placeholder="Hours" style="width: 250px;" min="1" required value=1>
-        </div>
-        <div style="flex-direction: row; margin-left: 50px;">
-            <label for="date">Select Date</label>
-            <input class="form-control" id="date" name="date" type="date" style="width: 250px;" required value="">
-            <script>    
-                let date = new Date(); 
-                document.getElementById("date").setAttribute("value", date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate());
-            </script>
-        </div>
+        <label for="manhours">Hours To Log</label>
+        <input type="number" id="manhours" name="manhours" class="form-control" placeholder="Hours" style="width: 250px;" min="1" required value=1>
+
+        <label for="date">Select Date</label>
+        <input class="form-control" id="date" name="date" type="date" style="width: 250px;" required value="">
+        <script>    
+            let date = new Date(); 
+            let text = d.toISOString();
+            text = text.substring(0, text.length - 14)
+            document.getElementById("date").setAttribute("value", text);
+        </script>
 
     </form>
 </body>
