@@ -19,7 +19,7 @@ if (isset($_POST["task"]) && isset($_POST["employee"]) && isset($_POST["hours"])
     } 
     $sql = "select project_id, est_length, completion_percentage from task where task_id = $task_id";
     $task = $conn->query($sql)->fetch();
-    $new_completion = intval(((intval($task["completion_percentage"])* intval($task["est_length"]) + intval($hours)) / intval($task["est_length"]))*100);
+    $new_completion = intval(((intval($task["completion_percentage"])*0.01* intval($task["est_length"]) + intval($hours)) / intval($task["est_length"]))*100);
     $project_id = $task["project_id"];
 
     $sql = "update task set completion_percentage = $new_completion where task_id = $task_id";
