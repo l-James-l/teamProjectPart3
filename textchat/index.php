@@ -663,6 +663,8 @@ session_start();
             document.querySelector("#createPrivateChatSubmit").addEventListener("click", (event) => {
                 event.preventDefault();
                 createChat(false,document.querySelector("#createPrivateChatResultingUsers").value)
+                privateChatCreationModal.style.display="none";
+                fetchChats(<?php echo $user_id; ?>, false);
             });
 
 
@@ -681,6 +683,8 @@ session_start();
             document.querySelector("#createGroupChatSubmit").addEventListener("click", (event) => {
                 event.preventDefault();
                 createChat(true,document.querySelector("#createGroupChatResultingUsers").value,document.querySelector("#createGroupChatGroupName").value);
+                groupChatCreationModal.style.display="none"
+                fetchChats(<?php echo $user_id; ?>, true);
             });
 
         }
