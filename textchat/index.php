@@ -572,13 +572,24 @@ session_start();
                 selectedChatPreview.classList.add('selected-chat');
             }
         }
-        async function createChat() {
-            const fetchParams = {
+        async function createChat(isGroup,recipientUserID,groupName) {
+            if(isGroup) {
+                const fetchParams = {
                 method:"POST",
                 headers: {'Content-Type': 
                 'application/x-www-form-urlencoded'},
-                body : 'is_group=false&recipient_user_ID=4'
+                body : 'is_group=true&recipient_user_ID='+encodeURIComponent(recipientUserID)+'&group_name='+encodeURIComponent(groupName)
+                }
             }
+            else {
+                const fetchParams = {
+                method:"POST",
+                headers: {'Content-Type': 
+                'application/x-www-form-urlencoded'},
+                body : 'is_group=false&recipient_user_ID='+encodeURIComponent(recipientUserID)
+                }
+            }
+            
             try {
                 const response = await fetch("create-chat.php",fetchParams);
                 const responseObjects = await response.text();
@@ -588,7 +599,7 @@ session_start();
                 //handle error
             }
         }
-        createChat();
+        createChat(true,4,"testing2");
     </script>
 </body>
 </html>
