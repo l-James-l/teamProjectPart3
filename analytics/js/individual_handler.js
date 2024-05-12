@@ -22,6 +22,7 @@ function initProgressGraph(userData) {
 
 function drawProgressGraph(userData) {
     var progressData = userData.data.progressLog
+    console.log(progressData)
     var data = new google.visualization.DataTable();
     data.addColumn('date', 'Date');
     data.addColumn('number', 'Day to Day');
