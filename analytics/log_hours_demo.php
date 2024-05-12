@@ -25,7 +25,7 @@ if (isset($_POST["task"]) && isset($_POST["employee"]) && isset($_POST["hours"])
     $sql = "update task set completion_percentage = $new_completion where task_id = $task_id";
     $conn->query($sql);
     echo $sql;
-    header("location: new_project_analytics.php?projectToGet=$project_id&page=progress");
+    // header("location: new_project_analytics.php?projectToGet=$project_id&page=progress");
 
 }
 ?>
