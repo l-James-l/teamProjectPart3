@@ -77,20 +77,22 @@ $projectCount = count(array_unique($projectIDs));
 $taskCount = count($projects);
 
 // get the progress log
-$stmt = "select date, sum(hours_logged) as hours_sum 
-from task_progress_log left join task on task.task_id = task_progress_log.task_id
-where user_id = ?  
-group by date 
-order by date";
+$sql = "SELECT date, sum(hours_logged) AS hours_sum 
+FROM task_progress_log
+-- WHERE user_id = 1   
+GROUP BY date 
+ORDER BY date";
 
-$query = $conn->prepare($stmt);
-if ($query === false) {
+$stmt = $conn->prepare($sql);
+if ($stmt === false) {
     echo json_encode(array("status" => "error", "message" => "progress log query failed"));
     exit;
 }
-$query->bindParam("i", $userID);
-$query->execute();
-$progress_log = $query->fetch_all(MYSQLI_ASSOC);
+// $stmt->bind_param('i', $userID);
+$stmt->execute();
+$progress_log = $stmt->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
 
 $conn->close();
 
