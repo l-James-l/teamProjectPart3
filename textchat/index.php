@@ -574,8 +574,9 @@ session_start();
         }
         async function createChat(isGroup,recipientUserID,groupName) {
             try {
+                const fetchParams;
             if(isGroup) {
-                const fetchParams = {
+                fetchParams = {
                 method:"POST",
                 headers: {'Content-Type': 
                 'application/x-www-form-urlencoded'},
@@ -583,7 +584,7 @@ session_start();
                 }
             }
             else {
-                const fetchParams = {
+                fetchParams = {
                 method:"POST",
                 headers: {'Content-Type': 
                 'application/x-www-form-urlencoded'},
