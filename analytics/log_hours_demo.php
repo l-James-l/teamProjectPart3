@@ -12,7 +12,7 @@ if (isset($_POST["task"]) && isset($_POST["employee"]) && isset($_POST["hours"])
     $hours = $_POST['hours'];
     $date = $_POST['date'];
 
-    $sql = "insert into task_progress_log values (0, $task_id, $emp_id, $hours, Date $date)";
+    $sql = "insert into task_progress_log values (0, $task_id, $emp_id, $hours, Date '$date')";
     if (!$conn->query($sql)) {
         echo "failed query: $sql";
     } else {
