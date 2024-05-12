@@ -76,6 +76,22 @@ $hoursLeft = array_sum($estimatedHoursArray) - $hoursDone;
 $projectCount = count(array_unique($projectIDs));
 $taskCount = count($projects);
 
+// get the progress log
+$stmt = "select date, sum(hours_logged) as hours_sum 
+from task_progress_log left join task on task.task_id = task_progress_log.task_id
+where user_id = ?  
+group by date 
+order by date";
+
+$query = $conn->prepare($stmt);
+if ($query === false) {
+    echo json_encode(array("status" => "error", "message" => "progress log query failed"));
+    exit;
+}
+$query->bindParam("i", $userID);
+$query->execute();
+$progress_log = $query->fetch_all(MYSQLI_ASSOC);
+
 $conn->close();
 
 echo json_encode([
@@ -89,7 +105,8 @@ echo json_encode([
             'hoursLeft' => $hoursLeft,
             'projectCount' => $projectCount,
             'taskCount' => $taskCount
-        ]
+        ],
+        'progressLog' => $progress_log
     ]
 ]);
 ?>

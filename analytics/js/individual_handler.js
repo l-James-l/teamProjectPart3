@@ -15,6 +15,37 @@ function fetchUserData(userID, callback) {
         });
 }
 
+function drawProgressGraph(userData) {
+    var progressData = userData.data.progressLog
+    var data = new google.visualization.DataTable();
+    data.addColumn('date', 'Date');
+    data.addColumn('number', 'Day to Day');
+    data.addColumn('number', 'Cumulative');
+
+    var running_sum = 0
+    processedDataArray = []
+    progressData.forEach(row => {
+        running_sum = running_sum + parseInt(row["hours_sum"])
+        processedDataArray.push([new Date(row["date"]), parseInt(row["hours_sum"]), running_sum])
+    })
+    data.addRows(processedDataArray)
+
+    var options = {
+        chart: {
+          title: 'User Progress Over Time',
+          subtitle: 'in hours commited'
+        },
+        height: 500
+    };
+
+    if (processedDataArray.length > 0) {
+        var chart = new google.charts.Line(document.getElementById('progress_line_chart'));
+        chart.draw(data, google.charts.Line.convertOptions(options));
+    } else {
+        document.getElementById('progress_line_chart').innerHTML = "There has been no progress logged for this user yet."
+    }
+}
+
 
 function updateUserData(userData) {
     document.getElementById('fullName').innerText = "Overview - " + userData.data.userDetails.fullName;

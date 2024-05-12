@@ -29,9 +29,6 @@ if (isset($_GET['userToGet'])) {
 
 
 <body>
-<script>
-    fetchUserData(<?php echo $userID ?>, updateUserData);
-</script>
     <?php
     // header handels the checking for login
     $currentPage = "analytics";
@@ -54,54 +51,63 @@ if (isset($_GET['userToGet'])) {
                         Tasks
                     </a>
                 </li>
+                <li>
+                    <a href="?userToGet=<?php echo $_GET['userToGet']?>&page=progress" class="nav-link <?php echo $page == "progress" ? "active" : "link-dark" ?>">
+                        <i class="bi bi-people-fill"></i>
+                        Progression
+                    </a>
+                </li>
             </ul>
             <hr>
         </div>
         <div class="main-content-container" style="padding: 20px; width: 100%;">
             <?php if ($page == "overview") { ?>
-                <div class="col-md-9">
-    <header class="mb-3">
-        <h1 class="sectionT" id="fullName"></h1>
-        <h2 id="role" class="subheadingT"></h2>
-    </header>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="row mb-2">
-                    <div class="col-md-12">
-                        <div class="statBox bg-light-grey p-3">
-                            <div class="hours-info" id="overviewHoursSummary">
+            <script>
+                fetchUserData(<?php echo $userID ?>, updateUserData);
+            </script>
+            <div class="col-md-9">
+                <header class="mb-3">
+                    <h1 class="sectionT" id="fullName"></h1>
+                    <h2 id="role" class="subheadingT"></h2>
+                </header>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <div class="statBox bg-light-grey p-3">
+                                        <div class="hours-info" id="overviewHoursSummary">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <div class="statBox bg-light-grey p-3">
+                                        <span class = "percentage-number">Current task completion: </span>
+                                        <span id="overviewPercentageNumber" class="percentage-number"></span>
+                                    </div>
+                                </div>
+                            </div>
+                                
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <div class="statBox bg-light-grey p-3">
+                                        <div id="overviewTaskProjectInfo" class="taskProjectInfo">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                
-                <div class="row mb-2">
-                    <div class="col-md-12">
-                        <div class="statBox bg-light-grey p-3">
-                            <span class = "percentage-number">Current task completion: </span>
-                            <span id="overviewPercentageNumber" class="percentage-number"></span>
-                        </div>
-                    </div>
-                </div>
-                    
-                <div class="row mb-2">
-                    <div class="col-md-12">
-                        <div class="statBox bg-light-grey p-3">
-                            <div id="overviewTaskProjectInfo" class="taskProjectInfo">
+                        <div class="col-md-4">
+                            <div class="pie-chart-box bg-light-grey p-3">
+                                <canvas id="taskCompletionPieChart"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="pie-chart-box bg-light-grey p-3">
-                    <canvas id="taskCompletionPieChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
             <?php } elseif ($page == "tasks") { ?>
                 <header class="main-content-header">
                     <h1 class = "sectionT">Tasks</h1>
@@ -152,7 +158,12 @@ if (isset($_GET['userToGet'])) {
                     $conn->close();
                     ?>
                 </div>
-            <?php } ?>
+            <?php } else if ($page == "progress") {?>
+                <div id="progress_line_chart" style="width: -webkit-fill-available; height:400px"></div>
+                <script>
+                    fetchUserData(<?php echo $userID ?>, drawProgressGraph);
+                </script>
+            <?php }?>
         </div>
     </div>
 </body>
