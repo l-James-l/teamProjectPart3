@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $statement=mysqli_stmt_init($connection);
         mysqli_stmt_prepare($statement,"SELECT user_id, first_name, surname 
         FROM users
-        WHERE (first_name LIKE %?% OR surname LIKE %?%)
+        WHERE (first_name LIKE '%?%' OR surname LIKE '%?%')
         AND user_id <> ?;");
         mysqli_stmt_bind_param($statement,"ssi",$_GET["enteredSearch"],$_GET["enteredSearch"],$_SESSION["user_id"]);
         mysqli_stmt_execute($statement);
