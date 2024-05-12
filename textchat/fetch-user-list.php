@@ -12,11 +12,13 @@ $dbname = "make_it_all";
 $connection=mysqli_connect($servername,$username,$password,$dbname);
 session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    if(isset($_SESSION["user_id"])) {
+    if(isset($_SESSION["user_id"]) && isset($_GET["enteredSearch"])) {
         $statement=mysqli_stmt_init($connection);
         mysqli_stmt_prepare($statement,"SELECT user_id, first_name, surname 
-        FROM users;");
-
+        FROM users
+        WHERE (first_name LIKE %?% OR surname LIKE %?%)
+        AND user_id <> ?;");
+        mysqli_stmt_bind_param($statement,"ssi",$_GET["enteredSearch"],$_GET["enteredSearch"],$_SESSION["user_id"]);
         mysqli_stmt_execute($statement);
         $result=mysqli_stmt_get_result($statement);
         $resultingUsers=[];

@@ -70,6 +70,21 @@ session_start();
                 </div>
             </div>
 
+
+            <div id="createPrivateChatModal" class="modal">
+                <div class="modal-content">
+                    <span class="close"></span>
+                    <form id="createPrivateChatForm">
+                        <input type="hidden" id="editMessageId">
+                        <label for="createPrivateChatUserSearchField">Name of recipient</label>
+                        <input type="text" id="createPrivateChatUserSearchField" name="createPrivateChatUserSearchField">
+                        <button type="submit">Find users</button>
+                        <select id="createPrivateChatResultingUsers"></select>
+                        <button type="submit">Create conversation</button>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </main>
     <script>
@@ -619,8 +634,8 @@ session_start();
             }
         }
         //createChat(true,1,"test_group")
-        addUserToChat(4,122)
-        .then(console.log("running"))
+        //addUserToChat(4,122)
+        //.then(console.log("running"))
         
     </script>
 </body>
