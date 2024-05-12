@@ -600,8 +600,25 @@ session_start();
                 console.log(error);
             }
         }
-        createChat(false,4)
-        .then(console.log("running,creating private message"))
+        //createChat(false,4)
+        //.then(console.log("running,creating private message"))
+        async function addUserToChat(userID,chatID) {
+            try {
+                fetchParams = {
+                    method:"POST",
+                headers: {'Content-Type': 
+                'application/x-www-form-urlencoded'},
+                body : 'user_id_to_add='+encodeURIComponent(userID)+'chat_id='+encodeURIComponent(chatID)
+                }
+                const response = await fetch("add-user-to-chat.php",fetchParams);
+                const responseObjects = await response.text();
+                await console.log(responseObjects);
+            }
+            catch(error) {
+                console.log(error);
+            }
+        }
+        
     </script>
 </body>
 </html>
