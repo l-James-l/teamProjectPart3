@@ -600,8 +600,8 @@ session_start();
                 console.log(error);
             }
         }
-        createChat(true,4,"testing2")
-        .then(console.log("running"))
+        createChat(false,4)
+        .then(console.log("running,creating private message"))
     </script>
 </body>
 </html>
