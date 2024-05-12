@@ -103,7 +103,7 @@ if (isset($_POST["task"]) && isset($_POST["employee"]) && isset($_POST["hours"])
     <form action="post" autocomplete="off" style="width:100%; margin-top:15%" class="text-center">
         <h1>Log Hours</h1>
         <?php
-        echo "<label class='mr-sm-2' for='projectsearch'>Select Project</label>
+        echo "<label class='mr-sm-2' for='projectsearch'>Select Task</label>
         <br>
         <div class='dropdown'>
         <input type='text' placeholder='Search..' id='projectsearch' class='searchbox form-control' style='width: 250px' onkeyup='filterFunction(\"project\")' required>
