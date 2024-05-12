@@ -733,7 +733,7 @@ session_start();
             
         }
         //createChat(true,1,"test_group")
-        addUserToChat(4,122)
+        addUserToChat(4,127)
         .then(console.log("ran"))
         //.then(console.log("running"))
         
