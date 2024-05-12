@@ -599,7 +599,8 @@ session_start();
                 //handle error
             }
         }
-        await createChat(true,4,"testing2");
+        createChat(true,4,"testing2")
+        .then(console.log("running"))
     </script>
 </body>
 </html>
