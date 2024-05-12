@@ -90,6 +90,7 @@ if ($stmt === false) {
 }
 // $stmt->bind_param('i', $userID);
 $stmt->execute();
+$result = $stmt->get_result();
 $progress_log = $stmt->fetch_all();
 // $stmt->close();
 
