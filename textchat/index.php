@@ -26,7 +26,7 @@ session_start();
         <div class="message-list-sidebar-container">
             <div class="message-list-topbar">
                 <p id="message-list-title">Messages</p>
-                <p>+</p>
+                <p id="createChat">+</p>
             </div>
             
             <div class="message-list-sidebar">
@@ -73,13 +73,26 @@ session_start();
 
             <div id="createPrivateChatModal" class="modal">
                 <div class="modal-content">
-                    <span class="close"></span>
+                    <span class="close" id="privateChatModalCloseButton">Close</span>
                     <form id="createPrivateChatForm">
                         <input type="hidden" id="editMessageId">
                         <label for="createPrivateChatUserSearchField">Name of recipient</label>
                         <input type="text" id="createPrivateChatUserSearchField" name="createPrivateChatUserSearchField">
-                        <button type="submit">Find users</button>
+                        <button type="submit" id="createPrivateChatUserSearchButton">Find users</button>
                         <select id="createPrivateChatResultingUsers"></select>
+                        <button type="submit">Create conversation</button>
+                    </form>
+                </div>
+            </div>
+            <div id="createGroupChatModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="groupChatModalCloseButton">Close</span>
+                    <form id="createGroupChatForm">
+                        <input type="hidden" id="editMessageId">
+                        <label for="createGroupChatUserSearchField">Name of recipient</label>
+                        <input type="text" id="createGroupChatUserSearchField" name="createGroupChatUserSearchField">
+                        <button type="submit" id="createGroupChatUserSearchButton">Find users</button>
+                        <select id="createGroupChatResultingUsers"></select>
                         <button type="submit">Create conversation</button>
                     </form>
                 </div>
@@ -94,7 +107,7 @@ session_start();
         fetchChats(<?php echo $user_id; ?>, false); // Fetch one-to-one chats by default
         fetchMessages();
         <?php endif; ?>
-
+        let oneToOne=true;
         document.addEventListener("DOMContentLoaded", function () {
             var oneToOneButton = document.querySelector('.groups-sidebar-item:nth-child(1)');
             var groupButton = document.querySelector('.groups-sidebar-item:nth-child(2)');
@@ -103,6 +116,7 @@ session_start();
             oneToOneButton.addEventListener('click', function () {
                 if (<?php echo isset($user_id) ? 'true' : 'false'; ?>) {
                     fetchChats(<?php echo $user_id; ?>, false);  // Pass false to indicate 1-1 chats
+                    oneToOne=true;
                 }
             });
 
@@ -110,6 +124,7 @@ session_start();
             groupButton.addEventListener('click', function () {
                 if (<?php echo isset($user_id) ? 'true' : 'false'; ?>) {
                     fetchChats(<?php echo $user_id; ?>, true);  // Pass true to indicate group chats
+                    oneToOne=false;
                 }
             });
 
@@ -632,6 +647,73 @@ session_start();
             catch(error) {
                 console.log(error);
             }
+        }
+        function displayCreatePrivateChatModal() {
+            let privateChatCreationModal=document.querySelector("#createPrivateChatModal");
+            privateChatCreationModal.style.display = block;
+            let closeButton=document.querySelector("#privateChatModalCloseButton");
+            closeButton.addEventListener("click",() => {
+                privateChatCreationModal.style.display=none;
+            })
+            document.querySelector("#createPrivateChatUserSearchButton").addEventListener("click",()=> {
+                searchUsersCreatePrivateChat(document.querySelector("#createPrivateChatUserSearchField").value)
+            });
+
+        }
+        function displayCreateGroupChatModal() {
+            let groupChatCreationModal=document.querySelector("#createGroupChatModal");
+            groupChatCreationModal.style.display = block;
+            let closeButton=document.querySelector("#groupChatModalCloseButton");
+            closeButton.addEventListener("click",() => {
+                groupChatCreationModal.style.display=none;
+            })
+            document.querySelector("#createGroupChatUserSearchButton").addEventListener("click",()=> {
+                searchUsersCreateGroupChat(document.querySelector("#createGroupChatUserSearchField").value)
+            });
+
+        }
+        document.querySelector("#createChat").addEventListener("click",() => {
+            if(oneToOne) {
+                displayCreatePrivateChatModal();
+            }
+            else {
+                displayCreateGroupChatModal();
+            }
+        })
+        async function searchUsersCreatePrivateChat(searchString) {
+            const link = "fetch-user-list.php?enteredSearch="+encodeURIComponent(searchString);
+            try {
+                const response=await fetch(link);
+                const results= await response.json();
+                let length=results.length;
+                let HTMLToInsert="";
+                for(let i=0;i<length;i++) {
+                   HTMLToInsert+="<option value="+results[i].user_id+">"+results[i].first_name+" "+results[i].surname+"</option>";
+                }
+                document.querySelector("#createPrivateChatResultingUsers").innerHTML=HTMLToInsert;
+                
+            }
+            catch(error) {
+                console.log(error);
+            }
+        async function searchUsersCreateGroupChat(searchString) {
+            const link = "fetch-user-list.php?enteredSearch="+encodeURIComponent(searchString);
+            try {
+                const response=await fetch(link);
+                const results= await response.json();
+                let length=results.length;
+                let HTMLToInsert="";
+                for(let i=0;i<length;i++) {
+                   HTMLToInsert+="<option value="+results[i].user_id+">"+results[i].first_name+" "+results[i].surname+"</option>";
+                }
+                document.querySelector("#createGroupChatResultingUsers").innerHTML=HTMLToInsert;
+                
+            }
+            catch(error) {
+                console.log(error);
+            }
+
+            
         }
         //createChat(true,1,"test_group")
         //addUserToChat(4,122)
