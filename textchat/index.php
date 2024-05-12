@@ -696,6 +696,7 @@ session_start();
             catch(error) {
                 console.log(error);
             }
+        }
         async function searchUsersCreateGroupChat(searchString) {
             const link = "fetch-user-list.php?enteredSearch="+encodeURIComponent(searchString);
             try {
