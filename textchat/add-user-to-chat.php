@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 WHERE chat_id=?");
                 mysqli_stmt_bind_param($groupCheckStatement,"i",$_POST["chat_id"]);
                 mysqli_stmt_execute($groupCheckStatement);
+                echo "Group check statement ran";
                 $isGroupResult=mysqli_stmt_get_result($groupCheckStatement);
                 $groupResultRowCount=mysqli_num_rows($isGroupResult);
                 if($groupResultRowCount==0) {
@@ -38,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         AND user_id=?");
                         mysqli_stmt_bind_param($adminCheckStatement,"ii",$_POST["chat_id"],$_SESSION["user_id"]);
                         mysqli_stmt_execute($adminCheckStatement);
+                        echo "Admin check statement ran";
                         $isAdminResult=mysqli_stmt_get_result($adminCheckStatement);
                         $adminResultRowCount=mysqli_num_rows($isAdminResult);
                         if($adminResultRowCount==0) {
@@ -51,6 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             }
                         else {
                             //user is an admin for the chat:
+                            
                             mysqli_stmt_prepare($addUserToGroupStatement,"INSERT INTO chat_relation(chat_id,user_id,is_admin)
                             VALUES(?,?,0)");
                             mysqli_stmt_bind_param($addUserToGroupStatement,"ii",$_POST["chat_id"],$_SESSION["user_id"]);
