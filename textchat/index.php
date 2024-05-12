@@ -78,7 +78,7 @@ session_start();
                         <input type="hidden" id="editMessageId">
                         <label for="createPrivateChatUserSearchField">Name of recipient</label>
                         <input type="text" id="createPrivateChatUserSearchField" name="createPrivateChatUserSearchField">
-                        <button type="submit" id="createPrivateChatUserSearchButton" action="return false">Find users</button>
+                        <button type="submit" id="createPrivateChatUserSearchButton">Find users</button>
                         <select id="createPrivateChatResultingUsers"></select>
                         <button type="submit">Create conversation</button>
                     </form>
@@ -91,7 +91,7 @@ session_start();
                         <input type="hidden" id="editMessageId">
                         <label for="createGroupChatUserSearchField">Name of recipient</label>
                         <input type="text" id="createGroupChatUserSearchField" name="createGroupChatUserSearchField">
-                        <button type="submit" id="createGroupChatUserSearchButton" action="return false>Find users</button>
+                        <button type="submit" id="createGroupChatUserSearchButton">Find users</button>
                         <select id="createGroupChatResultingUsers"></select>
                         <button type="submit">Create conversation</button>
                     </form>
@@ -655,7 +655,8 @@ session_start();
             closeButton.addEventListener("click",() => {
                 privateChatCreationModal.style.display="none";
             })
-            document.querySelector("#createPrivateChatUserSearchButton").addEventListener("click",()=> {
+            document.querySelector("#createPrivateChatUserSearchButton").addEventListener("click",(event)=> {
+                event.preventDefault();
                 searchUsersCreatePrivateChat(document.querySelector("#createPrivateChatUserSearchField").value)
             });
 
@@ -667,7 +668,8 @@ session_start();
             closeButton.addEventListener("click",() => {
                 groupChatCreationModal.style.display=none;
             })
-            document.querySelector("#createGroupChatUserSearchButton").addEventListener("click",()=> {
+            document.querySelector("#createGroupChatUserSearchButton").addEventListener("click",(event)=> {
+                event.preventDefault();
                 searchUsersCreateGroupChat(document.querySelector("#createGroupChatUserSearchField").value)
             });
 
