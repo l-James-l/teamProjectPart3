@@ -78,7 +78,7 @@ session_start();
                         <input type="hidden" id="editMessageId">
                         <label for="createPrivateChatUserSearchField">Name of recipient</label>
                         <input type="text" id="createPrivateChatUserSearchField" name="createPrivateChatUserSearchField">
-                        <button type="submit" id="createPrivateChatUserSearchButton">Find users</button>
+                        <button type="submit" id="createPrivateChatUserSearchButton" onsubmit="return false">Find users</button>
                         <select id="createPrivateChatResultingUsers"></select>
                         <button type="submit">Create conversation</button>
                     </form>
