@@ -90,7 +90,8 @@ if ($stmt === false) {
 }
 // $stmt->bind_param('i', $userID);
 $stmt->execute();
-// $progress_log = $stmt->fetch_all(MYSQLI_ASSOC);
+$result = $stmt->get_result();
+$progress_log = $result->fetch_all();
 // $stmt->close();
 
 

@@ -15,6 +15,11 @@ function fetchUserData(userID, callback) {
         });
 }
 
+function initProgressGraph(userData) {
+    google.charts.load('current', {'packages':['line']});
+    google.charts.setOnLoadCallback(function () {drawProgressGraph(userData)});
+}
+
 function drawProgressGraph(userData) {
     var progressData = userData.data.progressLog
     var data = new google.visualization.DataTable();
