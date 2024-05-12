@@ -4,6 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 mysqli_report(MYSQLI_REPORT_ERROR);
+echo "Line 7";
 $connection=mysqli_connect($servername,$username,$password,$db_name);
 $groupCheckStatement=mysqli_stmt_init($connection);
 $adminCheckStatement=mysqli_stmt_init($connection);
