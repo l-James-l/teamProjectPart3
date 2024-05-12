@@ -573,6 +573,7 @@ session_start();
             }
         }
         async function createChat(isGroup,recipientUserID,groupName) {
+            try {
             if(isGroup) {
                 const fetchParams = {
                 method:"POST",
@@ -590,8 +591,6 @@ session_start();
                 }
             }
             
-            try {
-                console.log("try block running")
                 const response = await fetch("create-chat.php",fetchParams);
                 const responseObjects = await response.text();
                 await console.log(responseObjects);
