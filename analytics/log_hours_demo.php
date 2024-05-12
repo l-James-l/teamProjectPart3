@@ -90,7 +90,7 @@ try {
     </style>
 </head>
 <body>
-    <form action="post" autocomplete="off" style="width:100% margin-top:15%" class="text-center">
+    <form action="post" autocomplete="off" style="width:100%; margin-top:15%" class="text-center">
         <?php
         echo "<label class='mr-sm-2' for='projectsearch'>Select Project</label>
         <br>
@@ -150,17 +150,25 @@ try {
             </div>
         </div>
 
-        <label for="manhours">Hours To Log</label>
-        <input type="number" id="manhours" name="manhours" class="form-control" placeholder="Hours" style="width: 250px;" min="1" required value=1>
+        <br>
 
-        <label for="date">Select Date</label>
-        <input class="form-control" id="date" name="date" type="date" style="width: 250px;" required value="">
-        <script>    
-            let date = new Date(); 
-            let text = d.toISOString();
-            text = text.substring(0, text.length - 14)
-            document.getElementById("date").setAttribute("value", text);
-        </script>
+        <div style="disply: inline-block">
+            <label for="manhours">Hours To Log</label>
+            <input type="number" id="manhours" name="manhours" class="form-control" placeholder="Hours" style="width: 250px;" min="1" required value=1>
+        </div>
+
+        <br>
+
+        <div style="display:inline-block">
+            <label for="date">Select Date</label>
+            <input class="form-control" id="date" name="date" type="date" style="width: 250px;" required value="">
+            <script>    
+                let date = new Date(); 
+                let text = d.toISOString();
+                text = text.substring(0, text.length - 14)
+                document.getElementById("date").setAttribute("value", text);
+            </script>
+        </div>
 
     </form>
 </body>
