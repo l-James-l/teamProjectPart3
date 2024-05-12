@@ -42,7 +42,12 @@ function drawProgressGraph(userData) {
           subtitle: 'in hours commited'
         },
         height: 500,
-        vAxis: {minValue: 0}
+        vAxis: {
+            minValue: 0, 
+            viewWindow: {
+                min:0
+            }
+        }
     };
 
     if (processedDataArray.length > 0) {
