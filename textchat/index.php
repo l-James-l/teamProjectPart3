@@ -601,7 +601,7 @@ session_start();
         }
         createChat(true,4,"testing2")
         .then(console.log("running"))
-        .catch(console.log("error"))
+        .catch(error=> console.log(error))
     </script>
 </body>
 </html>
