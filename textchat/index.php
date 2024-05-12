@@ -578,7 +578,7 @@ session_start();
                 method:"POST",
                 headers: {'Content-Type': 
                 'application/x-www-form-urlencoded'},
-                body : 'is_group=true&recipient_user_ID='+encodeURIComponent(recipientUserID)+'&group_name='+encodeURIComponent(groupName)
+                body : 'is_group=true&recipient_user_ID='+encodeURIComponent(recipientUserID)+'&chat_name='+encodeURIComponent(groupName)
                 }
             }
             else {
