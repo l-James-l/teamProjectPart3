@@ -13,7 +13,7 @@ $connection=mysqli_connect($servername,$username,$password,$dbname);
 session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if(isset($_SESSION["user_id"]) && isset($_GET["enteredSearch"])) {
-        $search="%"+$_GET["enteredSearch"]+"%";
+        $search="%".$_GET["enteredSearch"]."%";
         $statement=mysqli_stmt_init($connection);
         mysqli_stmt_prepare($statement,"SELECT user_id, first_name, surname 
         FROM users
