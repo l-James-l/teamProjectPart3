@@ -2,6 +2,7 @@
 include_once(__DIR__ . '/../src/db_connection.php');
 $connection=mysqli_connect($servername,$username,$password,$db_name);
 $groupCheckStatement=mysqli_stmt_init($connection);
+$adminCheckStatement=mysqli_stmt_init($connection);
 $addUserToGroupStatement=mysqli_stmt_init($connection);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if(isset($_SESSION["user_id"])) {
@@ -9,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if(isset($_POST["user_id_to_add"])) {
                 mysqli_stmt_prepare($groupCheckStatement,"SELECT is_group 
                 FROM chat
-                WHERE group_id=?");
+                WHERE chat_id=?");
                 mysqli_stmt_bind_param($groupCheckStatement,"i",$_POST["chat_id"]);
                 mysqli_stmt_execute($groupCheckStatement);
                 $isGroupResult=mysqli_stmt_get_result($groupCheckStatement);
@@ -26,20 +27,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                     else {
                         //chat is a group:
-                        mysqli_stmt_prepare($addUserToGroupStatement,"INSERT INTO chat_relation(chat_id,user_id,is_admin)
-                        VALUES(?,?,0)");
-                        mysqli_stmt_bind_param($addUserToGroupStatement,"ii",$_POST["chat_id"],$_SESSION["user_id"]);
-                        mysqli_stmt_execute($addUserToGroupStatement);
-                        $affectedRows=mysqli_stmt_affected_rows($addUserToGroupStatement);
-                        if ($affectedRows == 1) {
-                            echo json_encode(['success' => true, 'message' => 'Message deleted successfully.']);
-                        } else if ($affectedRows == 0) {
-                            http_response_code(404);
-                            echo json_encode(['error' => 'No message deleted - no matching message found or lack of permission.']);
-                        } else {
+                        //check if user is an admin
+                        mysqli_stmt_prepare($adminCheckStatement,"SELECT is_admin
+                        FROM chat_relation
+                        WHERE chat_id=?
+                        AND user_id=?");
+                        mysqli_stmt_bind_param($adminCheckStatement,"ii",$_POST["chat_id"],$_SESSION["user_id"]);
+                        mysqli_stmt_execute($adminCheckStatement);
+                        $isAdminResult=mysqli_stmt_get_result($adminCheckStatement);
+                        $adminResultRowCount=mysqli_num_rows($isAdminResult);
+                        if($adminResultRowCount==0) {
+                            //Invalid chat/user combination
                             http_response_code(500);
-                            echo json_encode(['error' => 'Query error']);
                         }
+                        else if($adminResultRowCount==1) {
+                            $isAdminResultArray=mysqli_fetch_array($isAdminResult,MYSQLI_ASSOC);
+                            if($isAdminResultArray["is_admin"]==0) {
+                                //Error: user isn't an admin for this chat
+                            }
+                        else {
+                            //user is an admin for the chat:
+                            mysqli_stmt_prepare($addUserToGroupStatement,"INSERT INTO chat_relation(chat_id,user_id,is_admin)
+                            VALUES(?,?,0)");
+                            mysqli_stmt_bind_param($addUserToGroupStatement,"ii",$_POST["chat_id"],$_SESSION["user_id"]);
+                            mysqli_stmt_execute($addUserToGroupStatement);
+                            $affectedRows=mysqli_stmt_affected_rows($addUserToGroupStatement);
+                            //change the below messages:
+                            if ($affectedRows == 1) {
+                                echo json_encode(['success' => true, 'message' => 'Message deleted successfully.']);
+                            } 
+                            else if ($affectedRows == 0) {
+                                http_response_code(404);
+                                echo json_encode(['error' => 'No message deleted - no matching message found or lack of permission.']);
+                            } else {
+                                http_response_code(500);
+                                echo json_encode(['error' => 'Query error']);
+                            }
+                        }
+                    }
+
+
+
+
+
+
+
+
+                        
                     }
                 }
                 else {
