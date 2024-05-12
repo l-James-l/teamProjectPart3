@@ -79,7 +79,7 @@ $taskCount = count($projects);
 // get the progress log
 $sql = "SELECT date, sum(hours_logged) AS hours_sum 
 FROM task_progress_log
--- WHERE user_id = 1   
+WHERE user_id = 1   
 GROUP BY date 
 ORDER BY date";
 
@@ -89,9 +89,9 @@ if ($stmt === false) {
     exit;
 }
 // $stmt->bind_param('i', $userID);
-$stmt->execute();
-$progress_log = $stmt->fetch_all(MYSQLI_ASSOC);
-$stmt->close();
+// $stmt->execute();
+// $progress_log = $stmt->fetch_all(MYSQLI_ASSOC);
+// $stmt->close();
 
 
 $conn->close();
