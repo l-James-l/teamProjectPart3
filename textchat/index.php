@@ -80,7 +80,7 @@ session_start();
                         <input type="text" id="createPrivateChatUserSearchField" name="createPrivateChatUserSearchField">
                         <button type="submit" id="createPrivateChatUserSearchButton">Find users</button>
                         <select id="createPrivateChatResultingUsers"></select>
-                        <button type="submit">Create conversation</button>
+                        <button type="submit" id="createPrivateChatSubmit">Create conversation</button>
                     </form>
                 </div>
             </div>
@@ -93,7 +93,8 @@ session_start();
                         <input type="text" id="createGroupChatUserSearchField" name="createGroupChatUserSearchField">
                         <button type="submit" id="createGroupChatUserSearchButton">Find users</button>
                         <select id="createGroupChatResultingUsers"></select>
-                        <button type="submit">Create conversation</button>
+                        <input type="text" id="createGroupChatGroupName" name="createGroupChatGroupName">
+                        <button type="submit" id="createGroupChatSubmit">Create conversation</button>
                     </form>
                 </div>
             </div>
@@ -659,6 +660,11 @@ session_start();
                 event.preventDefault();
                 searchUsersCreatePrivateChat(document.querySelector("#createPrivateChatUserSearchField").value)
             });
+            document.querySelector("#createPrivateChatSubmit").addEventListener("click", (event) => {
+                event.preventDefault();
+                createChat(false,document.querySelector("#createPrivateChatResultingUsers").value)
+            });
+
 
         }
         function displayCreateGroupChatModal() {
@@ -671,6 +677,10 @@ session_start();
             document.querySelector("#createGroupChatUserSearchButton").addEventListener("click",(event)=> {
                 event.preventDefault();
                 searchUsersCreateGroupChat(document.querySelector("#createGroupChatUserSearchField").value)
+            });
+            document.querySelector("#createGroupChatSubmit").addEventListener("click", (event) => {
+                event.preventDefault();
+                createChat(true,document.querySelector("#createGroupChatResultingUsers").value,document.querySelector("#createGroupChatGroupName").value);
             });
 
         }
