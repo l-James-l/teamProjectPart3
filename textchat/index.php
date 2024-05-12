@@ -618,6 +618,8 @@ session_start();
                 console.log(error);
             }
         }
+        addUserToChat(5,4)
+        .then(console.log("running"))
         
     </script>
 </body>
