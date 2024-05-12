@@ -15,9 +15,17 @@ if (isset($_POST["task"]) && isset($_POST["employee"]) && isset($_POST["hours"])
     $sql = "insert into task_progress_log values (0, $task_id, $emp_id, $hours, Date '$date')";
     if (!$conn->query($sql)) {
         echo "failed query: $sql";
-    } else {
-        header("location: ./analytics_landing_page.php?lf=projects");
-    }
+        exit;
+    } 
+    $sql = "select project_id, est_length, completion_percentage from task where task_id = $task_id";
+    $task = $conn->query($sql)->fetch();
+    $new_completion = (intval($task["completion_percentage"])* intval($task["est_length"]) + intval($hours)) / intval($task["est_length"]);
+    $project_id = $task["project_id"];
+
+    $sql = "update task set completion_percentage = $new_completion where task_id = $task_id";
+    $conn->query($sql);
+    header("location: new_project_analytics.php?projectToGet=$project_id&page=progress");
+
 }
 ?>
 
