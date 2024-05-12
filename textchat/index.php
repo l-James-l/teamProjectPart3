@@ -686,8 +686,7 @@ session_start();
             const link = "fetch-user-list.php?enteredSearch="+encodeURIComponent(searchString);
             try {
                 const response=await fetch(link);
-                const results= await response.text();
-                console.log(results);
+                const results= await response.json();
                 let length=results.length;
                 let HTMLToInsert="";
                 for(let i=0;i<length;i++) {
