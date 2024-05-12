@@ -574,7 +574,7 @@ session_start();
         }
         async function createChat(isGroup,recipientUserID,groupName) {
             try {
-                const fetchParams;
+                let fetchParams;
             if(isGroup) {
                 fetchParams = {
                 method:"POST",
