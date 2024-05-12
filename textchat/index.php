@@ -599,7 +599,7 @@ session_start();
                 //handle error
             }
         }
-        createChat(true,4,"testing2");
+        await createChat(true,4,"testing2");
     </script>
 </body>
 </html>
