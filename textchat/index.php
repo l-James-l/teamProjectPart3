@@ -802,7 +802,7 @@ session_start();
 
 
         }
-        displayAddToChatModal(1);
+        
         document.querySelector("#createChat").addEventListener("click",() => {
             if(oneToOne) {
                 displayCreatePrivateChatModal();
