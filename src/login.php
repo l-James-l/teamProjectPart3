@@ -129,8 +129,6 @@ if (isset ($_POST["username"]) && isset ($_POST["password"])) {
 				</div>
 				<!--These two buttons are used to switch to create page or to submit the values inside the form (without submitting acutal form)-->
 				<button class="w-100 btn btn-lg btn-primary" type="submit">Sign In </button>
-				<button class="w-100 btn btn-lg btn-secondary" type="button" href="./createAccount.php"
-					style="margin:1% 0%">Create Account</button>
 			</form>
 		</main>
 	</div>
