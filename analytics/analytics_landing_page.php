@@ -122,11 +122,11 @@ if (isset($_GET["lf"])) {
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdownMenuButton"
                         data-bs-toggle="dropdown" style="width: 90%;">Sort</button>
                     <div class="dropdown-menu" aria-labelledby="filterDropdownMenuButton">
-                        <button class="dropdown-item" type="button"
+                        <button class="dropdown-item d-flex justify-content-between" type="button"
                             onclick="change_sort_value('task_count');get_user_json()">On Going Tasks<i id="task_countToggleIcon" class="sortOption bi bi-check"></i></button>
-                        <button class="dropdown-item" type="button"
+                        <button class="dropdown-item d-flex justify-content-between" type="button"
                             onclick="change_sort_value('first_name');get_user_json()">First Name<i id="first_nameToggleIcon" class="sortOption bi"></i></button>
-                        <button class="dropdown-item" type="button"
+                        <button class="dropdown-item d-flex justify-content-between" type="button"
                             onclick="change_sort_value('surname');get_user_json()">Surname<i id="surnameToggleIcon" class="sortOption bi"></i></button>
                         <input type="hidden" id="sortValue" value="surname">
                     </div>

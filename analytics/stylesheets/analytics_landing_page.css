@@ -15,3 +15,7 @@
     position: fixed;
     height: -webkit-fill-available;
 }
+
+.sortOption {
+    padding-left: 10px;
+}
