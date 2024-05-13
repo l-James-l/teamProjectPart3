@@ -705,8 +705,8 @@ session_start();
             try {
             const formData = new FormData();
             formData.append('user_id_to_add', userID);
-            console.log('user_id_to_add');
-            console.log('chat_id');
+            console.log(userID);
+            console.log(chatID);
             formData.append('chat_id', chatID);
 
             const response = await fetch("add-user-to-chat.php", {
