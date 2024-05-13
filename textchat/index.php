@@ -599,11 +599,13 @@ session_start();
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
                             updateChatUI(response.messages, <?php echo $user_id; ?>);
-                            let selectedChatPreview = document.querySelector('.chat-preview.selected-chat');
+
+
+                        var selectedChatPreview = document.querySelector('.chat-preview.selected-chat');
                         if (selectedChatPreview && selectedChatPreview.dataset.isGroup === "1") {
                             document.querySelector('.add-user-button').style.display = 'block'; // Show 'Add Users' for group chats
                         } else {
-                        document.querySelector('.add-user-button').style.display = 'none'; // Hide for non-group chats
+                            document.querySelector('.add-user-button').style.display = 'none'; // Hide for non-group chats
                         }
                             // Store the selected chat ID in local storage
                         localStorage.setItem('selectedChatId', chatId);
