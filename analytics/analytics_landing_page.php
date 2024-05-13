@@ -72,11 +72,11 @@ if (isset($_GET["lf"])) {
                         data-bs-toggle="dropdown" style="width: 90%;">Sort</button>
                     <div class=" dropdown-menu" aria-labelledby="filterDropdownMenuButton">
                         <button class="dropdown-item d-flex justify-content-between" type="button"
-                            onclick="change_sort_value('due date');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Due date<i id="due_dateToggleIcon" class="sortOption bi bi-check"></i></button>
+                            onclick="change_sort_value('due_date');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Due date<i id="due_dateToggleIcon" class="sortOption bi bi-check"></i></button>
                         <button class="dropdown-item d-flex justify-content-between" type="button"
-                            onclick="change_sort_value('completion_percentage');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Completion Percentage<i id="due_dateToggleIcon" class="sortOption bi"></i></button>
+                            onclick="change_sort_value('completion_percentage');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Completion Percentage<i id="completion_percentageToggleIcon" class="sortOption bi"></i></button>
                         <button class="dropdown-item d-flex justify-content-between" type="button"
-                            onclick="change_sort_value('assigned tasks');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Assigned Tasks<i id="due_dateToggleIcon" class="sortOption bi"></i></button>
+                            onclick="change_sort_value('assigned_tasks');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Assigned Tasks<i id="assigned_tasksToggleIcon" class="sortOption bi"></i></button>
                         <input type="hidden" id="sortValue" value="due date">
                     </div>
                 </div>
@@ -123,11 +123,11 @@ if (isset($_GET["lf"])) {
                         data-bs-toggle="dropdown" style="width: 90%;">Sort</button>
                     <div class="dropdown-menu" aria-labelledby="filterDropdownMenuButton">
                         <button class="dropdown-item" type="button"
-                            onclick="change_sort_value('task_count');get_user_json()">On Going Tasks</button>
+                            onclick="change_sort_value('task_count');get_user_json()">On Going Tasks<i id="task_countToggleIcon" class="sortOption bi bi-check"></i></button>
                         <button class="dropdown-item" type="button"
-                            onclick="change_sort_value('first_name');get_user_json()">First Name</button>
+                            onclick="change_sort_value('first_name');get_user_json()">First Name<i id="first_nameToggleIcon" class="sortOption bi"></i></button>
                         <button class="dropdown-item" type="button"
-                            onclick="change_sort_value('surname');get_user_json()">Surname</button>
+                            onclick="change_sort_value('surname');get_user_json()">Surname<i id="surnameToggleIcon" class="sortOption bi"></i></button>
                         <input type="hidden" id="sortValue" value="surname">
                     </div>
                 </div>

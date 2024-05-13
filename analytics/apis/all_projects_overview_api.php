@@ -37,11 +37,11 @@ if ($conn) {
         } 
         if (!isset($_GET["sortValue"])) {
             $stmt = $stmt." order by project.due_date";
-        } else if ($_GET["sortValue"] == "due date") {
+        } else if ($_GET["sortValue"] == "due_date") {
             $stmt = $stmt." order by project.due_date";
         } else if ($_GET["sortValue"] == "completion_percentage") {
             $stmt = $stmt." order by overall_completion";
-        } else if ($_GET["sortValue"] == "assigned tasks") {
+        } else if ($_GET["sortValue"] == "assigned_tasks") {
             $stmt = $stmt." order by task_count";
         } else {
             $stmt = $stmt." order by project.due_date";
