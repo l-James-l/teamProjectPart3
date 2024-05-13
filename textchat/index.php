@@ -784,7 +784,7 @@ session_start();
         });
 
         function displayAddToChatModal(chatID) {
-            fetch(`get-group-info?chat_id=${chatID}`)
+            fetch(`get-group-info.php?chat_id=${chatID}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === "success") {
