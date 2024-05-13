@@ -587,7 +587,7 @@ session_start();
 
         // Function to load messages for a specific chat
         function loadChatMessages(chatId) {
-            let chatSection = document.getElementById("chat-section");
+            var chatSection = document.getElementById("chat-section");
             chatSection.innerHTML = ''; // Clear existing messages
 
             var xhr = new XMLHttpRequest();
@@ -601,12 +601,23 @@ session_start();
                             updateChatUI(response.messages, <?php echo $user_id; ?>);
 
 
-                        var selectedChatPreview = document.querySelector('.chat-preview.selected-chat');
-                        if (selectedChatPreview && selectedChatPreview.dataset.isGroup === "1") {
-                            document.querySelector('.add-user-button').style.display = 'block'; // Show 'Add Users' for group chats
-                        } else {
-                            document.querySelector('.add-user-button').style.display = 'none'; // Hide for non-group chats
+                        // var selectedChatPreview = document.querySelector('.chat-preview.selected-chat');
+                        // if (selectedChatPreview && selectedChatPreview.dataset.isGroup === "1") {
+                        //     document.querySelector('.add-user-button').style.display = 'block'; // Show 'Add Users' for group chats
+                        // } else {
+                        //     document.querySelector('.add-user-button').style.display = 'none'; // Hide for non-group chats
+                        // }
+                        var chatPreviews = document.querySelectorAll('.chat-preview');
+                        chatPreviews.forEach(function (chatPreview) {
+                            chatPreview.classList.remove('selected-chat');
+                        });
+
+                        // Add the 'selected-chat' class to the currently selected chat preview
+                        var selectedChatPreview = document.querySelector('.chat-preview[data-chat-id="' + chatId + '"]');
+                        if (selectedChatPreview) {
+                            selectedChatPreview.classList.add('selected-chat');
                         }
+
                             // Store the selected chat ID in local storage
                         localStorage.setItem('selectedChatId', chatId);
                         } else {
