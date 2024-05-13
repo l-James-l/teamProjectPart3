@@ -203,6 +203,8 @@ session_start();
                 return;
             }
 
+            document.getElementById("message").value = '';
+
             addMessageToChat(message, 'outgoing');
             scrollToBottom();
 
