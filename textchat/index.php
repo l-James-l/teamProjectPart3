@@ -103,7 +103,7 @@ session_start();
             </div>
             <div id="addToChatModal" class="modal">
                 <div class="modal-content">
-                    <span class="close" id="addToChatModalCloseButton">Close</span>
+                    <span class="close" id="addToChatModalCloseButton">X</span>
                     <form id="addToChatForm">
                         <input type="hidden" id="editMessageId">
                         <label for="addToChatUserSearchField">Name of recipient</label>
@@ -149,6 +149,24 @@ session_start();
             if (<?php echo isset($user_id) ? 'true' : 'false'; ?>) {
                 fetchChats(<?php echo $user_id; ?>, false);  // Fetch 1-1 chats by default
             }
+            addUserButton.addEventListener('click', function () {
+            var selectedChatId = localStorage.getItem('selectedChatId');
+            if (selectedChatId && !oneToOne) {
+                displayAddToChatModal(selectedChatId);
+            } else {
+                console.log("Add Users action is only available for group chats.");
+            }
+            });
+
+            // Prepare form submissions
+            document.getElementById('createChat').addEventListener('click', () => {
+                if (oneToOne) {
+                    displayCreatePrivateChatModal();
+                } else {
+                    displayCreateGroupChatModal();
+                }
+            });
+
 
             var chatSection = document.getElementById("chat-section");
             chatSection.scrollTop = chatSection.scrollHeight;
