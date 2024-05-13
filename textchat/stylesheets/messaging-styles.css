@@ -324,7 +324,7 @@ main {
 #createChat {
     cursor: pointer; 
     font-size: 38px;
-    margin-top: 1px;
+    margin-top: -2px;
 }
 #createPrivateChatForm button {
     margin-top: 10px; 
