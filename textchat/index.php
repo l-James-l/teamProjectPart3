@@ -109,7 +109,7 @@ session_start();
                     <span class="close" id="addToChatModalCloseButton">X</span>
                     <form id="addToChatForm">
                         <input type="hidden" id="editMessageId">
-                        <h3>Group Members</h3>
+                        <h5>Group Members</h5s>
                         <p id="groupMembersList"></p>
                         <label for="addToChatUserSearchField">Name of recipient</label>
                         <input type="text" id="addToChatUserSearchField" name="addToChatUserSearchField">
@@ -822,7 +822,7 @@ session_start();
                             });
                         } else {
                             // Display error alert to the user if it's not a group
-                            alert("This is not a group chat.");
+                            alert("Cannot add members to a 1-1 chat. Select a group chat.");
                         }
                     } else {
                         // Handle API error
