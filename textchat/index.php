@@ -785,8 +785,13 @@ session_start();
 
         function displayAddToChatModal(chatID) {
             // Check if it's a group chat
-            fetch('check_group_info.php?chat_id=' + chatID)
-                .then(response => response.json())
+            fetch('check_group_chat.php?chat_id=' + chatID)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.is_group) {
                         let addToChatModal = document.querySelector("#addToChatModal");
