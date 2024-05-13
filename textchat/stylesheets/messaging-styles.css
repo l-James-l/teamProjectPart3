@@ -299,7 +299,8 @@ main {
 
 .top-bar-settings-container {
     display: flex;
-    align-items: flex-end;
+    align-items: flex-start;
+
 }
 
 
