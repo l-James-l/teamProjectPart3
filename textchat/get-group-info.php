@@ -7,11 +7,12 @@ $password = "p455w0rD";
 $dbname = "make_it_all"; 
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
     die("Error: Could not connect. " . $e->getMessage());
 }
+
 
 // Define a function to get group members
 function getGroupMembers($chatId, $pdo) {
