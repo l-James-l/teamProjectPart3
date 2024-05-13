@@ -71,12 +71,12 @@ if (isset($_GET["lf"])) {
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="filterDropdownMenuButton"
                         data-bs-toggle="dropdown" style="width: 90%;">Sort</button>
                     <div class=" dropdown-menu" aria-labelledby="filterDropdownMenuButton">
-                        <button class="dropdown-item" type="button"
-                            onclick="change_sort_value('due date');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Due date</button>
-                        <button class="dropdown-item" type="button"
-                            onclick="change_sort_value('completion_percentage');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Completion Percentage</button>
-                        <button class="dropdown-item" type="button"
-                            onclick="change_sort_value('assigned tasks');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Assigned Tasks</button>
+                        <button class="dropdown-item d-flex justify-content-between" type="button"
+                            onclick="change_sort_value('due date');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Due date<i id="due_dateToggleIcon" class="sortOption bi bi-check"></i></button>
+                        <button class="dropdown-item d-flex justify-content-between" type="button"
+                            onclick="change_sort_value('completion_percentage');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Completion Percentage<i id="due_dateToggleIcon" class="sortOption bi"></i></button>
+                        <button class="dropdown-item d-flex justify-content-between" type="button"
+                            onclick="change_sort_value('assigned tasks');get_project_json(<?php echo $_SESSION['user_id'] ?>)">Assigned Tasks<i id="due_dateToggleIcon" class="sortOption bi"></i></button>
                         <input type="hidden" id="sortValue" value="due date">
                     </div>
                 </div>
