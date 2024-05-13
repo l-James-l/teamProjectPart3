@@ -703,46 +703,46 @@ session_start();
             });
 
         }
-        function renderChatHeader(chatId, chatName,isGroup) {
-            const chatSection = document.getElementById("chat-section");
-            const chatHeader = document.createElement("div");
-            chatHeader.className = "chat-header";
+        // function renderChatHeader(chatId, chatName,isGroup) {
+        //     const chatSection = document.getElementById("chat-section");
+        //     const chatHeader = document.createElement("div");
+        //     chatHeader.className = "chat-header";
 
-            const title = document.createElement("span");
-            title.className = "chat-title";
-            title.textContent = chatName;
+        //     const title = document.createElement("span");
+        //     title.className = "chat-title";
+        //     title.textContent = chatName;
 
-            chatHeader.appendChild(title);
-            if (isGroup) {
-                const addUserButton = document.createElement("button");
-                addUserButton.className = "add-user-button";
-                addUserButton.textContent = "Add Users";
-                addUserButton.onclick = function() {
-                    displayAddToChatModal(chatId);
-                };
-                chatHeader.appendChild(addUserButton);
-            }
+        //     chatHeader.appendChild(title);
+        //     if (isGroup) {
+        //         const addUserButton = document.createElement("button");
+        //         addUserButton.className = "add-user-button";
+        //         addUserButton.textContent = "Add Users";
+        //         addUserButton.onclick = function() {
+        //             displayAddToChatModal(chatId);
+        //         };
+        //         chatHeader.appendChild(addUserButton);
+        //     }
 
-            chatSection.appendChild(chatHeader);
+        //     chatSection.appendChild(chatHeader);
 
-            const chatMessages = document.createElement("div");
-            chatMessages.className = "chat-messages";
-            chatSection.appendChild(chatMessages);
-        }
+        //     const chatMessages = document.createElement("div");
+        //     chatMessages.className = "chat-messages";
+        //     chatSection.appendChild(chatMessages);
+        // }
 
-        document.querySelectorAll('.chat-preview').forEach(chat => {
-        chat.addEventListener('click', function() {
-            const chatId = this.dataset.chatId;
-            const chatName = this.querySelector('.chat-name').textContent;
-            const isGroup = this.dataset.isGroup === 1; 
-            onChatSelected(chatId, chatName, isGroup);
-            });
-        });
+        // document.querySelectorAll('.chat-preview').forEach(chat => {
+        // chat.addEventListener('click', function() {
+        //     const chatId = this.dataset.chatId;
+        //     const chatName = this.querySelector('.chat-name').textContent;
+        //     const isGroup = this.dataset.isGroup === 1; 
+        //     onChatSelected(chatId, chatName, isGroup);
+        //     });
+        // });
 
-        function onChatSelected(chatId, chatName, isGroup) {
-            renderChatHeader(chatId, chatName, isGroup);
-            loadChatMessages(chatId);
-        }
+        // function onChatSelected(chatId, chatName, isGroup) {
+        //     renderChatHeader(chatId, chatName, isGroup);
+        //     loadChatMessages(chatId);
+        // }
 
         function displayAddToChatModal(chatID) {
             let addToChatModal=document.querySelector("#addToChatModal");
