@@ -132,6 +132,7 @@ session_start();
         <?php endif; ?>
         let oneToOne=true;
         document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector(".add-user-button").style.display = "none";
             var oneToOneButton = document.querySelector('.groups-sidebar-item:nth-child(1)');
             var groupButton = document.querySelector('.groups-sidebar-item:nth-child(2)');
 
