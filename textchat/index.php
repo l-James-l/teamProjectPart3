@@ -784,26 +784,45 @@ session_start();
         });
 
         function displayAddToChatModal(chatID) {
-            let addToChatModal=document.querySelector("#addToChatModal");
-            addToChatModal.style.display = "block";
-            let closeButton=document.querySelector("#addToChatModalCloseButton");
-            closeButton.addEventListener("click",() => {
-                addToChatModal.style.display="none";
-            })
-            document.querySelector("#addToChatUserSearchButton").addEventListener("click",(event)=> {
-                event.preventDefault();
-                searchUsersAddToChat(document.querySelector("#addToChatUserSearchField").value)
-            });
-            document.querySelector("#addToChatSubmit").addEventListener("click", (event) => {
-                event.preventDefault();
-                addUserToChat(document.querySelector("#addToChatResultingUsers").value,chatID)
-                .then(fetchMessages());
-                addToChatModal.style.display="none";
-                
-            });
+            // Check if it's a group chat
+            fetch('check_group_chat.php?chat_id=' + chatID)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.is_group) {
+                        let addToChatModal = document.querySelector("#addToChatModal");
+                        addToChatModal.style.display = "block";
+                        
+                        // Display group members
+                        fetch('get_group_members.php?chat_id=' + chatID)
+                            .then(response => response.json())
+                            .then(members => {
+                                let memberList = members.map(member => member.first_name + ' ' + member.surname).join(', ');
+                                document.querySelector("#addToChatResultingUsers").innerText = "Group Members: " + memberList;
+                            });
 
+                        let closeButton = document.querySelector("#addToChatModalCloseButton");
+                        closeButton.addEventListener("click", () => {
+                            addToChatModal.style.display = "none";
+                        });
 
+                        document.querySelector("#addToChatUserSearchButton").addEventListener("click", (event) => {
+                            event.preventDefault();
+                            searchUsersAddToChat(document.querySelector("#addToChatUserSearchField").value);
+                        });
+
+                        document.querySelector("#addToChatSubmit").addEventListener("click", (event) => {
+                            event.preventDefault();
+                            addUserToChat(document.querySelector("#addToChatResultingUsers").value, chatID)
+                                .then(fetchMessages());
+                            addToChatModal.style.display = "none";
+                        });
+                    } else {
+                        alert("This chat is not a group.");
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         }
+
         
         document.querySelector("#createChat").addEventListener("click",() => {
             if(oneToOne) {
