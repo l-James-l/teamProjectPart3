@@ -692,20 +692,32 @@ session_start();
         }
 
         async function addUserToChat(userID,chatID) {
+            // try {
+            //     fetchParams = {
+            //         method:"POST",
+            //     headers: {'Content-Type': 
+            //     'application/x-www-form-urlencoded'},
+            //     body : 'user_id_to_add='+encodeURIComponent(userID)+'&chat_id='+encodeURIComponent(chatID)
+            //     }
+            //     const response = await fetch("add-user-to-chat.php",fetchParams);
+            //     const responseObjects = await response.text();
+            //     await console.log(responseObjects);
             try {
-                fetchParams = {
-                    method:"POST",
-                headers: {'Content-Type': 
-                'application/x-www-form-urlencoded'},
-                body : 'user_id_to_add='+encodeURIComponent(userID)+'&chat_id='+encodeURIComponent(chatID)
-                }
-                const response = await fetch("add-user-to-chat.php",fetchParams);
-                const responseObjects = await response.text();
-                await console.log(responseObjects);
-            }
-            catch(error) {
-                console.log(error);
-            }
+                const formData = new FormData();
+                formData.append('user_id_to_add', userID);
+                formData.append('chat_id', chatID);
+
+                const response = await fetch("add-user-to-chat.php", {
+                    method: "POST",
+                    body: formData
+                });
+                const result = await response.text();
+                console.log(result);
+                        fetchChats()
+                    }
+                    catch(error) {
+                        console.log(error);
+                    }
         }
         function displayCreatePrivateChatModal() {
             let privateChatCreationModal=document.querySelector("#createPrivateChatModal");
