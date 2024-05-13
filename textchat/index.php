@@ -32,7 +32,7 @@ session_start();
             <div class="message-list-sidebar">
                     
                     <div class="message-list-sidebar-content">
-                        
+                    <button class="add-user-button" onclick="displayAddToChatModal(chatId)">Add Users</button>
 
                     </div>
                 </div>
@@ -42,7 +42,7 @@ session_start();
         <div class="main-section">
             
             <div id="chat-section" class="chat-section">
-            <button class="add-user-button" onclick="displayAddToChatModal(chatId)">Add Users</button>
+           
             </div>
             
             <form id="send-message-form" action="send-message.php" method="post" onsubmit="sendMessage(event)">
