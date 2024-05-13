@@ -435,6 +435,7 @@ session_start();
                 // Set the data attribute to store the chat id
                 chatPreview.dataset.chatId = chat.chat_id;
 
+                chatPreview.dataset.isGroup = chat.is_group;
                 var chatName = document.createElement('p');
                 chatName.classList.add('chat-name');
                 chatName.textContent = chat.chat_name;
