@@ -43,7 +43,7 @@ session_start();
         
         <div class="main-section">
             <div class="top-bar-settings-container">
-                <button class="add-user-button" onclick="displayAddToChatModal(localStorage.getItem('selectedChatId'))">Add Users</button>
+                <button class="add-user-button" onclick="displayAddToChatModal(localStorage.getItem('selectedChatId'))">Group Settings</button>
             </div>
             
             <div id="chat-section" class="chat-section">
