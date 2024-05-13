@@ -21,7 +21,8 @@ session_start();
         <div class="groups-sidebar">
             <div class="groups-sidebar-item" >1-1</div>
             <div class="groups-sidebar-item" >Groups</div>
-            <button class="add-user-button" onclick="displayAddToChatModal(chatId)">Add Users</button>
+            <button class="add-user-button" onclick="displayAddToChatModal(localStorage.getItem('selectedChatId'))">Add Users</button>
+
 
             <!-- <a href="settings.html" class="groups-sidebar-item">Settings</a> -->
         </div>
