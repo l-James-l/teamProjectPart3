@@ -703,21 +703,21 @@ session_start();
             //     const responseObjects = await response.text();
             //     await console.log(responseObjects);
             try {
-                const formData = new FormData();
-                formData.append('user_id_to_add', userID);
-                formData.append('chat_id', chatID);
+            const formData = new FormData();
+            formData.append('user_id_to_add', userID);
+            formData.append('chat_id', chatID);
 
-                const response = await fetch("add-user-to-chat.php", {
-                    method: "POST",
-                    body: formData
-                });
-                const result = await response.text();
-                console.log(result);
-                        fetchChats()
-                    }
-                    catch(error) {
-                        console.log(error);
-                    }
+            const response = await fetch("add-user-to-chat.php", {
+                method: "POST",
+                body: formData
+            });
+            const result = await response.text();
+            console.log(result);
+                    fetchChats()
+                }
+                catch(error) {
+                    console.log(error);
+                }
         }
         function displayCreatePrivateChatModal() {
             let privateChatCreationModal=document.querySelector("#createPrivateChatModal");
@@ -839,19 +839,14 @@ session_start();
 
                             document.querySelector("#addToChatSubmit").addEventListener("click", (event) => {
                                 event.preventDefault();
-                                let selectedUserId = document.querySelector("#addToChatResultingUsers").value;
-                                if (selectedUserId) {
-                                    addUserToChat(selectedUserId, chatID).then(() => {
-                                        fetchMessages();
-                                        addToChatModal.style.display = "none";
-                                    });
-                                } else {
-                                    alert("Please select a user to add.");
-                                }
+                                addUserToChat(document.querySelector("#addToChatResultingUsers").value, chatID)
+                                    .then(fetchMessages());
+                                addToChatModal.style.display = "none";
                             });
-                                    // Display error alert to the user if it's not a group
-                                    alert("Cannot add members to a 1-1 chat. Select a group chat.");
-                                }
+                        } else {
+                            // Display error alert to the user if it's not a group
+                            alert("Cannot add members to a 1-1 chat. Select a group chat.");
+                        }
                     } else {
                         // Handle API error
                         console.error("Error:", data.message);
