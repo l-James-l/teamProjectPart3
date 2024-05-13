@@ -317,3 +317,7 @@ main {
 .sender-name {
     font-size: 0.8rem;
 }
+
+#createChat {
+    cursor: pointer; 
+}
