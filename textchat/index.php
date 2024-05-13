@@ -42,7 +42,6 @@ session_start();
         <div class="main-section">
             
             <div id="chat-section" class="chat-section">
-            <span class="chat-title">Group Chat Name</span>
             <button class="add-user-button" onclick="displayAddToChatModal(chatId)">Add Users</button>
             </div>
             
