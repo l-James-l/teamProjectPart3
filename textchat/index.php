@@ -789,16 +789,19 @@ session_start();
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === "success") {
-                        let groupInfo = data.group_info[0];
-                        if (groupInfo.is_group === 1) { // Check if it's a group
+                        let groupInfo = data.group_info;
+                        if (groupInfo[0].is_group === 1) { // Check if it's a group
                             let addToChatModal = document.querySelector("#addToChatModal");
                             addToChatModal.style.display = "block";
 
                             // Display group members' names
                             let groupMembersList = document.querySelector("#groupMembersList");
-                            groupMembersList.innerHTML = "";
-                            groupMembersList.innerHTML = groupInfo.first_name + " " + groupInfo.surname; // Assuming there's only one member, modify as needed
-                            console.log(groupInfo);
+                            groupMembersList.innerHTML = ""; // Clear previous content
+                            groupInfo.forEach(member => {
+                                let memberName = document.createElement("div");
+                                memberName.textContent = member.first_name + " " + member.surname;
+                                groupMembersList.appendChild(memberName);
+                            });
 
                             let closeButton = document.querySelector("#addToChatModalCloseButton");
                             closeButton.addEventListener("click", () => {
@@ -827,6 +830,7 @@ session_start();
                 })
                 .catch(error => console.error("Error:", error));
         }
+
 
         
         document.querySelector("#createChat").addEventListener("click",() => {
