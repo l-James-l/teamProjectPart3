@@ -266,11 +266,10 @@ main {
     align-items: center;
     justify-content: center; 
     position: fixed;
-    z-index: 1;
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
+    width: 100px;
+    height: 100px;
     overflow: auto; 
     background-color: rgba(0, 0, 0, 0.4);
 }
@@ -317,4 +316,8 @@ main {
 
 .sender-name {
     font-size: 0.8rem;
+}
+
+#createChat {
+    cursor: pointer; 
 }
