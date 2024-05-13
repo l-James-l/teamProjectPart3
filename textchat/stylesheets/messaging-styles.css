@@ -290,6 +290,13 @@ main {
     height: 500px;
 }
 
+.modal-content input[type="text"] {
+    width: 100%; 
+    height: 40px; 
+    padding: 10px; 
+    box-sizing: border-box; 
+}
+
 .close {
     color: #aaaaaa;
     float: right;
