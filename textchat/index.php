@@ -714,13 +714,15 @@ session_start();
             });
             document.querySelector("#addToChatSubmit").addEventListener("click", (event) => {
                 event.preventDefault();
-                addUserToChat(document.querySelector("#addToChatResultingUsers").value,chatID);
+                addUserToChat(document.querySelector("#addToChatResultingUsers").value,chatID)
+                .then(fetchMessages());
                 addToChatModal.style.display="none";
-                fetchMessages();
+                
             });
 
 
         }
+        displayAddToChatModal(1);
         document.querySelector("#createChat").addEventListener("click",() => {
             if(oneToOne) {
                 displayCreatePrivateChatModal();
