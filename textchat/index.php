@@ -762,8 +762,16 @@ session_start();
         //     loadChatMessages(chatId);
         // }
 
+
+        document.querySelector('.add-user-button').addEventListener('click', function() {
+            let selectedChat = document.querySelector('.chat-preview.selected-chat');
+            if (selectedChat) {
+                let chatId = selectedChat.dataset.chatId; // Ensure chatId is set in your chat preview elements
+                displayAddToChatModal(chatId);
+            }
+        });
+
         function displayAddToChatModal(chatID) {
-            var chatId = localStorage.getItem('selectedChatId');
             let addToChatModal=document.querySelector("#addToChatModal");
             addToChatModal.style.display = "block";
             let closeButton=document.querySelector("#addToChatModalCloseButton");
