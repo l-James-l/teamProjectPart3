@@ -297,6 +297,11 @@ main {
 
 }
 
+.top-bar-settings-container {
+    display: flex;
+    align-items: flex-end;
+}
+
 
 .close {
     color: #aaaaaa;
