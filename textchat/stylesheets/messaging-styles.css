@@ -295,6 +295,8 @@ main {
     height: 80px; 
     padding: 10px; 
     box-sizing: border-box; 
+    font-size: 14px; 
+    line-height: 1.5; 
 }
 
 .close {
