@@ -33,7 +33,7 @@ function get_project_from_api(id, page) {
                     document.getElementById("summary-pie").style.setProperty("--c", "green")
                 }
                 document.getElementById("summary-pie").innerHTML = response["message"]["project"]["total_completion"] + "%"
-                document.getElementById("summary-label").innerHTML = "A total of " + response["message"]["project"]["total_hours"] + " hours have been assigned to this project. The exected completion date for the project is " + response["message"]["project"]["due_date"] + "."
+                document.getElementById("summary-label").innerHTML = "A total of " + response["message"]["project"]["total_hours"] + " hours have been assigned to this project. The expected completion date for the project is " + response["message"]["project"]["due_date"] + "."
                 update_task_display(response["message"]["tasks"])
 
             } else if (page == "users") {
