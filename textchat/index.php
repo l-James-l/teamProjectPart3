@@ -140,6 +140,7 @@ session_start();
                 if (<?php echo isset($user_id) ? 'true' : 'false'; ?>) {
                     fetchChats(<?php echo $user_id; ?>, false);  // Pass false to indicate 1-1 chats
                     oneToOne=true;
+                    document.querySelector(".add-user-button").style.display = "none";
                 }
             });
 
@@ -148,6 +149,7 @@ session_start();
                 if (<?php echo isset($user_id) ? 'true' : 'false'; ?>) {
                     fetchChats(<?php echo $user_id; ?>, true);  // Pass true to indicate group chats
                     oneToOne=false;
+                    document.querySelector(".add-user-button").style.display = "block";
                 }
             });
 
