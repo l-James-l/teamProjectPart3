@@ -585,7 +585,7 @@ session_start();
 
         // Function to load messages for a specific chat
         function loadChatMessages(chatId) {
-            var chatSection = document.getElementById("chat-section");
+            let chatSection = document.getElementById("chat-section");
             chatSection.innerHTML = ''; // Clear existing messages
 
             var xhr = new XMLHttpRequest();
@@ -597,27 +597,14 @@ session_start();
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
                             updateChatUI(response.messages, <?php echo $user_id; ?>);
-
-                            // Remove the 'selected-chat' class from all chat previews
-                            var chatPreviews = document.querySelectorAll('.chat-preview');
-                            chatPreviews.forEach(function (chatPreview) {
-                                chatPreview.classList.remove('selected-chat');
-                            });
-
-                            // Add the 'selected-chat' class to the currently selected chat preview
-                            var selectedChatPreview = document.querySelector('.chat-preview[data-chat-id="' + chatId + '"]');
-                            if (selectedChatPreview) {
-                                selectedChatPreview.classList.add('selected-chat');
-                            }
-
                             let selectedChatPreview = document.querySelector('.chat-preview.selected-chat');
-                            if (selectedChatPreview && selectedChatPreview.dataset.isGroup === "1") {
+                        if (selectedChatPreview && selectedChatPreview.dataset.isGroup === "1") {
                             document.querySelector('.add-user-button').style.display = 'block'; // Show 'Add Users' for group chats
-                            } else {
-                            document.querySelector('.add-user-button').style.display = 'none'; // Hide for non-group chats
-                            }
+                        } else {
+                        document.querySelector('.add-user-button').style.display = 'none'; // Hide for non-group chats
+                        }
                             // Store the selected chat ID in local storage
-                            localStorage.setItem('selectedChatId', chatId);
+                        localStorage.setItem('selectedChatId', chatId);
                         } else {
                             console.error('Error fetching messages:', response.message);
                         }
