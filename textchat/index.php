@@ -703,7 +703,7 @@ session_start();
             });
 
         }
-        function renderChatHeader(chatId, chatName) {
+        function renderChatHeader(chatId, chatName,isGroup) {
             const chatSection = document.getElementById("chat-section");
             const chatHeader = document.createElement("div");
             chatHeader.className = "chat-header";
@@ -712,10 +712,14 @@ session_start();
             title.className = "chat-title";
             title.textContent = chatName;
 
-            const addUserButton = document.createElement("button");
-            addUserButton.className = "add-user-button";
-            addUserButton.textContent = "Add Users";
-            addUserButton.onclick = function() { displayAddToChatModal(chatId); };
+            if (isGroup==1) {
+                const addUserButton = document.createElement("button");
+                addUserButton.className = "add-user-button";
+                addUserButton.textContent = "Add Users";
+                addUserButton.onclick = function() {
+                    displayAddToChatModal(chatId);
+                 };
+            }
 
             chatHeader.appendChild(title);
             chatHeader.appendChild(addUserButton);
