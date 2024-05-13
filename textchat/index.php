@@ -896,8 +896,11 @@ session_start();
                 const results= await response.json();
                 let length=results.length;
                 let HTMLToInsert="";
+                const loggedInUserId = <?php echo json_encode($user_id); ?>;
                 for(let i=0;i<length;i++) {
-                   HTMLToInsert+="<option value="+results[i].user_id+">"+results[i].first_name+" "+results[i].surname+"</option>";
+                    if (results[i].user_id !== loggedInUserId) { 
+                        HTMLToInsert += "<option value=" + results[i].user_id + ">" + results[i].first_name + " " + results[i].surname + "</option>";
+                    }
                 }
                 document.querySelector("#addToChatResultingUsers").innerHTML=HTMLToInsert;
                 
