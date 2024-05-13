@@ -785,7 +785,7 @@ session_start();
 
         function displayAddToChatModal(chatID) {
             // Check if it's a group chat
-            fetch('check_group_chat.php?chat_id=' + chatID)
+            fetch('get_group_info.php?chat_id=' + chatID)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
