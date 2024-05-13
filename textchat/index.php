@@ -712,23 +712,36 @@ session_start();
             title.className = "chat-title";
             title.textContent = chatName;
 
-            if (isGroup==1) {
+            chatHeader.appendChild(title);
+            if (isGroup) {
                 const addUserButton = document.createElement("button");
                 addUserButton.className = "add-user-button";
                 addUserButton.textContent = "Add Users";
                 addUserButton.onclick = function() {
                     displayAddToChatModal(chatId);
-                 };
+                };
+                chatHeader.appendChild(addUserButton);
             }
-
-            chatHeader.appendChild(title);
-            chatHeader.appendChild(addUserButton);
 
             chatSection.appendChild(chatHeader);
 
             const chatMessages = document.createElement("div");
             chatMessages.className = "chat-messages";
             chatSection.appendChild(chatMessages);
+        }
+
+        document.querySelectorAll('.chat-preview').forEach(chat => {
+        chat.addEventListener('click', function() {
+            const chatId = this.dataset.chatId;
+            const chatName = this.querySelector('.chat-name').textContent;
+            const isGroup = this.dataset.isGroup === 1; 
+            onChatSelected(chatId, chatName, isGroup);
+            });
+        });
+
+        function onChatSelected(chatId, chatName, isGroup) {
+            renderChatHeader(chatId, chatName, isGroup);
+            loadChatMessages(chatId);
         }
 
         function displayAddToChatModal(chatID) {
