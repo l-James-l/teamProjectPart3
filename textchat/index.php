@@ -798,7 +798,7 @@ session_start();
                             let groupMembersList = document.querySelector("#groupMembersList");
                             groupMembersList.innerHTML = "";
                             groupMembersList.innerHTML = groupInfo.first_name + " " + groupInfo.surname; // Assuming there's only one member, modify as needed
-                            console.log(groupMembers);
+                            console.log(groupInfo);
 
                             let closeButton = document.querySelector("#addToChatModalCloseButton");
                             closeButton.addEventListener("click", () => {
