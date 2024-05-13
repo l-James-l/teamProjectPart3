@@ -21,6 +21,8 @@ session_start();
         <div class="groups-sidebar">
             <div class="groups-sidebar-item" >1-1</div>
             <div class="groups-sidebar-item" >Groups</div>
+            <button class="add-user-button" onclick="displayAddToChatModal(chatId)">Add Users</button>
+
             <!-- <a href="settings.html" class="groups-sidebar-item">Settings</a> -->
         </div>
         <div class="message-list-sidebar-container">
@@ -32,8 +34,7 @@ session_start();
             <div class="message-list-sidebar">
                     
                     <div class="message-list-sidebar-content">
-                    <button class="add-user-button" onclick="displayAddToChatModal(chatId)">Add Users</button>
-
+                  
                     </div>
                 </div>
         </div>
