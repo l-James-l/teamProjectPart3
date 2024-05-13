@@ -88,7 +88,7 @@ session_start();
             </div>
             <div id="createGroupChatModal" class="modal">
                 <div class="modal-content">
-                    <span class="close" id="groupChatModalCloseButton">Close</span>
+                    <span class="close" id="groupChatModalCloseButton">X</span>
                     <form id="createGroupChatForm">
                         <input type="hidden" id="editMessageId">
                         <label for="createGroupChatUserSearchField">Name of recipient</label>
