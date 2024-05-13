@@ -109,6 +109,7 @@ session_start();
                     <span class="close" id="addToChatModalCloseButton">X</span>
                     <form id="addToChatForm">
                         <input type="hidden" id="editMessageId">
+                        <h3>Group Members</h3>
                         <p id="groupMembersList"></p>
                         <label for="addToChatUserSearchField">Name of recipient</label>
                         <input type="text" id="addToChatUserSearchField" name="addToChatUserSearchField">
