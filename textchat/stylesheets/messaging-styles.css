@@ -323,7 +323,7 @@ main {
 
 #createChat {
     cursor: pointer; 
-    size: 20px;
+    font-size: 20px;
 }
 #createPrivateChatForm button {
     margin-top: 10px; 
