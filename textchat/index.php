@@ -665,7 +665,7 @@ session_start();
         function displayCreatePrivateChatModal() {
             let privateChatCreationModal=document.querySelector("#createPrivateChatModal");
             privateChatCreationModal.style.display = "block";
-            let closeButton=document.querySelector("#privateChatModalCloseButton");
+            let closeButton=document.querySelector("#close");
             closeButton.addEventListener("click",() => {
                 privateChatCreationModal.style.display="none";
             })
