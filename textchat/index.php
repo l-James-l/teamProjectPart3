@@ -74,7 +74,7 @@ session_start();
 
             <div id="createPrivateChatModal" class="modal">
                 <div class="modal-content">
-                <span class="close">&times;</span> 
+                    <span class="close" id="privateChatModalCloseButton">X</span>
                     <form id="createPrivateChatForm">
                         <input type="hidden" id="editMessageId">
                         <label for="createPrivateChatUserSearchField">Name of recipient</label>
@@ -665,7 +665,7 @@ session_start();
         function displayCreatePrivateChatModal() {
             let privateChatCreationModal=document.querySelector("#createPrivateChatModal");
             privateChatCreationModal.style.display = "block";
-            let closeButton=document.querySelector("#close");
+            let closeButton=document.querySelector("#privateChatModalCloseButton");
             closeButton.addEventListener("click",() => {
                 privateChatCreationModal.style.display="none";
             })
@@ -722,7 +722,7 @@ session_start();
 
 
         }
-       
+        displayAddToChatModal(1);
         document.querySelector("#createChat").addEventListener("click",() => {
             if(oneToOne) {
                 displayCreatePrivateChatModal();
