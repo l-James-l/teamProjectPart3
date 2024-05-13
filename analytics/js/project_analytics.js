@@ -70,7 +70,13 @@ function drawprogressLineChart(progressData) {
           title: 'Project Progress Over Time',
           subtitle: 'in hours commited'
         },
-        height: 500
+        height: 500,
+        vAxis: {
+            minValue: 0, 
+            viewWindow: {
+                min:0
+            }
+        }
     };
 
     if (processedDataArray.length > 0) {
