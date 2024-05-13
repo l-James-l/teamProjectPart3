@@ -99,6 +99,19 @@ session_start();
                     </form>
                 </div>
             </div>
+            <div id="addToChatModal" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="addToChatModalCloseButton">Close</span>
+                    <form id="addToChatForm">
+                        <input type="hidden" id="editMessageId">
+                        <label for="addToChatUserSearchField">Name of recipient</label>
+                        <input type="text" id="addToChatUserSearchField" name="addToChatUserSearchField">
+                        <button type="submit" id="addToChatUserSearchButton">Find users</button>
+                        <select id="addToChatResultingUsers"></select>
+                        <button type="submit" id="addToChatSubmit">Add to chat</button>
+                    </form>
+                </div>
+            </div>
 
         </div>
     </main>
@@ -632,8 +645,7 @@ session_start();
                 console.log(error);
             }
         }
-        //createChat(false,4)
-        //.then(console.log("running,creating private message"))
+
         async function addUserToChat(userID,chatID) {
             try {
                 fetchParams = {
@@ -689,6 +701,26 @@ session_start();
             });
 
         }
+        function displayAddToChatModal(chatID) {
+            let addToChatModal=document.querySelector("#addToChatModal");
+            addToChatModal.style.display = "block";
+            let closeButton=document.querySelector("#addToChatModalCloseButton");
+            closeButton.addEventListener("click",() => {
+                addToChatModal.style.display="none";
+            })
+            document.querySelector("#addToChatUserSearchButton").addEventListener("click",(event)=> {
+                event.preventDefault();
+                searchUsersAddToChat(document.querySelector("#addToChatUserSearchField").value)
+            });
+            document.querySelector("#addToChatSubmit").addEventListener("click", (event) => {
+                event.preventDefault();
+                addUserToChat(document.querySelector("#addToChatResultingUsers").value,chatID);
+                addToChatModal.style.display="none";
+                fetchMessages();
+            });
+
+
+        }
         document.querySelector("#createChat").addEventListener("click",() => {
             if(oneToOne) {
                 displayCreatePrivateChatModal();
@@ -733,11 +765,23 @@ session_start();
 
             
         }
-        //createChat(true,1,"test_group")
-        addUserToChat(4,127)
-        .then(console.log("ran"))
-        //.then(console.log("running"))
-        
+        async function searchUsersAddToChat(searchString) {
+            const link = "fetch-user-list.php?enteredSearch="+encodeURIComponent(searchString);
+            try {
+                const response=await fetch(link);
+                const results= await response.json();
+                let length=results.length;
+                let HTMLToInsert="";
+                for(let i=0;i<length;i++) {
+                   HTMLToInsert+="<option value="+results[i].user_id+">"+results[i].first_name+" "+results[i].surname+"</option>";
+                }
+                document.querySelector("#addToChatResultingUsers").innerHTML=HTMLToInsert;
+                
+            }
+            catch(error) {
+                console.log(error);
+            }
+        }
     </script>
 </body>
 </html>
