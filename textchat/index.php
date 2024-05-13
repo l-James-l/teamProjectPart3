@@ -69,7 +69,6 @@ session_start();
                     <textarea id="editMessageText" name="editMessageText" rows="4" cols="50"></textarea>
                     <button type="submit">Save</button>
                 </form>
-
                 </div>
             </div>
 
