@@ -763,6 +763,7 @@ session_start();
         // }
 
         function displayAddToChatModal(chatID) {
+            var chatId = localStorage.getItem('selectedChatId');
             let addToChatModal=document.querySelector("#addToChatModal");
             addToChatModal.style.display = "block";
             let closeButton=document.querySelector("#addToChatModalCloseButton");
