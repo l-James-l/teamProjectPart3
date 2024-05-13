@@ -796,8 +796,12 @@ session_start();
 
                             // Display group members' names
                             let groupMembersList = document.querySelector("#groupMembersList");
-                            groupMembersList.innerHTML = "";
-                            groupMembersList.innerHTML = groupInfo.first_name + " " + groupInfo.surname; // Assuming there's only one member, modify as needed
+                            groupMembersList.innerHTML = ""; // Clear previous content
+                            groupInfo.forEach(member => {
+                                let memberName = document.createElement("div");
+                                memberName.textContent = member.first_name + " " + member.surname;
+                                groupMembersList.appendChild(memberName);
+                            });
 
                             let closeButton = document.querySelector("#addToChatModalCloseButton");
                             closeButton.addEventListener("click", () => {
