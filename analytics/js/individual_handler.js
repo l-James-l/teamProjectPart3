@@ -30,20 +30,9 @@ function drawProgressGraph(userData) {
 
     var running_sum = 0
     processedDataArray = []
-    var checkDate = new Date(progressData[0]["date"])
     progressData.forEach(row => {
-        var rowDate = new Date(row["date"])
-        while (true) {
-            if (rowDate.getTime() === checkDate.getTime()) {
-                checkDate.setDate(checkDate.getDate() + 1)
-                break
-            } else {
-                processedDataArray.push([checkDate, 0, running_sum])
-                checkDate.setDate(checkDate.getDate() + 1)
-            }
-            running_sum = running_sum + parseInt(row["hours_sum"])
-            processedDataArray.push([new Date(row["date"]), parseInt(row["hours_sum"]), running_sum])
-        }
+        running_sum = running_sum + parseInt(row["hours_sum"])
+        processedDataArray.push([new Date(row["date"]), parseInt(row["hours_sum"]), running_sum])
     })
     data.addRows(processedDataArray)
 
