@@ -784,48 +784,46 @@ session_start();
         });
 
         function displayAddToChatModal(chatID) {
-            // Check if it's a group chat
-            fetch('get_group_info.php?chat_id=' + chatID)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
+            fetch(`get-group-info?chat_id=${chatID}`)
+                .then(response => response.json())
                 .then(data => {
-                    if (data.is_group) {
-                        let addToChatModal = document.querySelector("#addToChatModal");
-                        addToChatModal.style.display = "block";
-                        
-                        // Display group members
-                        fetch('get_group_members.php?chat_id=' + chatID)
-                            .then(response => response.json())
-                            .then(members => {
-                                let memberList = members.map(member => member.first_name + ' ' + member.surname).join(', ');
-                                document.querySelector("#addToChatResultingUsers").innerText = "Group Members: " + memberList;
+                    if (data.status === "success") {
+                        let groupInfo = data.group_info[0];
+                        if (groupInfo.is_group === 1) { // Check if it's a group
+                            let addToChatModal = document.querySelector("#addToChatModal");
+                            addToChatModal.style.display = "block";
+
+                            // Display group members' names
+                            let groupMembersList = document.querySelector("#groupMembersList");
+                            groupMembersList.innerHTML = "";
+                            groupMembersList.innerHTML = groupInfo.first_name + " " + groupInfo.surname; // Assuming there's only one member, modify as needed
+
+                            let closeButton = document.querySelector("#addToChatModalCloseButton");
+                            closeButton.addEventListener("click", () => {
+                                addToChatModal.style.display = "none";
                             });
 
-                        let closeButton = document.querySelector("#addToChatModalCloseButton");
-                        closeButton.addEventListener("click", () => {
-                            addToChatModal.style.display = "none";
-                        });
+                            document.querySelector("#addToChatUserSearchButton").addEventListener("click", (event) => {
+                                event.preventDefault();
+                                searchUsersAddToChat(document.querySelector("#addToChatUserSearchField").value);
+                            });
 
-                        document.querySelector("#addToChatUserSearchButton").addEventListener("click", (event) => {
-                            event.preventDefault();
-                            searchUsersAddToChat(document.querySelector("#addToChatUserSearchField").value);
-                        });
-
-                        document.querySelector("#addToChatSubmit").addEventListener("click", (event) => {
-                            event.preventDefault();
-                            addUserToChat(document.querySelector("#addToChatResultingUsers").value, chatID)
-                                .then(fetchMessages());
-                            addToChatModal.style.display = "none";
-                        });
+                            document.querySelector("#addToChatSubmit").addEventListener("click", (event) => {
+                                event.preventDefault();
+                                addUserToChat(document.querySelector("#addToChatResultingUsers").value, chatID)
+                                    .then(fetchMessages());
+                                addToChatModal.style.display = "none";
+                            });
+                        } else {
+                            // Display error alert to the user if it's not a group
+                            alert("This is not a group chat.");
+                        }
                     } else {
-                        alert("This chat is not a group.");
+                        // Handle API error
+                        console.error("Error:", data.message);
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => console.error("Error:", error));
         }
 
         
