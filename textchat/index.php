@@ -81,6 +81,7 @@ session_start();
                         <input type="text" id="createPrivateChatUserSearchField" name="createPrivateChatUserSearchField">
                         <button type="submit" id="createPrivateChatUserSearchButton">Find users</button>
                         <select id="createPrivateChatResultingUsers"></select>
+                        <br>
                         <button type="submit" id="createPrivateChatSubmit">Create conversation</button>
                     </form>
                 </div>
