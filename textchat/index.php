@@ -62,11 +62,12 @@ session_start();
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <form id="editMessageForm">
-                        <input type="hidden" id="editMessageId">
-                        <label for="editMessageText">Edit Message:</label>
-                        <input type="text" id="editMessageText" name="editMessageText">
-                        <button type="submit">Save</button>
-                    </form>
+                    <input type="hidden" id="editMessageId">
+                    <label for="editMessageText">Edit Message:</label>
+                    <textarea id="editMessageText" name="editMessageText" rows="4" cols="50"></textarea>
+                    <button type="submit">Save</button>
+                </form>
+
                 </div>
             </div>
 
