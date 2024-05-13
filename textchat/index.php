@@ -42,6 +42,7 @@ session_start();
         <div class="main-section">
             
             <div id="chat-section" class="chat-section">
+            <span class="chat-title">Group Chat Name</span>
             <button class="add-user-button" onclick="displayAddToChatModal(chatId)">Add Users</button>
             </div>
             
@@ -702,6 +703,30 @@ session_start();
             });
 
         }
+        function renderChatHeader(chatId, chatName) {
+            const chatSection = document.getElementById("chat-section");
+            const chatHeader = document.createElement("div");
+            chatHeader.className = "chat-header";
+
+            const title = document.createElement("span");
+            title.className = "chat-title";
+            title.textContent = chatName;
+
+            const addUserButton = document.createElement("button");
+            addUserButton.className = "add-user-button";
+            addUserButton.textContent = "Add Users";
+            addUserButton.onclick = function() { displayAddToChatModal(chatId); };
+
+            chatHeader.appendChild(title);
+            chatHeader.appendChild(addUserButton);
+
+            chatSection.appendChild(chatHeader);
+
+            const chatMessages = document.createElement("div");
+            chatMessages.className = "chat-messages";
+            chatSection.appendChild(chatMessages);
+        }
+
         function displayAddToChatModal(chatID) {
             let addToChatModal=document.querySelector("#addToChatModal");
             addToChatModal.style.display = "block";
