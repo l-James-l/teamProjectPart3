@@ -74,7 +74,7 @@ session_start();
 
             <div id="createPrivateChatModal" class="modal">
                 <div class="modal-content">
-                    <span class="close" id="privateChatModalCloseButton">Close</span>
+                <span class="close">&times;</span> 
                     <form id="createPrivateChatForm">
                         <input type="hidden" id="editMessageId">
                         <label for="createPrivateChatUserSearchField">Name of recipient</label>
