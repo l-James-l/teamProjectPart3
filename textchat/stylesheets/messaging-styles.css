@@ -321,3 +321,13 @@ main {
 #createChat {
     cursor: pointer; 
 }
+#createPrivateChatForm button {
+    margin-top: 10px; 
+    margin-bottom: 10px; 
+
+}
+
+#createPrivateChatForm select {
+    margin-top: 10px; 
+    margin-bottom: 10px; 
+}
