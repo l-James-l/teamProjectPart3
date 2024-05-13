@@ -43,7 +43,7 @@ session_start();
         
         <div class="main-section">
             <div class="top-bar-settings-container">
-                <button class="add-user-button" onclick="displayAddToChatModal(localStorage.getItem('selectedChatId'))">Add Users</button>
+                <button class="add-user-button" onclick="displayAddToChatModal(localStorage.getItem('selectedChatId'))">Group Settings</button>
             </div>
             
             <div id="chat-section" class="chat-section">
@@ -141,6 +141,12 @@ session_start();
                     fetchChats(<?php echo $user_id; ?>, false);  // Pass false to indicate 1-1 chats
                     oneToOne=true;
                 }
+
+
+                // Select the element with the class "add-user-button" and hide it
+                document.querySelector(".add-user-button").style.display = "none";
+
+            
             });
 
             // Attach event listener to the group button
@@ -149,6 +155,9 @@ session_start();
                     fetchChats(<?php echo $user_id; ?>, true);  // Pass true to indicate group chats
                     oneToOne=false;
                 }
+                // Show the element with the class "add-user-button"
+                document.querySelector(".add-user-button").style.display = "block";
+
             });
 
             // Call fetchChats function with 1-1 chats as default
