@@ -839,14 +839,19 @@ session_start();
 
                             document.querySelector("#addToChatSubmit").addEventListener("click", (event) => {
                                 event.preventDefault();
-                                addUserToChat(document.querySelector("#addToChatResultingUsers").value, chatID)
-                                    .then(fetchMessages());
-                                addToChatModal.style.display = "none";
+                                let selectedUserId = document.querySelector("#addToChatResultingUsers").value;
+                                if (selectedUserId) {
+                                    addUserToChat(selectedUserId, chatID).then(() => {
+                                        fetchMessages();
+                                        addToChatModal.style.display = "none";
+                                    });
+                                } else {
+                                    alert("Please select a user to add.");
+                                }
                             });
-                        } else {
-                            // Display error alert to the user if it's not a group
-                            alert("Cannot add members to a 1-1 chat. Select a group chat.");
-                        }
+                                    // Display error alert to the user if it's not a group
+                                    alert("Cannot add members to a 1-1 chat. Select a group chat.");
+                                }
                     } else {
                         // Handle API error
                         console.error("Error:", data.message);
