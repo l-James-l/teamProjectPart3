@@ -826,12 +826,16 @@ session_start();
                             // Display group members' names
                             let groupMembersList = document.querySelector("#groupMembersList");
                             groupMembersList.innerHTML = ""; // Clear previous content
+                            let addedMembers = new Set();
                             groupInfo.forEach(member => {
-                                let memberName = document.createElement("div");
-                                memberName.textContent = member.first_name + " " + member.surname;
-                                groupMembersList.appendChild(memberName);
+                                let memberName = member.first_name + " " + member.surname;
+                                if (!addedMembers.has(memberName)) {
+                                    addedMembers.add(memberName);
+                                    let memberDiv = document.createElement("div");
+                                    memberDiv.textContent = memberName;
+                                    groupMembersList.appendChild(memberDiv);
+                                }
                             });
-
                             let closeButton = document.querySelector("#addToChatModalCloseButton");
                             closeButton.addEventListener("click", () => {
                                 addToChatModal.style.display = "none";
