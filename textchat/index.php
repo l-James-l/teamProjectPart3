@@ -410,7 +410,7 @@ session_start();
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
-                        console.log('Response:', xhr.responseText); // Log the response
+                        // console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
                             updateMessageListUI(response.chats, chatListContainer); // Update UI with fetched chats
@@ -714,7 +714,7 @@ session_start();
                 body: formData
             });
             const result = await response.text();
-            console.log(result);
+            // console.log(result);
                     fetchChats()
                 }
                 catch(error) {
