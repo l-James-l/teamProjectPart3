@@ -457,7 +457,9 @@ session_start();
             var existingChatIds = new Set();
             chats.forEach(function(chat) {
                 // Check if a chat preview with the same chat ID already exists
-                var existingChatPreview = container.querySelector('.chat-preview[data-chat-id="' + chat.chat_id + '"]');
+                var existingChatPreview = Array.from(container.querySelectorAll('.chat-preview')).find(function(preview) {
+                    return preview.querySelector('.chat-name').textContent === chat.chat_name;
+                });
                 if (!existingChatPreview) {
                     var chatPreview = document.createElement('div');
                     chatPreview.classList.add('chat-preview');
