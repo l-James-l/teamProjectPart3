@@ -21,7 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $chat_id = $_POST['chat_id'];  // The chat ID to which the message is being sent
         $user_id = $_POST['user_id'];  // The user ID sending the message
 
-        $sql = "INSERT INTO chat_log (chat_id, message, user_id, timestamp) VALUES (:chat_id, :message, :user_id, NOW())";
+        $sql = "INSERT INTO chat_log (chat_id, message, user_id, timestamp) VALUES (:chat_id, :message, :user_id, DATE_ADD(UTC_TIMESTAMP(), INTERVAL 1 HOUR))";
+
         $stmt = $conn->prepare($sql);
 
         $stmt->bindParam(':chat_id', $chat_id);
