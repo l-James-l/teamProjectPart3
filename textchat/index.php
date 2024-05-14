@@ -486,8 +486,10 @@ session_start();
         }
 
         function deleteMessage(messageId) {
+
             var userConfirmed = confirm("Are you sure you want to delete this message?");
 
+            // Check if the user confirmed the deletion
             if (userConfirmed) {
                 var formData = new FormData();
                 formData.append('message_id', messageId);
@@ -496,30 +498,30 @@ session_start();
                 xhr.open("POST", "delete-message.php", true);
                 xhr.onload = function () {
                     if (this.status === 200) {
-                        var response = JSON.parse(this.responseText);
-                        if (response.status === 'success') {
-                            console.log("Message deleted successfully");
-                            removeMessageFromUI(messageId); // Remove the message from UI
-                        } else {
-                            console.error('Failed to delete message:', response.message);
+                        // Message deleted successfully
+                        console.log("Message deleted");
+                        fetchMessages(); // Refresh messages to reflect deletion
+                        
+                        // Get the selected chat ID from local storage
+                        var selectedChatId = localStorage.getItem('selectedChatId');
+                        
+                        // If a chat is selected, reload its messages to ensure it's up to date
+                        if (selectedChatId) {
+                            loadChatMessages(selectedChatId);
                         }
                     } else {
-                        console.error('Error during the AJAX request to delete-message.php:', this.status);
+                        // Handle errors, such as message not found or server error
+                        console.error('Failed to delete message:', this.status);
                     }
                 };
                 xhr.onerror = function () {
-                    console.error('Error during the AJAX request to delete-message.php');
+                    console.error('Error during the AJAX request to delete the message.');
                 };
                 xhr.send(formData);
             }
+ 
         }
 
-        function removeMessageFromUI(messageId) {
-            var messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
-            if (messageElement) {
-                messageElement.remove(); // Remove the message element from the DOM
-            }
-        }
 
         function editMessage(messageId, messageDiv) {
             var messageText = messageDiv.textContent; 
