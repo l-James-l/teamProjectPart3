@@ -158,13 +158,23 @@ session_start();
             if (<?php echo isset($user_id) ? 'true' : 'false'; ?>) {
                 fetchChats(<?php echo $user_id; ?>, false);  // Fetch 1-1 chats by default
             }
-            addUserButton.addEventListener('click', function () {
-            var selectedChatId = localStorage.getItem('selectedChatId');
-            if (selectedChatId && !oneToOne) {
-                displayAddToChatModal(selectedChatId);
-            } else {
-                console.log("Add Users action is only available for group chats.");
-            }
+            // addUserButton.addEventListener('click', function () {
+            // var selectedChatId = localStorage.getItem('selectedChatId');
+            // if (selectedChatId && !oneToOne) {
+            //     displayAddToChatModal(selectedChatId);
+            // } else {
+            //     console.log("Add Users action is only available for group chats.");
+            // }
+            // });
+            //CHANGE MADE
+            
+            document.querySelector('.add-user-button').addEventListener('click', function () {
+                var selectedChatId = localStorage.getItem('selectedChatId');
+                if (selectedChatId && !oneToOne) {
+                    displayAddToChatModal(selectedChatId);
+                } else {
+                    console.log("Add Users action is only available for group chats.");
+                }
             });
 
             // Prepare form submissions
