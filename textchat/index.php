@@ -415,6 +415,7 @@ session_start();
 
         function fetchChats(userId, isGroup) {
             var chatListContainer = document.querySelector('.message-list-sidebar-content'); // Adjust selector based on your HTML structure
+            chatListContainer.innerHTML = ''; // Clear existing chat list
             var xhr = new XMLHttpRequest();
             xhr.open('GET', 'fetch-chats.php?user_id=' + userId + '&is_group=' + (isGroup ? '1' : '0'), true);
             xhr.onreadystatechange = function () {
