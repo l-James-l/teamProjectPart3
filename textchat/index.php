@@ -469,7 +469,9 @@ session_start();
                     chatName.textContent = chat.chat_name;
 
                     // Append chat name to the chat preview
-                    chatPreview.appendChild(chatName);
+                    if (chat.is_group===1){
+                        if chatPreview.appendChild(chatName);
+                    }
 
                     // Add an event listener to load the chat messages when clicked
                     chatPreview.addEventListener('click', function() {
