@@ -816,6 +816,7 @@ session_start();
                             // Display group members' names
                             let groupMembersList = document.querySelector("#groupMembersList");
                             groupMembersList.innerHTML = ""; // Clear previous content
+
                             groupInfo.forEach(member => {
                                 let memberName = document.createElement("div");
                                 memberName.textContent = member.first_name + " " + member.surname;
@@ -823,21 +824,14 @@ session_start();
                             });
 
                             let closeButton = document.querySelector("#addToChatModalCloseButton");
-                            closeButton.addEventListener("click", () => {
-                                addToChatModal.style.display = "none";
-                            });
+                            closeButton.removeEventListener("click", closeAddToChatModal);
+                            closeButton.addEventListener("click", closeAddToChatModal);
 
-                            document.querySelector("#addToChatUserSearchButton").addEventListener("click", (event) => {
-                                event.preventDefault();
-                                searchUsersAddToChat(document.querySelector("#addToChatUserSearchField").value);
-                            });
+                            document.querySelector("#addToChatUserSearchButton").removeEventListener("click", searchUsersForAddToChat);
+                            document.querySelector("#addToChatUserSearchButton").addEventListener("click", searchUsersForAddToChat);
 
-                            document.querySelector("#addToChatSubmit").addEventListener("click", (event) => {
-                                event.preventDefault();
-                                addUserToChat(document.querySelector("#addToChatResultingUsers").value, chatID)
-                                    .then(fetchMessages());
-                                addToChatModal.style.display = "none";
-                            });
+                            document.querySelector("#addToChatSubmit").removeEventListener("click", submitAddToChatForm);
+                            document.querySelector("#addToChatSubmit").addEventListener("click", submitAddToChatForm);
                         } else {
                             // Display error alert to the user if it's not a group
                             alert("Cannot add members to a 1-1 chat. Select a group chat.");
