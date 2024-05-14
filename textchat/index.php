@@ -452,7 +452,7 @@ session_start();
         }
 
         // Function to update the message list UI with fetched chats
-        function updateMessageListUI(chats, container) {
+        function updateMessageListUI(chats, container,isGroup) {
             chats.forEach(function(chat) {
                 // Check if a chat preview with the same chat ID already exists
                 var existingChatPreview = container.querySelector('.chat-preview[data-chat-id="' + chat.chat_id + '"]');
