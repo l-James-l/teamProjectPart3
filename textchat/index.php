@@ -742,20 +742,23 @@ session_start();
 
         }
         function displayCreateGroupChatModal() {
-            let groupChatCreationModal = document.querySelector("#createGroupChatModal");
+            let groupChatCreationModal=document.querySelector("#createGroupChatModal");
             groupChatCreationModal.style.display = "block";
+            let closeButton=document.querySelector("#groupChatModalCloseButton");
+            closeButton.addEventListener("click",() => {
+                groupChatCreationModal.style.display="none";
+            })
+            document.querySelector("#createGroupChatUserSearchButton").addEventListener("click",(event)=> {
+                event.preventDefault();
+                searchUsersCreateGroupChat(document.querySelector("#createGroupChatUserSearchField").value)
+            });
+            document.querySelector("#createGroupChatSubmit").addEventListener("click", (event) => {
+                event.preventDefault();
+                createChat(true,document.querySelector("#createGroupChatResultingUsers").value,document.querySelector("#createGroupChatGroupName").value);
+                groupChatCreationModal.style.display="none"
+                fetchChats(<?php echo $user_id; ?>, true);
+            });
 
-            let closeButton = document.querySelector("#groupChatModalCloseButton");
-            closeButton.removeEventListener("click", closeGroupChatModal);
-            closeButton.addEventListener("click", closeGroupChatModal);
-
-            let searchButton = document.querySelector("#createGroupChatUserSearchButton");
-            searchButton.removeEventListener("click", searchGroupChatUsers);
-            searchButton.addEventListener("click", searchGroupChatUsers);
-
-            let submitButton = document.querySelector("#createGroupChatSubmit");
-            submitButton.removeEventListener("click", submitGroupChatForm);
-            submitButton.addEventListener("click", submitGroupChatForm);
         }
         // function renderChatHeader(chatId, chatName,isGroup) {
         //     const chatSection = document.getElementById("chat-section");
