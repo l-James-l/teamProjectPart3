@@ -452,34 +452,43 @@ session_start();
         }
 
         // Function to update the message list UI with fetched chats
-        function updateMessageListUI(chats, container) {
-            container.innerHTML = ''; // Clear existing chat list
+     // Function to update the message list UI with fetched chats
+function updateMessageListUI(chats, container) {
+            // Get the IDs of existing chat previews
+            let existingChatIds = new Set(container.querySelectorAll('.chat-preview').map(chatPreview => chatPreview.dataset.chatId));
 
             // Iterate over each chat
             chats.forEach(function(chat) {
-                var chatPreview = document.createElement('div');
-                chatPreview.classList.add('chat-preview');
-                
-                // Set the data attribute to store the chat id
-                chatPreview.dataset.chatId = chat.chat_id;
+                // Check if the chat ID already exists in the sidebar
+                if (!existingChatIds.has(chat.chat_id)) {
+                    var chatPreview = document.createElement('div');
+                    chatPreview.classList.add('chat-preview');
 
-                chatPreview.dataset.isGroup = chat.is_group;
-                var chatName = document.createElement('p');
-                chatName.classList.add('chat-name');
-                chatName.textContent = chat.chat_name;
+                    // Set the data attribute to store the chat id
+                    chatPreview.dataset.chatId = chat.chat_id;
 
-                // Append chat name to the chat preview
-                chatPreview.appendChild(chatName);
-                
-                // Add an event listener to load the chat messages when clicked
-                chatPreview.addEventListener('click', function() {
-                    loadChatMessages(chat.chat_id); // Call loadChatMessages function with chat id
-                });
+                    chatPreview.dataset.isGroup = chat.is_group;
+                    var chatName = document.createElement('p');
+                    chatName.classList.add('chat-name');
+                    chatName.textContent = chat.chat_name;
 
-                // Append the chat preview to the container
-                container.appendChild(chatPreview);
+                    // Append chat name to the chat preview
+                    chatPreview.appendChild(chatName);
+
+                    // Add an event listener to load the chat messages when clicked
+                    chatPreview.addEventListener('click', function() {
+                        loadChatMessages(chat.chat_id); // Call loadChatMessages function with chat id
+                    });
+
+                    // Append the chat preview to the container
+                    container.appendChild(chatPreview);
+
+                    // Add the chat ID to the set of existing chat IDs
+                    existingChatIds.add(chat.chat_id);
+                }
             });
         }
+
 
         function deleteMessage(messageId) {
 
