@@ -158,13 +158,23 @@ session_start();
             if (<?php echo isset($user_id) ? 'true' : 'false'; ?>) {
                 fetchChats(<?php echo $user_id; ?>, false);  // Fetch 1-1 chats by default
             }
-            addUserButton.addEventListener('click', function () {
-            var selectedChatId = localStorage.getItem('selectedChatId');
-            if (selectedChatId && !oneToOne) {
-                displayAddToChatModal(selectedChatId);
-            } else {
-                console.log("Add Users action is only available for group chats.");
-            }
+            // addUserButton.addEventListener('click', function () {
+            // var selectedChatId = localStorage.getItem('selectedChatId');
+            // if (selectedChatId && !oneToOne) {
+            //     displayAddToChatModal(selectedChatId);
+            // } else {
+            //     console.log("Add Users action is only available for group chats.");
+            // }
+            // });
+            //CHANGE MADE
+            
+            document.querySelector('.add-user-button').addEventListener('click', function () {
+                var selectedChatId = localStorage.getItem('selectedChatId');
+                if (selectedChatId && !oneToOne) {
+                    displayAddToChatModal(selectedChatId);
+                } else {
+                    console.log("Add Users action is only available for group chats.");
+                }
             });
 
             // Prepare form submissions
@@ -405,12 +415,13 @@ session_start();
 
         function fetchChats(userId, isGroup) {
             var chatListContainer = document.querySelector('.message-list-sidebar-content'); // Adjust selector based on your HTML structure
+            chatListContainer.innerHTML = ''; // Clear existing chat list
             var xhr = new XMLHttpRequest();
             xhr.open('GET', 'fetch-chats.php?user_id=' + userId + '&is_group=' + (isGroup ? '1' : '0'), true);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
-                        console.log('Response:', xhr.responseText); // Log the response
+                        // console.log('Response:', xhr.responseText); // Log the response
                         var response = JSON.parse(xhr.responseText);
                         if (response.status === 'success') {
                             updateMessageListUI(response.chats, chatListContainer); // Update UI with fetched chats
@@ -442,32 +453,37 @@ session_start();
         }
 
         // Function to update the message list UI with fetched chats
-        function updateMessageListUI(chats, container) {
-            container.innerHTML = ''; // Clear existing chat list
-
-            // Iterate over each chat
+        function updateMessageListUI(chats, container,isGroup) {
+            var existingChatIds = new Set();
             chats.forEach(function(chat) {
-                var chatPreview = document.createElement('div');
-                chatPreview.classList.add('chat-preview');
-                
-                // Set the data attribute to store the chat id
-                chatPreview.dataset.chatId = chat.chat_id;
-
-                chatPreview.dataset.isGroup = chat.is_group;
-                var chatName = document.createElement('p');
-                chatName.classList.add('chat-name');
-                chatName.textContent = chat.chat_name;
-
-                // Append chat name to the chat preview
-                chatPreview.appendChild(chatName);
-                
-                // Add an event listener to load the chat messages when clicked
-                chatPreview.addEventListener('click', function() {
-                    loadChatMessages(chat.chat_id); // Call loadChatMessages function with chat id
+                // Check if a chat preview with the same chat ID already exists
+                var existingChatPreview = Array.from(container.querySelectorAll('.chat-preview')).find(function(preview) {
+                    return preview.querySelector('.chat-name').textContent === chat.chat_name;
                 });
+                if (!existingChatPreview) {
+                    var chatPreview = document.createElement('div');
+                    chatPreview.classList.add('chat-preview');
 
-                // Append the chat preview to the container
-                container.appendChild(chatPreview);
+                    // Set the data attribute to store the chat id
+                    chatPreview.dataset.chatId = chat.chat_id;
+                    chatPreview.dataset.isGroup = chat.is_group;
+                    
+                    var chatName = document.createElement('p');
+                    chatName.classList.add('chat-name');
+                    chatName.textContent = chat.chat_name;
+
+                    // Append chat name to the chat preview
+                    chatPreview.appendChild(chatName);
+
+                    // Add an event listener to load the chat messages when clicked
+                    chatPreview.addEventListener('click', function() {
+                        loadChatMessages(chat.chat_id); // Call loadChatMessages function with chat id
+                    });
+
+                    // Append the chat preview to the container
+                    container.appendChild(chatPreview);
+                    existingChatIds.add(chat.chat_id);
+                }
             });
         }
 
@@ -691,19 +707,26 @@ session_start();
             }
         }
 
-        async function addUserToChat(userID,chatID) {
+        async function addUserToChat(userID, chatID) {
             try {
-                fetchParams = {
-                    method:"POST",
-                headers: {'Content-Type': 
-                'application/x-www-form-urlencoded'},
-                body : 'user_id_to_add='+encodeURIComponent(userID)+'&chat_id='+encodeURIComponent(chatID)
+                const formData = new FormData();
+                formData.append('user_id_to_add', userID);
+                formData.append('chat_id', chatID);
+
+                const response = await fetch("add-user-to-chat.php", {
+                    method: "POST",
+                    body: formData
+                });
+                const result = await response.json(); 
+                console.log(result);
+
+                if (result.success) {
+                    // Fetch updated group info to reflect the added user
+                    displayAddToChatModal(chatID);
+                } else {
+                    console.error('Failed to add user:', result.error);
                 }
-                const response = await fetch("add-user-to-chat.php",fetchParams);
-                const responseObjects = await response.text();
-                await console.log(responseObjects);
-            }
-            catch(error) {
+            } catch (error) {
                 console.log(error);
             }
         }
@@ -809,12 +832,16 @@ session_start();
                             // Display group members' names
                             let groupMembersList = document.querySelector("#groupMembersList");
                             groupMembersList.innerHTML = ""; // Clear previous content
+                            let addedMembers = new Set();
                             groupInfo.forEach(member => {
-                                let memberName = document.createElement("div");
-                                memberName.textContent = member.first_name + " " + member.surname;
-                                groupMembersList.appendChild(memberName);
+                                let memberName = member.first_name + " " + member.surname;
+                                if (!addedMembers.has(memberName)) {
+                                    addedMembers.add(memberName);
+                                    let memberDiv = document.createElement("div");
+                                    memberDiv.textContent = memberName;
+                                    groupMembersList.appendChild(memberDiv);
+                                }
                             });
-
                             let closeButton = document.querySelector("#addToChatModalCloseButton");
                             closeButton.addEventListener("click", () => {
                                 addToChatModal.style.display = "none";
@@ -896,8 +923,11 @@ session_start();
                 const results= await response.json();
                 let length=results.length;
                 let HTMLToInsert="";
+                const loggedInUserId = <?php echo json_encode($user_id); ?>;
                 for(let i=0;i<length;i++) {
-                   HTMLToInsert+="<option value="+results[i].user_id+">"+results[i].first_name+" "+results[i].surname+"</option>";
+                    if (results[i].user_id !== loggedInUserId) { 
+                        HTMLToInsert += "<option value=" + results[i].user_id + ">" + results[i].first_name + " " + results[i].surname + "</option>";
+                    }
                 }
                 document.querySelector("#addToChatResultingUsers").innerHTML=HTMLToInsert;
                 
